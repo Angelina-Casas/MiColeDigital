@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Admin;
 import Complementos.BaseFrame;
 import Modelos.Usuario;
@@ -12,10 +8,6 @@ public class AdmCurso extends BaseFrame {
 
     @Override
     protected void initContenido() {
-        
-        
-
-        // Etiqueta Nombre
         JLabel lblNombre = new JLabel("Nombre:");
         lblNombre.setFont(new Font("Arial", Font.BOLD, 14));
         lblNombre.setBounds(40, 40, 100, 25);
@@ -25,7 +17,6 @@ public class AdmCurso extends BaseFrame {
         txtNombre.setBounds(40, 65, 300, 30);
         panelContenido.add(txtNombre);
 
-        // Docente
         JLabel lblDocente = new JLabel("Docente:");
         lblDocente.setFont(new Font("Arial", Font.BOLD, 14));
         lblDocente.setBounds(40, 110, 100, 25);
@@ -35,7 +26,6 @@ public class AdmCurso extends BaseFrame {
         cbDocente.setBounds(40, 135, 300, 30);
         panelContenido.add(cbDocente);
 
-        // Aula
         JLabel lblAula = new JLabel("Aula:");
         lblAula.setFont(new Font("Arial", Font.BOLD, 14));
         lblAula.setBounds(40, 180, 100, 25);
@@ -45,7 +35,6 @@ public class AdmCurso extends BaseFrame {
         cbAula.setBounds(40, 205, 300, 30);
         panelContenido.add(cbAula);
 
-        // Botones: Agregar, Editar, Eliminar
         JButton btnAgregar = new JButton("AGREGAR");
         btnAgregar.setBounds(40, 260, 140, 35);
         btnAgregar.setBackground(new Color(144, 238, 144));
@@ -60,8 +49,7 @@ public class AdmCurso extends BaseFrame {
         btnEliminar.setBounds(40, 350, 140, 35);
         btnEliminar.setBackground(new Color(173, 216, 230));
         panelContenido.add(btnEliminar);
-        // Botón Regresar
-        
+
         JButton btnRegresar = new JButton("REGRESAR");
         btnRegresar.setBounds(970, 510, 150, 40);
         btnRegresar.setBackground(new Color(255, 249, 200));
@@ -85,5 +73,4 @@ public class AdmCurso extends BaseFrame {
         
     }
 
-    
 }
