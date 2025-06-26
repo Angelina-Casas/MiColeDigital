@@ -25,7 +25,7 @@ public class CursoDocente extends ComplementosFrameDocente{
         btnCursoMatematica.setBackground(new Color(255, 248, 180));
         btnCursoMatematica.setFont(new Font("Serif", Font.PLAIN, 20));
         btnCursoMatematica.addActionListener(e -> {
-            new AgregarContenido(usuario).setVisible(true);
+            new ContenidoDocente(usuario).setVisible(true);
             dispose();
             });
         panelDerecho.add(btnCursoMatematica);

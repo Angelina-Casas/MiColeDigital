@@ -6,7 +6,6 @@ package Docente;
 import javax.swing.*;
 import java.awt.*;
 import Complementos.ComplementosFrameDocente;
-import Estudiante.CalifiEstudiante;
 import Modelos.Usuario;
 
 public class AgregarContenido extends ComplementosFrameDocente {
@@ -19,8 +18,6 @@ public class AgregarContenido extends ComplementosFrameDocente {
         this.usuario = usuario;
         
         add(crearPanelIzquierdo());
-
-        
         add(crearPanelDerecho("CONTENIDO - MICOLEDIGITAL"));
 
         
@@ -36,7 +33,7 @@ public class AgregarContenido extends ComplementosFrameDocente {
         btnCabecera2.setBackground(Color.WHITE);
         btnCabecera2.setBorder(BorderFactory.createLineBorder(new Color(178, 0, 38), 2));
         btnCabecera2.addActionListener(e -> {
-        new CalifiEstudiante(usuario).setVisible(true);
+        new CalifiDocente(usuario).setVisible(true);
         dispose();
         });
         panelDerecho.add(btnCabecera2);
