@@ -20,16 +20,16 @@ public class ContenidoDocente extends ComplementosFrameDocente{
         
         
         add(crearPanelIzquierdo());
-        // Panel derecho reutilizable 
+         
         add(crearPanelDerecho(" CONTENIDO  -  MICOLEDIGITAL   "));
-        //
+        
         JButton btnCabecera1 = new JButton("Contenido");
         btnCabecera1.setBounds(100, 140, 425, 40);
         btnCabecera1.setBackground(Color.WHITE);
         btnCabecera1.setBorder(BorderFactory.createLineBorder(new Color(39,87,117), 2));
         panelDerecho.add(btnCabecera1);
 
-        // Botón 2 - Prácticas completadas
+        
         JButton btnCabecera2 = new JButton("Calificaciones");
         btnCabecera2.setBounds(525, 140, 425, 40); 
         btnCabecera2.setBackground(Color.WHITE);
@@ -45,13 +45,13 @@ public class ContenidoDocente extends ComplementosFrameDocente{
         contenedorScroll.setBackground(Color.WHITE);
 
         
-        // Datos de prácticas
+        
         String[] semanas = { "Semana 1", "Semana 2", "Semana 3", "Semana 4" };
         
-        //AQUI VAN LOS LIKNS DE LAS CLASES POR SEMANA
+        
         
 
-        // Crear los 4 paneles
+        
         for (int i = 0; i < semanas.length; i++) {
             JPanel panelPractica = new JPanel(null); 
             panelPractica.setMaximumSize(new Dimension(Integer.MAX_VALUE, 110)); 
@@ -60,8 +60,8 @@ public class ContenidoDocente extends ComplementosFrameDocente{
             panelPractica.setBorder(BorderFactory.createLineBorder(Color.GRAY));
             
             JLabel lblSemana = new JLabel(semanas[i]);
-            lblSemana.setBounds(20, 10, 200, 20);
-            lblSemana.setFont(new Font("SansSerif", Font.BOLD, 14));
+            lblSemana.setBounds(50, 35, 200, 20);
+            lblSemana.setFont(new Font("SansSerif", Font.BOLD, 20));
             panelPractica.add(lblSemana);
 
             JButton btnVer = new JButton("Ver práctica");
@@ -78,7 +78,7 @@ public class ContenidoDocente extends ComplementosFrameDocente{
             contenedorScroll.add(panelPractica);
         }
 
-        // Scroll con borde visible
+        
         scrollPane = new JScrollPane(contenedorScroll);
         scrollPane.setBounds(100, 190, 850, 420);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -86,7 +86,7 @@ public class ContenidoDocente extends ComplementosFrameDocente{
         scrollPane.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
         panelDerecho.add(scrollPane);
         
-        contenedorScroll.setPreferredSize(new Dimension(850, 600)); // ancho igual al scroll
+        contenedorScroll.setPreferredSize(new Dimension(850, 600)); 
 
         setVisible(true);
    }

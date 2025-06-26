@@ -58,17 +58,19 @@ public class AgregarContenido extends ComplementosFrameDocente {
         panelFormulario.add(crearTextField(270, y, 200));
         y += 40;
 
-        panelFormulario.add(crearLabel("Número de preguntas: 5", 30, y));
-        
+        panelFormulario.add(crearLabel("Número de preguntas: 4", 30, y));
+        JComboBox<String> comboNumero = new JComboBox<>(new String[]{"1", "2", "3", "4"});
+        comboNumero.setBounds(270, y, 100, 25);
+        panelFormulario.add(comboNumero);
         y += 40;
 
         panelFormulario.add(crearLabel("Pregunta:", 30, y));
-        panelFormulario.add(crearTextField(270, y, 300));
+        panelFormulario.add(crearTextField(270, y, 200));
         y += 40;
 
         for (int i = 1; i <= 4; i++) {
             panelFormulario.add(crearLabel("Opción " + i + ":", 30, y));
-            panelFormulario.add(crearTextField(270, y, 300));
+            panelFormulario.add(crearTextField(270, y, 200));
             y += 40;
         }
 
@@ -86,14 +88,14 @@ public class AgregarContenido extends ComplementosFrameDocente {
 
         
         scrollPaneFormulario = new JScrollPane(panelFormulario);
-        scrollPaneFormulario.setBounds(100, 180, 500, 450);  
+        scrollPaneFormulario.setBounds(100, 200, 520, 430);  
         scrollPaneFormulario.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPaneFormulario.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
         panelDerecho.add(scrollPaneFormulario);
 
         
         panelVistaPrevia = new JPanel();
-        panelVistaPrevia.setBounds(630, 180, 320, 450); 
+        panelVistaPrevia.setBounds(630, 200, 320, 430); 
         panelVistaPrevia.setBackground(Color.LIGHT_GRAY);
         panelVistaPrevia.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         panelDerecho.add(panelVistaPrevia);
