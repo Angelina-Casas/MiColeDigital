@@ -53,10 +53,10 @@ public class ContenidoEstudiante extends ComplementosFrameEstudiante {
        
         //AQUI VAN LOS LIKNS DE LAS CLASES POR SEMANA
         String[] urls = {
-            "https://www.youtube.com/watch?v=Kk--BEdntyk&list=RDGMEMYvZjTda73N9EL0Qo2TnYng&start_radio=1&rv=udQ3QgVkE5w",
-            "https://www.youtube.com/watch?v=_9RevalFoko",
-            "https://www.youtube.com/watch?v=_9RevalFoko",
-            "https://www.youtube.com/watch?v=_9RevalFoko"
+            "https://www.youtube.com/watch?v=RZzyWljhMEw",
+            "https://www.youtube.com/watch?v=-acFUpFSgo4",
+            "https://www.youtube.com/watch?v=YW_04Esg4QQ",
+            "https://www.youtube.com/watch?v=-SCa4B7VoAs"
         };
 
         // Crear los 4 paneles
@@ -94,18 +94,17 @@ public class ContenidoEstudiante extends ComplementosFrameEstudiante {
             btnVer.setBackground(new Color(39,87,117));
             btnVer.setForeground(Color.WHITE);
             btnVer.addActionListener(e -> {
-            new Practica01(usuario).setVisible(true);
-                dispose();
+            dispose();
             });
 
              // para usar dentro del lambda
 
             btnVer.addActionListener(e -> {
                 switch (index) {
-                    case 0 -> new Practica01(usuario).setVisible(true);
-                    case 1 -> new Practica02(usuario).setVisible(true);
-                    case 2 -> new Practica03(usuario).setVisible(true);
-                    case 3 -> new Practica04(usuario).setVisible(true);
+                    case 0 -> new Practica(usuario,1).setVisible(true);
+                    case 1 -> new Practica(usuario,2).setVisible(true);
+                    case 2 -> new Practica(usuario,3).setVisible(true);
+                    case 3 -> new Practica(usuario,4).setVisible(true);
                 }
                 dispose();
             });
