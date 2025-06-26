@@ -5,6 +5,7 @@
 package Docente;
 
 import Complementos.ComplementosFrameDocente;
+import Modelos.Usuario;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
@@ -15,7 +16,10 @@ public class CalifiDocente extends ComplementosFrameDocente{
     private JTable tabla;
     private JScrollPane scroll;
     
-    public CalifiDocente() {
+    public CalifiDocente(Usuario usuario) {
+        super(usuario);
+        this.usuario = usuario;
+        
         add(crearPanelIzquierdo());
         add(crearPanelDerecho("MATEMATICA"));
 
@@ -25,7 +29,7 @@ public class CalifiDocente extends ComplementosFrameDocente{
         btnContenido.setBackground(Color.WHITE);
         btnContenido.setBorder(BorderFactory.createLineBorder(new Color(178, 0, 38), 2));
         btnContenido.addActionListener(e -> {
-        new ContenidoDocente().setVisible(true);
+        new ContenidoDocente(usuario).setVisible(true);
         dispose();
         });
         panelDerecho.add(btnContenido);
@@ -36,7 +40,7 @@ public class CalifiDocente extends ComplementosFrameDocente{
         btnCalificaciones.setBackground(Color.WHITE);
         btnCalificaciones.setBorder(BorderFactory.createLineBorder(new Color(178, 0, 38), 2));
         btnCalificaciones.addActionListener(e -> {
-        new CalifiDocente().setVisible(true);
+        new CalifiDocente(usuario).setVisible(true);
         dispose();
         });
         panelDerecho.add(btnCalificaciones);

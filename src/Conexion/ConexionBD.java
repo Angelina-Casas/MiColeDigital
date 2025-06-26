@@ -10,13 +10,15 @@ public class ConexionBD {
             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
             
             String url = "jdbc:sqlserver://DBMiColeDigital.mssql.somee.com:1433;"
-                       + "databaseName=DBMiColeDigital;"
-                       + "user=angiecasas_SQLLogin_1;"
-                       + "password=65w2espf7m;"
-                       + "encrypt=true;"
-                       + "trustServerCertificate=true;";
+                      + "databaseName=DBMiColeDigital;"
+                      + "user=angiecasas_SQLLogin_1;"
+                      + "password=65w2espf7m;"
+                      + "encrypt=true;"
+                      + "trustServerCertificate=true;";
 
-            con = DriverManager.getConnection(url);
+
+            
+                       con = DriverManager.getConnection(url);
         } catch (ClassNotFoundException | SQLException e) {
             System.out.println("Error: " + e.getMessage());
         }

@@ -4,11 +4,12 @@
  */
 package Estudiante;
 import Complementos.ComplementosFrameEstudiante;
+import Modelos.Usuario;
 import javax.swing.*;
 import java.awt.*;
 
 public class PerfilEstudiante extends ComplementosFrameEstudiante{
-    
+    private Usuario usuario;
     private JLabel lblFoto;
     private JLabel lblInfoBasica;
     private JLabel lblInfoAdicional;
@@ -21,7 +22,10 @@ public class PerfilEstudiante extends ComplementosFrameEstudiante{
     private JLabel lblSeccion;
     private JLabel lblSeccionValor;
     
-    public PerfilEstudiante() {
+    public PerfilEstudiante(Usuario usuario) {
+        super(usuario);
+        this.usuario = usuario;
+        
         //LLAMANDO A PANEL IZQUIERDO
         add(crearPanelIzquierdo());
 
@@ -31,7 +35,7 @@ public class PerfilEstudiante extends ComplementosFrameEstudiante{
 
         lblFoto = new JLabel();
         lblFoto.setBounds(460, 170, 180, 180);
-        lblFoto.setIcon(new ImageIcon(getClass().getResource("/imagenes/estudiantefoto.png")));
+        lblFoto.setIcon(new ImageIcon(getClass().getResource("/Img/estudiantefoto.png")));
         panelDerecho.add(lblFoto);
 
         lblInfoBasica = new JLabel("Información básica");
@@ -49,7 +53,7 @@ public class PerfilEstudiante extends ComplementosFrameEstudiante{
         lblNombre.setBounds(280, 410, 100, 30);
         panelDerecho.add(lblNombre);
 
-        lblNombreValor = new JLabel("Agelina Vargas");
+        lblNombreValor = new JLabel(usuario.getNombre());
         lblNombreValor.setFont(new Font("Serif", Font.BOLD, 14));
         lblNombreValor.setBounds(380, 410, 300, 30);
         panelDerecho.add(lblNombreValor);

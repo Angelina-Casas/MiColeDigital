@@ -7,41 +7,44 @@ import javax.swing.*;
 import java.awt.*;
 import Complementos.ComplementosFrameDocente;
 import Estudiante.CalifiEstudiante;
+import Modelos.Usuario;
 
 public class ContenidoDocente extends ComplementosFrameDocente {
     private JScrollPane scrollPaneFormulario;
     private JPanel panelFormulario;
     private JPanel panelVistaPrevia;
     
-   public ContenidoDocente() {
-        // Panel izquierdo
+   public ContenidoDocente(Usuario usuario) {
+        super(usuario);
+        this.usuario = usuario;
+        
         add(crearPanelIzquierdo());
 
-        // Panel derecho con título
+        
         add(crearPanelDerecho("CONTENIDO - MICOLEDIGITAL"));
 
-        // Botones cabecera
+        
         JButton btnCabecera1 = new JButton("Contenido");
         btnCabecera1.setBounds(100, 140, 425, 40);
         btnCabecera1.setBackground(Color.WHITE);
         btnCabecera1.setBorder(BorderFactory.createLineBorder(new Color(178, 0, 38), 2));
         panelDerecho.add(btnCabecera1);
 
-        // Botón 2 - Prácticas completadas
+        
         JButton btnCabecera2 = new JButton("Calificaciones");
         btnCabecera2.setBounds(525, 140, 425, 40); 
         btnCabecera2.setBackground(Color.WHITE);
         btnCabecera2.setBorder(BorderFactory.createLineBorder(new Color(178, 0, 38), 2));
         btnCabecera2.addActionListener(e -> {
-        new CalifiEstudiante().setVisible(true);
+        new CalifiEstudiante(usuario).setVisible(true);
         dispose();
         });
         panelDerecho.add(btnCabecera2);
 
-        // === PANEL FORMULARIO ===
+        
         panelFormulario = new JPanel();
         panelFormulario.setLayout(null);
-        panelFormulario.setPreferredSize(new Dimension(500, 600)); // activa scroll si crece
+        panelFormulario.setPreferredSize(new Dimension(500, 600));
         panelFormulario.setBackground(Color.WHITE);
 
         int y = 20;
@@ -86,14 +89,14 @@ public class ContenidoDocente extends ComplementosFrameDocente {
         btnGuardar.setForeground(Color.WHITE);
         panelFormulario.add(btnGuardar);
 
-        // Scroll que contiene el formulario
+        
         scrollPaneFormulario = new JScrollPane(panelFormulario);
-        scrollPaneFormulario.setBounds(100, 180, 500, 450);  // más abajo y alineado a la izquierda
+        scrollPaneFormulario.setBounds(100, 180, 500, 450);  
         scrollPaneFormulario.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPaneFormulario.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
         panelDerecho.add(scrollPaneFormulario);
 
-        // === PANEL DERECHO DE PREVISUALIZACIÓN ===
+        
         panelVistaPrevia = new JPanel();
         panelVistaPrevia.setBounds(630, 180, 320, 450); 
         panelVistaPrevia.setBackground(Color.LIGHT_GRAY);

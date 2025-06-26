@@ -19,7 +19,7 @@ public abstract class BaseFrame extends JFrame{
 
         // Panel crema de fondo
         panelFondo = new JPanel();
-        panelFondo.setBackground(new Color(255, 249, 200));
+        panelFondo.setBackground(new Color(255, 220, 80));
         panelFondo.setBounds(0, 0, 1280, 720);
         panelFondo.setLayout(null);
         add(panelFondo);
@@ -27,16 +27,16 @@ public abstract class BaseFrame extends JFrame{
         // Panel blanco centrado
         panelContenido = new JPanel();
         panelContenido.setBackground(Color.WHITE);
-        panelContenido.setBounds(50, 50, 1200, 600);
+        panelContenido.setBounds(50, 50, 1160, 580);
         panelContenido.setLayout(null);
         panelFondo.add(panelContenido);
 
-        initContenido(); // método que implementa cada frame hijo
+        initContenido(); 
 
         
-        setVisible(true); // muy importante
+        setVisible(true);
     }
 
-    protected abstract void initContenido(); // se implementa en cada clase hija
+    protected abstract void initContenido(); 
     
 }

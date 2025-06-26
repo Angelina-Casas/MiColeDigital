@@ -6,14 +6,17 @@ package Docente;
 import javax.swing.*;
 import java.awt.*;
 import Complementos.ComplementosFrameDocente;
-import Estudiante.ContenidoEstudiante;
+import Modelos.Usuario;
 
 public class CursoDocente extends ComplementosFrameDocente{
     //aqui vamos agregando otros botones conforme se creen otros cursos para el profesor
     private JButton btnCursoMatematica;
     
-    public CursoDocente(){
-    add(crearPanelIzquierdo());
+    public CursoDocente(Usuario usuario){
+        super(usuario);
+        this.usuario = usuario;
+        
+        add(crearPanelIzquierdo());
         // Panel derecho reutilizable 
         add(crearPanelDerecho("BIENVENIDO A MICOLEDIGITAL"));
 
@@ -22,8 +25,8 @@ public class CursoDocente extends ComplementosFrameDocente{
         btnCursoMatematica.setBackground(new Color(255, 248, 180));
         btnCursoMatematica.setFont(new Font("Serif", Font.PLAIN, 20));
         btnCursoMatematica.addActionListener(e -> {
-        new ContenidoDocente().setVisible(true);
-        dispose();
+            new ContenidoDocente(usuario).setVisible(true);
+            dispose();
             });
         panelDerecho.add(btnCursoMatematica);
 

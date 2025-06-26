@@ -1,6 +1,7 @@
 package Estudiante;
 import Complementos.PruebasSemanales;
 import Complementos.ComplementosFrameEstudiante;
+import Modelos.Usuario;
 import javax.swing.*;
 import java.awt.*;
 
@@ -10,7 +11,9 @@ public class Practica01 extends ComplementosFrameEstudiante{
     private JScrollPane scrollPane;
     
     
-    public Practica01(){
+    public Practica01(Usuario usuario){
+        super(usuario);
+        this.usuario = usuario;
         
         add(crearPanelIzquierdo());
         add(crearPanelDerecho("     PRACTICAS"));
@@ -18,9 +21,9 @@ public class Practica01 extends ComplementosFrameEstudiante{
         JButton btnCabecera1 = new JButton("Contenido");
         btnCabecera1.setBounds(100, 140, 425, 40); // mismo ancho que la mitad del scroll (850 / 2)
         btnCabecera1.setBackground(Color.WHITE);
-        btnCabecera1.setBorder(BorderFactory.createLineBorder(new Color(178, 0, 38), 2));
+        btnCabecera1.setBorder(BorderFactory.createLineBorder(new Color(39,87,117), 2));
         btnCabecera1.addActionListener(e -> {
-        new ContenidoEstudiante().setVisible(true);
+        new ContenidoEstudiante(usuario).setVisible(true);
             dispose();
         });
         panelDerecho.add(btnCabecera1);
@@ -29,9 +32,9 @@ public class Practica01 extends ComplementosFrameEstudiante{
         JButton btnCabecera2 = new JButton("Calificaciones");
         btnCabecera2.setBounds(525, 140, 425, 40); // empieza donde terminó el anterior
         btnCabecera2.setBackground(Color.WHITE);
-        btnCabecera2.setBorder(BorderFactory.createLineBorder(new Color(178, 0, 38), 2));
+        btnCabecera2.setBorder(BorderFactory.createLineBorder(new Color(39,87,117), 2));
         btnCabecera2.addActionListener(e -> {
-        new CalifiEstudiante().setVisible(true);
+        new CalifiEstudiante(usuario).setVisible(true);
         dispose();
         });
         panelDerecho.add(btnCabecera2);

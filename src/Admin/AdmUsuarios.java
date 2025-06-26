@@ -5,6 +5,7 @@
 package Admin;
 
 import Complementos.BaseFrame;
+import Modelos.Usuario;
 import java.awt.Color;
 import java.awt.Font;
 import javax.swing.*;
@@ -69,7 +70,8 @@ public class AdmUsuarios extends BaseFrame {
         btnRegresar.setFont(new Font("Arial", Font.BOLD, 13));
         
         btnRegresar.addActionListener(e -> {
-            new MenuAdm().setVisible(true);
+        Usuario usuario = null;
+            new MenuAdm(usuario).setVisible(true);
             dispose();
         });
         panelContenido.add(btnRegresar);

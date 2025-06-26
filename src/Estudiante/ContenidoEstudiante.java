@@ -6,12 +6,15 @@ package Estudiante;
 import javax.swing.*;
 import java.awt.*;
 import Complementos.ComplementosFrameEstudiante;
+import Modelos.Usuario;
 
 public class ContenidoEstudiante extends ComplementosFrameEstudiante {
     private JScrollPane scrollPane;
     private JPanel contenedorScroll;
     
-   public ContenidoEstudiante() {
+   public ContenidoEstudiante(Usuario usuario) {
+        super(usuario);
+        this.usuario = usuario;
         // Panel izquierdo reutilizable
         add(crearPanelIzquierdo());
         // Panel derecho reutilizable 
@@ -20,16 +23,16 @@ public class ContenidoEstudiante extends ComplementosFrameEstudiante {
         JButton btnCabecera1 = new JButton("Contenido");
         btnCabecera1.setBounds(100, 140, 425, 40);
         btnCabecera1.setBackground(Color.WHITE);
-        btnCabecera1.setBorder(BorderFactory.createLineBorder(new Color(178, 0, 38), 2));
+        btnCabecera1.setBorder(BorderFactory.createLineBorder(new Color(39,87,117), 2));
         panelDerecho.add(btnCabecera1);
 
         // Botón 2 - Prácticas completadas
         JButton btnCabecera2 = new JButton("Calificaciones");
         btnCabecera2.setBounds(525, 140, 425, 40); 
         btnCabecera2.setBackground(Color.WHITE);
-        btnCabecera2.setBorder(BorderFactory.createLineBorder(new Color(178, 0, 38), 2));
+        btnCabecera2.setBorder(BorderFactory.createLineBorder(new Color(39,87,117), 2));
         btnCabecera2.addActionListener(e -> {
-        new CalifiEstudiante().setVisible(true);
+        new CalifiEstudiante(usuario).setVisible(true);
         dispose();
         });
         panelDerecho.add(btnCabecera2);
@@ -88,10 +91,10 @@ public class ContenidoEstudiante extends ComplementosFrameEstudiante {
 
             JButton btnVer = new JButton("Ver práctica");
             btnVer.setBounds(650, 35, 120, 30);
-            btnVer.setBackground(new Color(178, 0, 38));
+            btnVer.setBackground(new Color(39,87,117));
             btnVer.setForeground(Color.WHITE);
             btnVer.addActionListener(e -> {
-            new Practica01().setVisible(true);
+            new Practica01(usuario).setVisible(true);
                 dispose();
             });
 
@@ -99,10 +102,10 @@ public class ContenidoEstudiante extends ComplementosFrameEstudiante {
 
             btnVer.addActionListener(e -> {
                 switch (index) {
-                    case 0 -> new Practica01().setVisible(true);
-                    case 1 -> new Practica02().setVisible(true);
-                    case 2 -> new Practica03().setVisible(true);
-                    case 3 -> new Practica04().setVisible(true);
+                    case 0 -> new Practica01(usuario).setVisible(true);
+                    case 1 -> new Practica02(usuario).setVisible(true);
+                    case 2 -> new Practica03(usuario).setVisible(true);
+                    case 3 -> new Practica04(usuario).setVisible(true);
                 }
                 dispose();
             });

@@ -7,14 +7,16 @@ package Complementos;
 import Estudiante.CursoEstudiante;
 import Estudiante.PerfilEstudiante;
 import Main.LoginGeneral;
+import Modelos.Usuario;
 import javax.swing.*;
 import java.awt.*;
 
 public class ComplementosFrameEstudiante extends JFrame{
     
-   public static final int ANCHO = 1280;
+    public static final int ANCHO = 1280;
     public static final int ALTO = 720;
-
+    
+    protected Usuario usuario;
     protected JPanel panelIzquierdo;
     protected JPanel panelDerecho;
     protected JPanel lineaRoja;
@@ -27,7 +29,8 @@ public class ComplementosFrameEstudiante extends JFrame{
     protected JButton btnEstudiante;
     protected JButton btnCerrarSesion;
 
-    public ComplementosFrameEstudiante() {
+    public ComplementosFrameEstudiante(Usuario usuario) {
+        this.usuario = usuario;
         setSize(ANCHO, ALTO);
         setLayout(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -38,36 +41,37 @@ public class ComplementosFrameEstudiante extends JFrame{
     // Panel izquierdo común
     protected JPanel crearPanelIzquierdo() {
     panelIzquierdo = new JPanel();
-    panelIzquierdo.setBackground(new Color(255, 248, 220));
+    panelIzquierdo.setBackground(new Color(255, 220, 80));
     panelIzquierdo.setBounds(0, 0, 203, ALTO);
     panelIzquierdo.setLayout(null);
 
     lblLogoIzquierda = new JLabel();
-    lblLogoIzquierda.setBounds(60, 40, 115, 120);
-    lblLogoIzquierda.setIcon(new ImageIcon(getClass().getResource("/Imagenes/montefioripequeno.png")));
+    lblLogoIzquierda.setBounds(30, 20, 140,140);
+    lblLogoIzquierda.setIcon(new ImageIcon(getClass().getResource("/Img/montefioripequeno.png")));
     panelIzquierdo.add(lblLogoIzquierda);
 
     btnCursos = new JButton("CURSOS");
     btnCursos.setBounds(10, 220, 180, 40);
-    btnCursos.setBackground(new Color(255, 248, 220));
+    btnCursos.setBackground(new Color(255, 220, 80));
     btnCursos.addActionListener(e -> {
-        new CursoEstudiante().setVisible(true);
+        new CursoEstudiante(usuario).setVisible(true);
         dispose();
     });
     panelIzquierdo.add(btnCursos);
 
     btnEstudiante = new JButton("ESTUDIANTE");
     btnEstudiante.setBounds(10, 270, 180, 40);
-    btnEstudiante.setBackground(new Color(255, 248, 220));
+    btnEstudiante.setBackground(new Color(255, 220, 80));
     btnEstudiante.addActionListener(e -> {
-        new PerfilEstudiante().setVisible(true);
+        
+        new PerfilEstudiante(usuario).setVisible(true);
         dispose();
     });
     panelIzquierdo.add(btnEstudiante);
 
     btnCerrarSesion = new JButton("CERRAR SESIÓN");
     btnCerrarSesion.setBounds(10, 320, 180, 40);
-    btnCerrarSesion.setBackground(new Color(255, 248, 220));
+    btnCerrarSesion.setBackground(new Color(255, 220, 80));
     btnCerrarSesion.addActionListener(e -> {
         new LoginGeneral().setVisible(true);
         dispose();
@@ -85,8 +89,8 @@ public class ComplementosFrameEstudiante extends JFrame{
         panelDerecho.setLayout(null);
 
         lblLogoDerecha = new JLabel();
-        lblLogoDerecha.setBounds(930, 20, 98, 78);
-        lblLogoDerecha.setIcon(new ImageIcon(getClass().getResource("/Imagenes/logoMiColePequeno.png")));
+        lblLogoDerecha.setBounds(900, 10, 128, 101);
+        lblLogoDerecha.setIcon(new ImageIcon(getClass().getResource("/Img/logoMiColePequeno.png")));
         panelDerecho.add(lblLogoDerecha);
 
         lblTitulo = new JLabel(titulo);
@@ -95,7 +99,7 @@ public class ComplementosFrameEstudiante extends JFrame{
         panelDerecho.add(lblTitulo);
 
         lineaRoja = new JPanel();
-        lineaRoja.setBackground(new Color(178, 0, 38));
+        lineaRoja.setBackground(new Color(39,87,117));
         lineaRoja.setBounds(50, 115, 950, 5);
         panelDerecho.add(lineaRoja);
 

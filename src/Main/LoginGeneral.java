@@ -1,11 +1,14 @@
 package Main;
 
+import Admin.MenuAdm;
 import Estudiante.PerfilEstudiante;
-import Complementos.ComplementosFrameEstudiante;
+import Docente.PerfilDocente;
+import Modelos.Usuario;
+import Modelos.UsuarioBD;
 import javax.swing.*;
 import java.awt.*;
 
-public class LoginGeneral extends ComplementosFrameEstudiante{
+public class LoginGeneral extends JFrame{
     private JLabel lblLogoIzquierda;
     private JLabel lblIconoUsuario;
     private JLabel lblLogoDerecha;
@@ -17,16 +20,20 @@ public class LoginGeneral extends ComplementosFrameEstudiante{
     private JButton btnIngresar;
     
     public LoginGeneral() { 
-    
+        setSize(1280, 720); 
+        setLayout(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setResizable(false);
         
         JPanel panelIzquierdologin = new JPanel();
-        panelIzquierdologin .setBackground(new Color(255, 248, 220)); 
+        panelIzquierdologin .setBackground(new Color(255, 220, 80)); 
         panelIzquierdologin .setBounds(0, 0, 640, 720);
         panelIzquierdologin .setLayout(null);
 
         lblLogoIzquierda = new JLabel();
         lblLogoIzquierda.setBounds(155,154, 330, 413); 
-        lblLogoIzquierda.setIcon(new ImageIcon(getClass().getResource("/Imagenes/montefioriLogoGrande1.png")));
+        lblLogoIzquierda.setIcon(new ImageIcon(getClass().getResource("/Img/montefioriLogoGrande1.png")));
         panelIzquierdologin.add(lblLogoIzquierda);
 
         
@@ -38,7 +45,7 @@ public class LoginGeneral extends ComplementosFrameEstudiante{
         
         lblLogoDerecha = new JLabel();
         lblLogoDerecha.setBounds(494,15,98,78);
-        lblLogoDerecha.setIcon(new ImageIcon(getClass().getResource("/Imagenes/logoMiColePequeno.png")));
+        lblLogoDerecha.setIcon(new ImageIcon(getClass().getResource("/Img/logoMiColePequeno.png")));
         panelDerechoLogin.add(lblLogoDerecha); 
 
         // Título
@@ -50,7 +57,7 @@ public class LoginGeneral extends ComplementosFrameEstudiante{
         
         lblIconoUsuario = new JLabel();
         lblIconoUsuario.setBounds(250, 230, 95, 95);
-        lblIconoUsuario.setIcon(new ImageIcon(getClass().getResource("/Imagenes/personaIniciarSesion.png")));
+        lblIconoUsuario.setIcon(new ImageIcon(getClass().getResource("/Img/personaIniciarSesion.png")));
         panelDerechoLogin.add(lblIconoUsuario);
 
         
@@ -78,13 +85,40 @@ public class LoginGeneral extends ComplementosFrameEstudiante{
         
         btnIngresar = new JButton("Ingresar");
         btnIngresar.setBounds(215, 500, 200, 40);
-        btnIngresar.setBackground(new Color(178, 0, 38)); 
+        btnIngresar.setBackground(new Color(39,87,117)); 
         btnIngresar.setForeground(Color.WHITE);
         btnIngresar.setFocusPainted(false);
         btnIngresar.addActionListener(e -> {
-        PerfilEstudiante menu = new PerfilEstudiante();
-        menu.setVisible(true);
-        dispose(); 
+            String correo = txtUsuario.getText();
+            String contrasena = new String(txtContrasena.getPassword());
+
+            UsuarioBD usuarioBD = new UsuarioBD();
+            Usuario usuario = usuarioBD.validarUsuario(correo, contrasena);
+
+            if (usuario != null) {
+            String rol = usuario.getRol().getNombreRol();
+
+            JOptionPane.showMessageDialog(this, "¡Bienvenido " + usuario.getNombre() + " (" + rol + ")!");
+
+            switch (rol.toLowerCase()) {
+                case "estudiante":
+                    new PerfilEstudiante(usuario).setVisible(true);
+                break;
+                case "docente":
+                    new PerfilDocente(usuario).setVisible(true);
+                break;
+                case "administrador":
+                    new MenuAdm(usuario).setVisible(true);
+                break;
+                default:
+                    JOptionPane.showMessageDialog(this, "Rol no reconocido.");
+                return;
+            }
+            dispose(); 
+            } else {
+                JOptionPane.showMessageDialog(this, "Correo o contraseña incorrectos.");
+            }
+    
         });
         panelDerechoLogin.add(btnIngresar);
 

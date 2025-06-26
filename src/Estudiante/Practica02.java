@@ -5,6 +5,7 @@
 package Estudiante;
 import Complementos.PruebasSemanales;
 import Complementos.ComplementosFrameEstudiante;
+import Modelos.Usuario;
 import javax.swing.*;
 import java.awt.*;
 
@@ -14,7 +15,9 @@ public class Practica02 extends ComplementosFrameEstudiante{
     private JScrollPane scrollPane;
     
     
-    public Practica02(){
+    public Practica02(Usuario usuario){
+        super(usuario);
+        this.usuario = usuario;
         
         add(crearPanelIzquierdo());
         add(crearPanelDerecho("      PRACTICAS"));
@@ -24,7 +27,7 @@ public class Practica02 extends ComplementosFrameEstudiante{
         btnCabecera1.setBackground(Color.WHITE);
         btnCabecera1.setBorder(BorderFactory.createLineBorder(new Color(178, 0, 38), 2));
         btnCabecera1.addActionListener(e -> {
-        new ContenidoEstudiante().setVisible(true);
+        new ContenidoEstudiante(usuario).setVisible(true);
             dispose();
         });
         panelDerecho.add(btnCabecera1);
@@ -35,7 +38,7 @@ public class Practica02 extends ComplementosFrameEstudiante{
         btnCabecera2.setBackground(Color.WHITE);
         btnCabecera2.setBorder(BorderFactory.createLineBorder(new Color(178, 0, 38), 2));
         btnCabecera2.addActionListener(e -> {
-        new CalifiEstudiante().setVisible(true);
+        new CalifiEstudiante(usuario).setVisible(true);
         dispose();
         });
         panelDerecho.add(btnCabecera2);
