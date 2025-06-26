@@ -27,7 +27,7 @@ public class LoginGeneral extends JFrame{
         setResizable(false);
         
         JPanel panelIzquierdologin = new JPanel();
-        panelIzquierdologin .setBackground(new Color(255, 220, 80)); 
+        panelIzquierdologin .setBackground(new Color(255, 217, 80)); 
         panelIzquierdologin .setBounds(0, 0, 640, 720);
         panelIzquierdologin .setLayout(null);
 
