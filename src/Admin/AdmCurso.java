@@ -16,7 +16,7 @@ public class AdmCurso extends BaseFrame {
     private UsuarioBD usuarioBD = new UsuarioBD();
     private AulaBD aulaBD = new AulaBD();
     private Usuario usuario;
-    
+
     public AdmCurso(Usuario usuario) {
         this.usuario = usuario;
         initContenido();
@@ -24,47 +24,58 @@ public class AdmCurso extends BaseFrame {
 
     @Override
     protected void initContenido() {
+        JLabel lblBienvenida = new JLabel("Bienvenido, " + usuario.getNombre());
+        lblBienvenida.setFont(new Font("Arial", Font.BOLD, 16));
+        lblBienvenida.setBounds(30, 20, 400, 25);
+        panelContenido.add(lblBienvenida);
+
         JLabel lblNombre = new JLabel("Nombre:");
         lblNombre.setFont(new Font("Arial", Font.BOLD, 14));
-        lblNombre.setBounds(40, 40, 100, 25);
+        lblNombre.setBounds(30, 70, 100, 25);
         panelContenido.add(lblNombre);
 
         txtNombre = new JTextField();
-        txtNombre.setBounds(40, 65, 300, 30);
+        txtNombre.setBounds(30, 95, 300, 30);
         panelContenido.add(txtNombre);
 
         JLabel lblDocente = new JLabel("Docente:");
         lblDocente.setFont(new Font("Arial", Font.BOLD, 14));
-        lblDocente.setBounds(40, 110, 100, 25);
+        lblDocente.setBounds(30, 140, 100, 25);
         panelContenido.add(lblDocente);
 
         cbDocente = new JComboBox<>();
-        cbDocente.setBounds(40, 135, 300, 30);
+        cbDocente.setBounds(30, 165, 300, 30);
         panelContenido.add(cbDocente);
 
         JLabel lblAula = new JLabel("Aula:");
         lblAula.setFont(new Font("Arial", Font.BOLD, 14));
-        lblAula.setBounds(40, 180, 100, 25);
+        lblAula.setBounds(30, 210, 100, 25);
         panelContenido.add(lblAula);
 
         cbAula = new JComboBox<>();
-        cbAula.setBounds(40, 205, 300, 30);
+        cbAula.setBounds(30, 235, 300, 30);
         panelContenido.add(cbAula);
 
+        int btnWidth = 140;
+        int btnHeight = 35;
+        int xBtn = 30;
+        int startY = 300;
+        int gap = 50;
+
         JButton btnAgregar = new JButton("AGREGAR");
-        btnAgregar.setBounds(40, 260, 140, 35);
+        btnAgregar.setBounds(xBtn, startY, btnWidth, btnHeight);
         btnAgregar.setBackground(new Color(144, 238, 144));
         btnAgregar.addActionListener(e -> agregarCurso());
         panelContenido.add(btnAgregar);
 
         JButton btnEditar = new JButton("EDITAR");
-        btnEditar.setBounds(40, 305, 140, 35);
+        btnEditar.setBounds(xBtn, startY + gap, btnWidth, btnHeight);
         btnEditar.setBackground(new Color(255, 102, 102));
         btnEditar.addActionListener(e -> editarCurso());
         panelContenido.add(btnEditar);
 
         JButton btnEliminar = new JButton("ELIMINAR");
-        btnEliminar.setBounds(40, 350, 140, 35);
+        btnEliminar.setBounds(xBtn, startY + 2 * gap, btnWidth, btnHeight);
         btnEliminar.setBackground(new Color(173, 216, 230));
         btnEliminar.addActionListener(e -> eliminarCurso());
         panelContenido.add(btnEliminar);
@@ -75,8 +86,8 @@ public class AdmCurso extends BaseFrame {
         btnRegresar.setFont(new Font("Arial", Font.BOLD, 13));
         btnRegresar.addActionListener(e -> {
             new MenuAdm(usuario).setVisible(true);
-            dispose();}
-        );
+            dispose();
+        });
         panelContenido.add(btnRegresar);
 
         tablaCursos = new JTable(new DefaultTableModel(
@@ -198,3 +209,4 @@ public class AdmCurso extends BaseFrame {
         cbAula.setSelectedIndex(-1);
     }
 }
+
