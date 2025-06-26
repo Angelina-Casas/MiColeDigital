@@ -9,12 +9,12 @@ import Complementos.ComplementosFrameDocente;
 import Estudiante.CalifiEstudiante;
 import Modelos.Usuario;
 
-public class ContenidoDocente extends ComplementosFrameDocente {
+public class AgregarContenido extends ComplementosFrameDocente {
     private JScrollPane scrollPaneFormulario;
     private JPanel panelFormulario;
     private JPanel panelVistaPrevia;
     
-   public ContenidoDocente(Usuario usuario) {
+   public AgregarContenido(Usuario usuario) {
         super(usuario);
         this.usuario = usuario;
         
@@ -61,10 +61,8 @@ public class ContenidoDocente extends ComplementosFrameDocente {
         panelFormulario.add(crearTextField(270, y, 200));
         y += 40;
 
-        panelFormulario.add(crearLabel("Ingrese número de pregunta:", 30, y));
-        JComboBox<String> comboNumero = new JComboBox<>(new String[]{"1", "2", "3", "4", "5"});
-        comboNumero.setBounds(270, y, 100, 25);
-        panelFormulario.add(comboNumero);
+        panelFormulario.add(crearLabel("Número de preguntas: 5", 30, y));
+        
         y += 40;
 
         panelFormulario.add(crearLabel("Pregunta:", 30, y));

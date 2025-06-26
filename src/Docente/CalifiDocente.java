@@ -29,7 +29,7 @@ public class CalifiDocente extends ComplementosFrameDocente{
         btnContenido.setBackground(Color.WHITE);
         btnContenido.setBorder(BorderFactory.createLineBorder(new Color(178, 0, 38), 2));
         btnContenido.addActionListener(e -> {
-        new ContenidoDocente(usuario).setVisible(true);
+        new AgregarContenido(usuario).setVisible(true);
         dispose();
         });
         panelDerecho.add(btnContenido);
