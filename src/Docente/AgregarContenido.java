@@ -13,7 +13,7 @@ import Modelos.Usuario;
 import Modelos.Formulario;
 import Modelos.PreguntaFormulario;
 import Modelos.FormularioBD;
-import Conexion.ConexionBD;
+import Conexion.ConexionBD; 
 
 public class AgregarContenido extends ComplementosFrameDocente {
     private JScrollPane scrollPaneFormulario;
