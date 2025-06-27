@@ -34,8 +34,6 @@ public class AgregarContenido extends ComplementosFrameDocente {
         super(usuario);
         this.usuario = usuario;
         
-        
-
         add(crearPanelIzquierdo());
         add(crearPanelDerecho("CONTENIDO - MICOLEDIGITAL"));
 
@@ -95,21 +93,29 @@ public class AgregarContenido extends ComplementosFrameDocente {
         }
 
         panelFormulario.add(crearLabel("Alternativa correcta:", 30, y));
-        comboAlternativa = new JComboBox<>(new String[]{"A", "B", "C", "D"});
+        comboAlternativa = new JComboBox<>(new String[]{"1", "2", "3", "4"});
         comboAlternativa.setBounds(270, y, 100, 25);
         panelFormulario.add(comboAlternativa);
         y += 50;
 
+        JButton btnEliminar = new JButton("Eliminar");
+        btnEliminar.setBounds(460, y+138, 100, 35);
+        btnEliminar.setBackground(new Color(234, 98, 85));
+        btnEliminar.setForeground(Color.WHITE);
+        
+        panelDerecho.add(btnEliminar);
+        
+        
         JButton btnVisualizar = new JButton("Visualizar");
-        btnVisualizar.setBounds(100, y, 150, 35);
-        btnVisualizar.setBackground(new Color(178, 0, 38));
+        btnVisualizar.setBounds(300, y+138, 100, 35);
+        btnVisualizar.setBackground(new Color(134, 199, 231));
         btnVisualizar.setForeground(Color.WHITE);
         btnVisualizar.addActionListener(e -> mostrarPrevisualizacion());
-        panelFormulario.add(btnVisualizar);
+        panelDerecho.add(btnVisualizar);
 
         btnGuardar = new JButton("Guardar");
-        btnGuardar.setBounds(270, y, 150, 35);
-        btnGuardar.setBackground(new Color(178, 0, 38));
+        btnGuardar.setBounds(140, y+138, 100, 35);
+        btnGuardar.setBackground(new Color(89,196,107));
         btnGuardar.setForeground(Color.WHITE);
         btnGuardar.addActionListener(e -> {
             int confirmacion = JOptionPane.showConfirmDialog(this, "¿Estás seguro de subir esta práctica?", "Confirmación", JOptionPane.OK_CANCEL_OPTION);
@@ -117,10 +123,10 @@ public class AgregarContenido extends ComplementosFrameDocente {
                 guardarEnBaseDeDatos();
             }
         });
-        panelFormulario.add(btnGuardar);
+        panelDerecho.add(btnGuardar);
 
         scrollPaneFormulario = new JScrollPane(panelFormulario);
-        scrollPaneFormulario.setBounds(100, 200, 520, 430);
+        scrollPaneFormulario.setBounds(100, 200, 520, 350);
         scrollPaneFormulario.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPaneFormulario.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
         panelDerecho.add(scrollPaneFormulario);
@@ -203,16 +209,16 @@ public class AgregarContenido extends ComplementosFrameDocente {
         ConexionBD conexion = new ConexionBD();
         FormularioBD formularioBD = new FormularioBD(conexion.obtenerConexion());
 
-        // Obtener datos generales del formulario
+        
         Formulario form = formularioBD.obtenerFormulario(idFormulario);
         List<PreguntaFormulario> preguntasCargadas = formularioBD.obtenerPreguntas(idFormulario);
 
-        // Rellenar los campos generales
+        
         txtNombre.setText(form.getNombreFor());
         txtTema.setText(form.getTema());
         txtVideo.setText(form.getVideoUrl());
 
-        // Mostrar la primera pregunta por defecto si existe
+        
         if (!preguntasCargadas.isEmpty()) {
             PreguntaFormulario pf = preguntasCargadas.get(0);
             comboNumero.setSelectedItem(String.valueOf(pf.getNroPregunta()));
@@ -224,7 +230,7 @@ public class AgregarContenido extends ComplementosFrameDocente {
             comboAlternativa.setSelectedItem(pf.getRespuestaCorrecta());
         }
 
-        // Guardar todas las preguntas en la lista local
+        
         preguntas = preguntasCargadas;
 
         } catch (Exception ex) {

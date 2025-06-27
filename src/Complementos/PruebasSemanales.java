@@ -8,7 +8,7 @@ import java.awt.*;
 
 public class PruebasSemanales {
     public static void agregarPregunta(JPanel destino, int numero, String textoPregunta, int y, String[] opciones) {
-        // Título de la pregunta
+        
         JLabel lblPregunta = new JLabel("    PREGUNTA " + numero);
         lblPregunta.setBounds(20, y, 120, 25);
         lblPregunta.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -21,7 +21,7 @@ public class PruebasSemanales {
         lblTexto.setBackground(Color.WHITE);
         lblTexto.setForeground(Color.BLACK);
         lblTexto.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2));
-        lblTexto.setBounds(60, y + 30, 500, 40); // ancho más grande, altura aumentada
+        lblTexto.setBounds(60, y + 30, 500, 40);
         destino.add(lblTexto);
 
         // Opciones
