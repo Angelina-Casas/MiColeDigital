@@ -51,8 +51,8 @@ public class MenuAdm extends BaseFrame {
         btnAulas.setForeground(Color.WHITE);
         btnAulas.setFont(new Font("Arial", Font.BOLD, 14));
         btnAulas.addActionListener(e -> {
-        new AdmAula().setVisible(true);
-            dispose();
+            new AdmAula(usuario).setVisible(true);
+                dispose();
         });
         panelContenido.add(btnAulas);
         
