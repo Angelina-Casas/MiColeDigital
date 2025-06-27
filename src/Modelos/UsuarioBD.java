@@ -210,4 +210,88 @@ public class UsuarioBD {
         }
         return lista;
     }
+    
+    public Usuario obtenerDocentePorAula(int idAula) {
+        String sql = "SELECT u.idUsuario, u.nombre, u.correo, u.password, u.idRol " +
+                     "FROM Curso c " +
+                     "JOIN Usuario u ON c.idDocente = u.idUsuario " +
+                     "WHERE c.idAula = ?";
+
+        try (Connection con = new ConexionBD().obtenerConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idAula);
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                int id = rs.getInt("idUsuario");
+                String nombre = rs.getString("nombre");
+                String correo = rs.getString("correo");
+                String password = rs.getString("password");
+                int idRol = rs.getInt("idRol");
+
+                Rol rol = new Rol();
+                return new Usuario(id, nombre, correo, password, rol);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+    
+    public List<Usuario> obtenerEstudiantesPorAula(int idAula) {
+        List<Usuario> estudiantes = new ArrayList<>();
+        String sql = "SELECT u.idUsuario, u.nombre, u.correo, u.password, u.idRol " +
+                     "FROM AulaUsuario au " +
+                     "JOIN Usuario u ON au.idUsuario = u.idUsuario " +
+                     "WHERE au.idAula = ? AND u.idRol = 1";
+
+        try (Connection con = new ConexionBD().obtenerConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idAula);
+            ResultSet rs = ps.executeQuery();
+
+            while (rs.next()) {
+                int id = rs.getInt("idUsuario");
+                String nombre = rs.getString("nombre");
+                String correo = rs.getString("correo");
+                String password = rs.getString("password");
+                int idRol = rs.getInt("idRol");
+
+                Rol rol = new Rol();
+                estudiantes.add(new Usuario(id, nombre, correo, password, rol));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return estudiantes;
+    }
+    public List<Usuario> obtenerEstudiantesSinAula() {
+        List<Usuario> lista = new ArrayList<>();
+
+        String sql = "SELECT u.idUsuario, u.nombre, u.correo, u.password, "
+                + "r.idRol, r.nombreRol " + "FROM Usuario u " +
+                 "INNER JOIN Rol r ON u.idRol = r.idRol " +
+                 "WHERE r.nombreRol = 'Estudiante' AND u.idUsuario NOT IN " +
+                 "(SELECT idUsuario FROM AulaUsuario)";
+        try (Connection con = new ConexionBD().obtenerConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {;
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Usuario u = new Usuario();
+                u.setIdUsuario(rs.getInt("idUsuario"));
+                u.setNombre(rs.getString("nombre"));
+                u.setCorreo(rs.getString("correo"));
+                lista.add(u);
+            }
+            rs.close();
+            ps.close();
+            ps.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
 }

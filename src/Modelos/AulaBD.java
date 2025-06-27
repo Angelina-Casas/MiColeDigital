@@ -12,15 +12,16 @@ public class AulaBD {
     public List<Aula> listarAulas() {
         List<Aula> lista = new ArrayList<>();
         String sql = "SELECT idAula, grado, seccion FROM Aula";
+
         try (Connection con = new ConexionBD().obtenerConexion();
              PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
-            int id = rs.getInt("idAula");
-            int grado = rs.getInt("grado");
-            String seccion = rs.getString("seccion");
-            Aula aula = new Aula(id, grado, seccion);
-            lista.add(aula);}
+                int id = rs.getInt("idAula");
+                int grado = rs.getInt("grado");
+                String seccion = rs.getString("seccion");
+                lista.add(new Aula(id, grado, seccion));
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -30,6 +31,7 @@ public class AulaBD {
     public Aula obtenerAula(int idAula) {
         Aula aula = null;
         String sql = "SELECT idAula, grado, seccion FROM Aula WHERE idAula = ?";
+
         try (Connection con = new ConexionBD().obtenerConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, idAula);
@@ -42,7 +44,6 @@ public class AulaBD {
                     );
                 }
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -51,12 +52,12 @@ public class AulaBD {
 
     public boolean insertarAula(Aula aula) {
         String sql = "INSERT INTO Aula (grado, seccion) VALUES (?, ?)";
+
         try (Connection con = new ConexionBD().obtenerConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, aula.getGrado());
             ps.setString(2, aula.getSeccion());
-            int filas = ps.executeUpdate();
-            return filas > 0;
+            return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -71,8 +72,7 @@ public class AulaBD {
             ps.setInt(1, aula.getGrado());
             ps.setString(2, aula.getSeccion());
             ps.setInt(3, aula.getIdAula());
-            int filas = ps.executeUpdate();
-            return filas > 0;
+            return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -81,11 +81,39 @@ public class AulaBD {
 
     public boolean eliminarAula(int idAula) {
         String sql = "DELETE FROM Aula WHERE idAula = ?";
+
         try (Connection con = new ConexionBD().obtenerConexion();
              PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, idAula);
-            int filas = ps.executeUpdate();
-            return filas > 0;
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean agregarEstudianteAlAula(int idUsuario, int idAula) {
+        String sql = "INSERT INTO AulaUsuario (idUsuario, idAula) VALUES (?, ?)";
+
+        try (Connection con = new ConexionBD().obtenerConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idUsuario);
+            ps.setInt(2, idAula);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean eliminarEstudianteDelAula(int idUsuario, int idAula) {
+        String sql = "DELETE FROM AulaUsuario WHERE idUsuario = ? AND idAula = ?";
+
+        try (Connection con = new ConexionBD().obtenerConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, idUsuario);
+            ps.setInt(2, idAula);
+            return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;

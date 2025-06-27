@@ -44,6 +44,21 @@ public class AdmAula extends BaseFrame {
         btnVerEstudiantes.setBounds(80, 180, 280, 35);
         btnVerEstudiantes.setBackground(new Color(173, 216, 230));
         panelContenido.add(btnVerEstudiantes);
+        btnVerEstudiantes.addActionListener(e -> {
+            int fila = tablaAulas.getSelectedRow();
+            if (fila != -1) {
+                int idAula = (int) tablaAulas.getValueAt(fila, 0);
+                Aula aulaSeleccionada = aulaBD.obtenerAula(idAula);
+                if (aulaSeleccionada != null) {
+                    new VerEstudiantes(aulaSeleccionada, usuario).setVisible(true);
+                    dispose();
+                } else {
+                    JOptionPane.showMessageDialog(this, "No se pudo encontrar el aula.");
+                }
+            } else {
+                JOptionPane.showMessageDialog(this, "Selecciona un aula primero.");
+            }
+        });
 
         JButton btnAgregar = new JButton("AGREGAR");
         btnAgregar.setBounds(80, 250, 280, 35);
@@ -161,6 +176,7 @@ public class AdmAula extends BaseFrame {
             JOptionPane.showMessageDialog(this, "Error al eliminar aula.");
         }
     }
+    
 
     private void limpiarCampos() {
         txtGrado.setText("");
