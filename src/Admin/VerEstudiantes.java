@@ -26,7 +26,7 @@ public class VerEstudiantes extends BaseFrame {
     protected void initContenido() {
         JLabel lblAula = new JLabel("AULA");
         lblAula.setFont(new Font("Arial", Font.BOLD, 13));
-        lblAula.setBounds(80, 40, 100, 30);
+        lblAula.setBounds(60, 40, 100, 30);
         panelContenido.add(lblAula);
 
         lblAulaValor = new JLabel();
@@ -36,7 +36,7 @@ public class VerEstudiantes extends BaseFrame {
 
         JLabel lblTutor = new JLabel("TUTOR:");
         lblTutor.setFont(new Font("Arial", Font.BOLD, 13));
-        lblTutor.setBounds(80, 90, 180, 30);
+        lblTutor.setBounds(60, 90, 180, 30);
         panelContenido.add(lblTutor);
 
         comboTutor = new JComboBox<>();
@@ -50,10 +50,6 @@ public class VerEstudiantes extends BaseFrame {
         JButton btnAgregar = new JButton("AGREGAR");
         btnAgregar.setBounds(80, 230, 100, 30);
         panelContenido.add(btnAgregar);
-
-        JButton btnEditar = new JButton("EDITAR");
-        btnEditar.setBounds(190, 230, 100, 30);
-        panelContenido.add(btnEditar);
 
         JButton btnEliminar = new JButton("ELIMINAR");
         btnEliminar.setBounds(300, 230, 100, 30);
@@ -76,7 +72,6 @@ public class VerEstudiantes extends BaseFrame {
 
         btnAgregar.addActionListener(e -> agregarEstudiante());
         btnEliminar.addActionListener(e -> eliminarEstudiante());
-        btnEditar.addActionListener(e -> editarEstudiante());
     }
 
     private void cargarDatos(Aula aula) {
@@ -136,41 +131,22 @@ public class VerEstudiantes extends BaseFrame {
         int idUsuario = (int) tablaEstudiantes.getValueAt(fila, 0);
         AulaBD aulaBD = new AulaBD();
         if (aulaBD.eliminarEstudianteDelAula(idUsuario, idAulaActual)) {
-            ((DefaultTableModel) tablaEstudiantes.getModel()).removeRow(fila);
+            DefaultTableModel model = (DefaultTableModel) tablaEstudiantes.getModel();
+            String nombre = (String) model.getValueAt(fila, 1);
+            String correo = (String) model.getValueAt(fila, 2);
+
+            Usuario estudianteEliminado = new Usuario();
+            estudianteEliminado.setIdUsuario(idUsuario);
+            estudianteEliminado.setNombre(nombre);
+            estudianteEliminado.setCorreo(correo);
+
+            comboEstudiantes.addItem(estudianteEliminado);
+
+            model.removeRow(fila);
+
             JOptionPane.showMessageDialog(this, "Estudiante eliminado correctamente.");
         } else {
             JOptionPane.showMessageDialog(this, "Error al eliminar de la base de datos.");
-        }
-    }
-
-    private void editarEstudiante() {
-        int fila = tablaEstudiantes.getSelectedRow();
-        if (fila == -1) {
-            JOptionPane.showMessageDialog(this, "Selecciona un estudiante para editar.");
-            return;
-        }
-
-        int idUsuario = (int) tablaEstudiantes.getValueAt(fila, 0);
-        String nombreActual = (String) tablaEstudiantes.getValueAt(fila, 1);
-        String correoActual = (String) tablaEstudiantes.getValueAt(fila, 2);
-
-        String nuevoNombre = JOptionPane.showInputDialog(this, "Editar nombre:", nombreActual);
-        if (nuevoNombre == null || nuevoNombre.trim().isEmpty()) return;
-
-        String nuevoCorreo = JOptionPane.showInputDialog(this, "Editar correo:", correoActual);
-        if (nuevoCorreo == null || nuevoCorreo.trim().isEmpty()) return;
-
-        UsuarioBD usuarioBD = new UsuarioBD();
-        Usuario usuario = usuarioBD.obtenerUsuario(idUsuario);
-        usuario.setNombre(nuevoNombre);
-        usuario.setCorreo(nuevoCorreo);
-
-        if (usuarioBD.actualizarUsuario(usuario)) {
-            tablaEstudiantes.setValueAt(nuevoNombre, fila, 1);
-            tablaEstudiantes.setValueAt(nuevoCorreo, fila, 2);
-            JOptionPane.showMessageDialog(this, "Datos actualizados correctamente.");
-        } else {
-            JOptionPane.showMessageDialog(this, "Error al actualizar en la base de datos.");
         }
     }
 }
