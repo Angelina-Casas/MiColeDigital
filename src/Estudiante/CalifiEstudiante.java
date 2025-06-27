@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
+
 package Estudiante;
 
 import Complementos.ComplementosFrameEstudiante;
@@ -35,7 +32,6 @@ public class CalifiEstudiante extends ComplementosFrameEstudiante {
         });
         panelDerecho.add(btnCabecera1);
 
-        // Botón 2 - Prácticas completadas
         JButton btnCabecera2 = new JButton("Calificaciones");
         btnCabecera2.setBounds(525, 140, 425, 40); 
         btnCabecera2.setBackground(Color.WHITE);
@@ -45,8 +41,7 @@ public class CalifiEstudiante extends ComplementosFrameEstudiante {
         dispose();
         });
         panelDerecho.add(btnCabecera2);
-
-        
+    
         String[] columnas = {"Practicas", "Nota"};
         DefaultTableModel modelo = new DefaultTableModel(null, columnas);
         tablaNotas = new JTable(modelo);
@@ -55,8 +50,6 @@ public class CalifiEstudiante extends ComplementosFrameEstudiante {
         scrollPane = new JScrollPane(tablaNotas);
         scrollPane.setBounds(100, 200, 850, 400);
         panelDerecho.add(scrollPane);
-    }
-        
-}
-    
 
+    }       
+}

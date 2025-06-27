@@ -17,6 +17,8 @@ public class PerfilEstudiante extends ComplementosFrameEstudiante{
     private JLabel lblNombreValor;
     private JLabel lblCurso;
     private JLabel lblCursoValor;
+    private JLabel lblCorreo;
+    private JLabel lblCorreoValor;
     private JLabel lblGrado;
     private JLabel lblGradoValor;
     private JLabel lblSeccion;
@@ -50,41 +52,52 @@ public class PerfilEstudiante extends ComplementosFrameEstudiante{
 
         lblNombre = new JLabel("NOMBRE:");
         lblNombre.setFont(new Font("Serif", Font.BOLD, 14));
-        lblNombre.setBounds(280, 410, 100, 30);
+        lblNombre.setBounds(280, 415, 100, 30);
         panelDerecho.add(lblNombre);
 
         lblNombreValor = new JLabel(usuario.getNombre());
         lblNombreValor.setFont(new Font("Serif", Font.BOLD, 14));
-        lblNombreValor.setBounds(380, 410, 300, 30);
+        lblNombreValor.setBounds(380, 415, 300, 30);
         panelDerecho.add(lblNombreValor);
+        
+        
+        lblCorreo = new JLabel("CORREO:");
+        lblCorreo.setFont(new Font("Serif", Font.BOLD, 14));
+        lblCorreo.setBounds(280, 450, 100, 30);
+        panelDerecho.add(lblCorreo);
+
+        lblCorreoValor = new JLabel(usuario.getCorreo());
+        lblCorreoValor.setFont(new Font("Serif", Font.BOLD, 14));
+        lblCorreoValor.setBounds(380, 450, 300, 30);
+        panelDerecho.add(lblCorreoValor);
 
         lblCurso = new JLabel("CURSO:");
         lblCurso.setFont(new Font("Serif", Font.BOLD, 14));
-        lblCurso.setBounds(280, 440, 100, 30);
+        lblCurso.setBounds(280, 485, 100, 30);
         panelDerecho.add(lblCurso);
 
         lblCursoValor = new JLabel("Matematica");
         lblCursoValor.setFont(new Font("Serif", Font.BOLD, 14));
-        lblCursoValor.setBounds(380, 440, 200, 30);
+        lblCursoValor.setBounds(380, 485, 200, 30);
         panelDerecho.add(lblCursoValor);
 
         lblGrado = new JLabel("GRADO:");
         lblGrado.setFont(new Font("Serif", Font.BOLD, 14));
-        lblGrado.setBounds(700, 410, 100, 30);
+        lblGrado.setBounds(700, 415, 100, 30);
         panelDerecho.add(lblGrado);
 
         lblGradoValor = new JLabel("6");
-        lblGradoValor.setBounds(800, 410, 100, 30);
+        lblGradoValor.setBounds(800, 415, 100, 30);
         lblGradoValor.setFont(new Font("Serif", Font.BOLD, 14));
         panelDerecho.add(lblGradoValor);
 
         lblSeccion = new JLabel("SECCIÓN:");
         lblSeccion.setFont(new Font("Serif", Font.BOLD, 14));
-        lblSeccion.setBounds(700, 440, 100, 30);
+        lblSeccion.setBounds(700, 450, 100, 30);
         panelDerecho.add(lblSeccion);
 
         lblSeccionValor = new JLabel("A");
-        lblSeccionValor.setBounds(800, 440, 100, 30);
+        lblSeccionValor.setBounds(800, 450, 100, 30);
         lblSeccionValor.setFont(new Font("Serif", Font.BOLD, 14));
         panelDerecho.add(lblSeccionValor);
 
