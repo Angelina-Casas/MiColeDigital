@@ -5,10 +5,14 @@
 package Docente;
 
 import Complementos.ComplementosFrameDocente;
-import Main.LoginGeneral;
+import Conexion.ConexionBD;
+import Modelos.Formulario;
+import Modelos.FormularioBD;
 import Modelos.Usuario;
+import java.util.List;
 import javax.swing.*;
 import java.awt.*;
+import java.util.Comparator;
 
 public class ContenidoDocente extends ComplementosFrameDocente{
     private JScrollPane scrollPane;
@@ -17,6 +21,8 @@ public class ContenidoDocente extends ComplementosFrameDocente{
     public ContenidoDocente (Usuario usuario) {
         super(usuario);
         this.usuario = usuario;
+        
+        
               
         add(crearPanelIzquierdo());   
         add(crearPanelDerecho(" CONTENIDO  -  MICOLEDIGITAL   "));
@@ -52,32 +58,55 @@ public class ContenidoDocente extends ComplementosFrameDocente{
         contenedorScroll.setLayout(new BoxLayout(contenedorScroll, BoxLayout.Y_AXIS));
         contenedorScroll.setBackground(Color.WHITE);
     
-        String[] semanas = { "Practica 1", "Practica 2", "Practica 3", "Practica 4" };
- 
-        for (int i = 0; i < semanas.length; i++) {
-            JPanel panelPractica = new JPanel(null); 
-            panelPractica.setMaximumSize(new Dimension(Integer.MAX_VALUE, 110)); 
-            panelPractica.setPreferredSize(new Dimension(850, 110)); 
-            panelPractica.setBackground(new Color(240, 240, 240));
-            panelPractica.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-            
-            JLabel lblSemana = new JLabel(semanas[i]);
-            lblSemana.setBounds(50, 35, 200, 20);
-            lblSemana.setFont(new Font("SansSerif", Font.BOLD, 20));
-            panelPractica.add(lblSemana);
+        try {
+            ConexionBD conexionBD = new ConexionBD();
+    FormularioBD formularioBD = new FormularioBD(conexionBD.obtenerConexion());
+    List<Formulario> listaFormularios = formularioBD.obtenerTodosFormularios();
 
-            JButton btnVer = new JButton("Ver práctica");
-            btnVer.setBounds(650, 35, 120, 30);
-            btnVer.setBackground(new Color(39,87,117));
-            btnVer.setForeground(Color.WHITE);
-            btnVer.addActionListener(e -> {
-                new AgregarContenido(usuario).setVisible(true);
+    // Ordenar por idFor ASCENDENTE (de menor a mayor)
+    listaFormularios.sort(Comparator.comparingInt(Formulario::getIdFor));
+
+    // Limpiar el contenedor
+    contenedorScroll.removeAll();
+
+    // Agregar prácticas al final (manteniendo orden correcto)
+    for (Formulario form : listaFormularios) {
+        int idFormulario = form.getIdFor();
+        String nombre = form.getNombreFor();
+
+        JPanel panelPractica = new JPanel(null);
+        panelPractica.setMaximumSize(new Dimension(Integer.MAX_VALUE, 110));
+        panelPractica.setPreferredSize(new Dimension(850, 110));
+        panelPractica.setBackground(new Color(240, 240, 240));
+        panelPractica.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+
+        JLabel lblSemana = new JLabel(nombre);
+        lblSemana.setBounds(50, 35, 400, 20);
+        lblSemana.setFont(new Font("SansSerif", Font.BOLD, 20));
+        panelPractica.add(lblSemana);
+
+        JButton btnVer = new JButton("Ver práctica");
+        btnVer.setBounds(650, 35, 120, 30);
+        btnVer.setBackground(new Color(39,87,117));
+        btnVer.setForeground(Color.WHITE);
+        btnVer.addActionListener(e -> {
+            new AgregarContenido(usuario, idFormulario).setVisible(true);
             dispose();
-            });
+        });
 
-            panelPractica.add(btnVer);
-            contenedorScroll.add(Box.createRigidArea(new Dimension(0, 10)));
-            contenedorScroll.add(panelPractica);
+        panelPractica.add(btnVer);
+
+        // Separador + panel
+        contenedorScroll.add(Box.createRigidArea(new Dimension(0, 10)));
+        contenedorScroll.add(panelPractica);
+    }
+
+    // IMPORTANTE: actualiza visualmente
+    contenedorScroll.revalidate();
+    contenedorScroll.repaint();
+
+} catch (Exception e) {
+    JOptionPane.showMessageDialog(this, "Error cargando prácticas: " + e.getMessage());
         }
   
         scrollPane = new JScrollPane(contenedorScroll);
@@ -88,6 +117,7 @@ public class ContenidoDocente extends ComplementosFrameDocente{
         panelDerecho.add(scrollPane);
         
         contenedorScroll.setPreferredSize(new Dimension(850, 600)); 
+        
 
         setVisible(true);
    }

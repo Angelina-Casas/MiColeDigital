@@ -15,6 +15,20 @@ public class Formulario {
 
     public Formulario() {}
 
+    public Formulario(String nombreFor, String tema, String videoUrl) {
+        this.nombreFor = nombreFor;
+        this.tema = tema;
+        this.videoUrl = videoUrl;
+    }
+    public String getNombre() {
+        return nombreFor;
+    }
+
+    public String getVideoURL() {
+        return videoUrl;
+    }
+    
+    
     public Formulario(String nombreFor, String tema, String videoUrl, 
             int nroPregunta, String pregunta,String opcion1, String opcion2, 
             String opcion3, String opcion4, String respuestaCorrecta) {

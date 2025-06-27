@@ -25,9 +25,16 @@ public class AgregarContenido extends ComplementosFrameDocente {
     private JButton btnGuardar;
     private List<PreguntaFormulario> preguntas = new ArrayList<>();
 
+    
     public AgregarContenido(Usuario usuario) {
+    this(usuario, 0);
+    }
+    
+    public AgregarContenido(Usuario usuario, int idFormulario) {
         super(usuario);
         this.usuario = usuario;
+        
+        
 
         add(crearPanelIzquierdo());
         add(crearPanelDerecho("CONTENIDO - MICOLEDIGITAL"));
@@ -125,6 +132,10 @@ public class AgregarContenido extends ComplementosFrameDocente {
         panelVistaPrevia.setLayout(new BorderLayout());
         panelDerecho.add(panelVistaPrevia);
 
+        
+        if (idFormulario != 0) {
+            cargarFormularioDesdeBD(idFormulario);
+        }
         setVisible(true);
     }
 
@@ -187,6 +198,41 @@ public class AgregarContenido extends ComplementosFrameDocente {
         }
     }
 
+    private void cargarFormularioDesdeBD(int idFormulario) {
+        try {
+        ConexionBD conexion = new ConexionBD();
+        FormularioBD formularioBD = new FormularioBD(conexion.obtenerConexion());
+
+        // Obtener datos generales del formulario
+        Formulario form = formularioBD.obtenerFormulario(idFormulario);
+        List<PreguntaFormulario> preguntasCargadas = formularioBD.obtenerPreguntas(idFormulario);
+
+        // Rellenar los campos generales
+        txtNombre.setText(form.getNombreFor());
+        txtTema.setText(form.getTema());
+        txtVideo.setText(form.getVideoUrl());
+
+        // Mostrar la primera pregunta por defecto si existe
+        if (!preguntasCargadas.isEmpty()) {
+            PreguntaFormulario pf = preguntasCargadas.get(0);
+            comboNumero.setSelectedItem(String.valueOf(pf.getNroPregunta()));
+            txtPregunta.setText(pf.getPregunta());
+            txtOpciones[0].setText(pf.getOpcion1());
+            txtOpciones[1].setText(pf.getOpcion2());
+            txtOpciones[2].setText(pf.getOpcion3());
+            txtOpciones[3].setText(pf.getOpcion4());
+            comboAlternativa.setSelectedItem(pf.getRespuestaCorrecta());
+        }
+
+        // Guardar todas las preguntas en la lista local
+        preguntas = preguntasCargadas;
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error cargando práctica: " + ex.getMessage());
+        }
+    }
+    
+    
     private JLabel crearLabel(String texto, int x, int y) {
         JLabel label = new JLabel(texto);
         label.setBounds(x, y, 250, 25);
