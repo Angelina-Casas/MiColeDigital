@@ -15,7 +15,7 @@ public class Usuario{
         this.password = password;
         this.rol = rol;
     }
-    // Getters y Setters
+    
     public int getIdUsuario() { return idUsuario; }
     public void setIdUsuario(int idUsuario) { this.idUsuario = idUsuario; }
 
@@ -33,9 +33,6 @@ public class Usuario{
 
     @Override
     public String toString() {
-        return String.format(
-        "%-10s | %-40s | %-40s | %-15s | %-13s",
-        idUsuario, nombre, correo, password, rol.getNombreRol()
-        );
+    return idUsuario + " | " + nombre;
     }
 }

@@ -1,4 +1,3 @@
-
 package Complementos;
 
 import javax.swing.*;
@@ -17,26 +16,21 @@ public abstract class BaseFrame extends JFrame{
         setLocationRelativeTo(null);
         setResizable(false);
 
-        // Panel crema de fondo
         panelFondo = new JPanel();
         panelFondo.setBackground(new Color(255, 220, 80));
         panelFondo.setBounds(0, 0, 1280, 720);
         panelFondo.setLayout(null);
         add(panelFondo);
 
-        // Panel blanco centrado
         panelContenido = new JPanel();
         panelContenido.setBackground(Color.WHITE);
         panelContenido.setBounds(50, 50, 1160, 580);
         panelContenido.setLayout(null);
         panelFondo.add(panelContenido);
 
-        initContenido(); 
-
+        //initContenido();
         
         setVisible(true);
     }
-
     protected abstract void initContenido(); 
-    
 }

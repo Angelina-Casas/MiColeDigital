@@ -1,6 +1,5 @@
 package Admin;
 
-
 import Complementos.BaseFrame;
 import Main.LoginGeneral;
 import Modelos.Usuario;
@@ -13,6 +12,7 @@ public class MenuAdm extends BaseFrame {
 
     public MenuAdm(Usuario usuario) {
         this.usuario = usuario;
+        initContenido();
     }
     
     @Override
@@ -39,8 +39,8 @@ public class MenuAdm extends BaseFrame {
         btnUsuarios.setBackground(new Color(102, 204, 0));
         btnUsuarios.setForeground(Color.WHITE);
         btnUsuarios.setFont(new Font("Arial", Font.BOLD, 14));
-        btnUsuarios.addActionListener(e -> {
-        new AdmUsuarios().setVisible(true);
+        btnUsuarios.addActionListener((var e) -> {
+            new AdmUsuario(usuario).setVisible(true);
             dispose();
         });
         panelContenido.add(btnUsuarios);
@@ -51,8 +51,8 @@ public class MenuAdm extends BaseFrame {
         btnAulas.setForeground(Color.WHITE);
         btnAulas.setFont(new Font("Arial", Font.BOLD, 14));
         btnAulas.addActionListener(e -> {
-        new AdmAula().setVisible(true);
-            dispose();
+            new AdmAula(usuario).setVisible(true);
+                dispose();
         });
         panelContenido.add(btnAulas);
         
@@ -62,7 +62,7 @@ public class MenuAdm extends BaseFrame {
         btnCursos.setForeground(Color.WHITE);
         btnCursos.setFont(new Font("Arial", Font.BOLD, 14));
         btnCursos.addActionListener(e -> {
-        new AdmCurso().setVisible(true);
+            new AdmCurso(usuario).setVisible(true);
             dispose();
         });
         panelContenido.add(btnCursos);
@@ -75,7 +75,6 @@ public class MenuAdm extends BaseFrame {
         new LoginGeneral().setVisible(true);
             dispose();
         });
-        
         panelContenido.add(btnCerrarSesion);
     }
 

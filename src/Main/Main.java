@@ -3,9 +3,9 @@ package Main;
 import Admin.MenuAdm;
 import Estudiante.PerfilEstudiante;
 import Docente.PerfilDocente;
+import Docente.ContenidoDocente;
 
-
-public class ColecolecolecolecoleDIGITAL {
+public class Main {
 
     public static void main(String[] args) {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
@@ -25,6 +25,7 @@ public class ColecolecolecolecoleDIGITAL {
                 
                 LoginGeneral ventanaprincipal= new LoginGeneral();
                 ventanaprincipal.setVisible(true);
+                
             }
         });
     }
