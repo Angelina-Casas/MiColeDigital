@@ -1,30 +1,23 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Complementos;
 import javax.swing.*;
 import java.awt.*;
 
 public class PruebasSemanales {
     public static void agregarPregunta(JPanel destino, int numero, String textoPregunta, int y, String[] opciones) {
-        // Título de la pregunta
         JLabel lblPregunta = new JLabel("    PREGUNTA " + numero);
         lblPregunta.setBounds(20, y, 120, 25);
         lblPregunta.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         destino.add(lblPregunta);
 
-        
         JLabel lblTexto = new JLabel(textoPregunta, SwingConstants.CENTER);
         lblTexto.setFont(new Font("SansSerif", Font.BOLD, 16));
         lblTexto.setOpaque(true);
         lblTexto.setBackground(Color.WHITE);
         lblTexto.setForeground(Color.BLACK);
         lblTexto.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 2));
-        lblTexto.setBounds(60, y + 30, 500, 40); // ancho más grande, altura aumentada
+        lblTexto.setBounds(60, y + 30, 500, 40);
         destino.add(lblTexto);
 
-        // Opciones
         JRadioButton opcion1 = new JRadioButton(opciones[0]);
         opcion1.setBounds(580, y + 30, 100, 20);
 
@@ -48,5 +41,4 @@ public class PruebasSemanales {
         destino.add(opcion3);
         destino.add(opcion4);
     }
-    
 }

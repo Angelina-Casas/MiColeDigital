@@ -1,9 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Complementos;
-
 
 import Docente.CursoDocente;
 import Docente.PerfilDocente;
@@ -39,7 +34,6 @@ public class ComplementosFrameDocente extends JFrame{
         setResizable(false);
     }
 
-    // Panel izquierdo común
     protected JPanel crearPanelIzquierdo() {
     panelIzquierdo = new JPanel();
     panelIzquierdo.setBackground(new Color(255, 220, 80));
@@ -82,7 +76,6 @@ public class ComplementosFrameDocente extends JFrame{
     return panelIzquierdo;
 }
 
-    // Panel derecho base con logo y título
     protected JPanel crearPanelDerecho(String titulo) {
         panelDerecho = new JPanel();
         panelDerecho.setBackground(Color.WHITE);

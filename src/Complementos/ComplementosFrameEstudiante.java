@@ -34,7 +34,6 @@ public class ComplementosFrameEstudiante extends JFrame{
         setResizable(false);
     }
 
-    // Panel izquierdo común
     protected JPanel crearPanelIzquierdo() {
     panelIzquierdo = new JPanel();
     panelIzquierdo.setBackground(new Color(255, 220, 80));
@@ -77,7 +76,6 @@ public class ComplementosFrameEstudiante extends JFrame{
     return panelIzquierdo;
 }
 
-    // Panel derecho base con logo y título
     protected JPanel crearPanelDerecho(String titulo) {
         panelDerecho = new JPanel();
         panelDerecho.setBackground(Color.WHITE);
