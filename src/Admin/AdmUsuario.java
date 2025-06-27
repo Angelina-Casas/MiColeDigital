@@ -17,7 +17,7 @@ public class AdmUsuario extends BaseFrame {
     private RolBD rolBD;
 
     public AdmUsuario(Usuario usuario) {
-        this.usuario= usuario;
+        this.usuario = usuario;
         this.rolBD = new RolBD();
         this.usuarioBD = new UsuarioBD();
         initContenido();
@@ -26,55 +26,69 @@ public class AdmUsuario extends BaseFrame {
     @Override
     protected void initContenido() {
         int xForm = 40;
+        int yForm = 90;
+        int alturaCampo = 30;
+        int anchoCampo = 220;
+        int separacion = 60;
 
-        JLabel lblNombre = new JLabel("Nombre");
-        lblNombre.setBounds(xForm, 10, 100, 20);
+        JLabel lblBienvenido = new JLabel("Bienvenido, " + usuario.getNombre());
+        lblBienvenido.setFont(new Font("Arial", Font.BOLD, 16));
+        lblBienvenido.setBounds(xForm, 10, 500, 25);
+        lblBienvenido.setHorizontalAlignment(SwingConstants.LEFT);
+        lblBienvenido.setToolTipText("Bienvenido, " + usuario.getNombre());
+        panelContenido.add(lblBienvenido);
+
+        JLabel lblNombre = new JLabel("Nombre:");
+        lblNombre.setBounds(xForm, yForm, 100, 20);
         panelContenido.add(lblNombre);
 
         txtNombre = new JTextField();
-        txtNombre.setBounds(xForm, 30, 220, 30);
+        txtNombre.setBounds(xForm, yForm + 20, anchoCampo, alturaCampo);
         panelContenido.add(txtNombre);
 
-        JLabel lblUsuario = new JLabel("Usuario");
-        lblUsuario.setBounds(xForm, 70, 100, 20);
+        JLabel lblUsuario = new JLabel("Usuario:");
+        lblUsuario.setBounds(xForm, yForm + separacion, 100, 20);
         panelContenido.add(lblUsuario);
 
         txtUsuario = new JTextField();
-        txtUsuario.setBounds(xForm, 90, 220, 30);
+        txtUsuario.setBounds(xForm, yForm + separacion + 20, anchoCampo, alturaCampo);
         panelContenido.add(txtUsuario);
 
-        JLabel lblContrasena = new JLabel("Contraseña");
-        lblContrasena.setBounds(xForm, 130, 100, 20);
+        JLabel lblContrasena = new JLabel("Contraseña:");
+        lblContrasena.setBounds(xForm, yForm + separacion * 2, 100, 20);
         panelContenido.add(lblContrasena);
 
         txtContrasena = new JPasswordField();
-        txtContrasena.setBounds(xForm, 150, 220, 30);
+        txtContrasena.setBounds(xForm, yForm + separacion * 2 + 20, anchoCampo, alturaCampo);
         panelContenido.add(txtContrasena);
 
-        JLabel lblRol = new JLabel("Rol");
-        lblRol.setBounds(xForm, 190, 100, 20);
+        JLabel lblRol = new JLabel("Rol:");
+        lblRol.setBounds(xForm, yForm + separacion * 3, 100, 20);
         panelContenido.add(lblRol);
 
         cbRol = new JComboBox<>();
-        cbRol.setBounds(xForm, 210, 220, 30);
+        cbRol.setBounds(xForm, yForm + separacion * 3 + 20, anchoCampo, alturaCampo);
         panelContenido.add(cbRol);
         cargarRoles();
 
+        int yBotones = yForm + separacion * 4 + 30;
+        int alturaBoton = 35;
+
         JButton btnAgregar = new JButton("AGREGAR");
-        btnAgregar.setBounds(40, 260, 140, 35);
+        btnAgregar.setBounds(xForm, yBotones, anchoCampo, alturaBoton);
         btnAgregar.setBackground(new Color(144, 238, 144));
         btnAgregar.addActionListener(e -> agregarUsuario());
         panelContenido.add(btnAgregar);
 
         JButton btnEditar = new JButton("EDITAR");
-        btnEditar.setBounds(40, 305, 140, 35);
-        btnEditar.setBackground(new Color(255, 102, 102));
+        btnEditar.setBounds(xForm, yBotones + 45, anchoCampo, alturaBoton);
+        btnEditar.setBackground(new Color(173, 216, 230));
         btnEditar.addActionListener(e -> editarUsuario());
         panelContenido.add(btnEditar);
 
         JButton btnEliminar = new JButton("ELIMINAR");
-        btnEliminar.setBounds(40, 350, 140, 35);
-        btnEliminar.setBackground(new Color(173, 216, 230));
+        btnEliminar.setBounds(xForm, yBotones + 90, anchoCampo, alturaBoton);
+        btnEliminar.setBackground(new Color(255, 102, 102));
         btnEliminar.addActionListener(e -> eliminarUsuario());
         panelContenido.add(btnEliminar);
 
@@ -96,14 +110,13 @@ public class AdmUsuario extends BaseFrame {
         tablaUsuarios.getSelectionModel().addListSelectionListener(e -> mostrarDatosSeleccionados());
 
         JScrollPane scrollLista = new JScrollPane(tablaUsuarios);
-        scrollLista.setBounds(380, 40, 740, 420);
+        scrollLista.setBounds(380, 60, 740, 420);
         panelContenido.add(scrollLista);
 
         cargarUsuarios();
     }
 
     private void cargarRoles() {
-        System.out.println("ROLBD: " + rolBD);
         cbRol.removeAllItems();
         for (Rol rol : rolBD.listarRoles()) {
             cbRol.addItem(rol);
