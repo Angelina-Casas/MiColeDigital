@@ -5,7 +5,7 @@
 package Docente;
 
 import Complementos.ComplementosFrameDocente;
-import Estudiante.CalifiEstudiante;
+import Main.LoginGeneral;
 import Modelos.Usuario;
 import javax.swing.*;
 import java.awt.*;
@@ -17,10 +17,8 @@ public class ContenidoDocente extends ComplementosFrameDocente{
     public ContenidoDocente (Usuario usuario) {
         super(usuario);
         this.usuario = usuario;
-        
-        
-        add(crearPanelIzquierdo());
-         
+              
+        add(crearPanelIzquierdo());   
         add(crearPanelDerecho(" CONTENIDO  -  MICOLEDIGITAL   "));
         
         JButton btnCabecera1 = new JButton("Contenido");
@@ -40,18 +38,22 @@ public class ContenidoDocente extends ComplementosFrameDocente{
         });
         panelDerecho.add(btnCabecera2);
         
+        JButton btnAgregarPractica = new JButton("AGREGAR PRACTICA");
+        btnAgregarPractica.setBounds(745, 580, 220, 40);
+        btnAgregarPractica.setBackground(new Color(39,87,117));
+        btnAgregarPractica.setForeground(Color.WHITE);
+        btnAgregarPractica.addActionListener(e -> {
+        new AgregarContenido(usuario).setVisible(true);
+        dispose();
+        });
+        panelDerecho.add(btnAgregarPractica);
+        
         contenedorScroll = new JPanel();
         contenedorScroll.setLayout(new BoxLayout(contenedorScroll, BoxLayout.Y_AXIS));
         contenedorScroll.setBackground(Color.WHITE);
-
-        
-        
-        String[] semanas = { "Semana 1", "Semana 2", "Semana 3", "Semana 4" };
-        
-        
-        
-
-        
+    
+        String[] semanas = { "Practica 1", "Practica 2", "Practica 3", "Practica 4" };
+ 
         for (int i = 0; i < semanas.length; i++) {
             JPanel panelPractica = new JPanel(null); 
             panelPractica.setMaximumSize(new Dimension(Integer.MAX_VALUE, 110)); 
@@ -77,10 +79,9 @@ public class ContenidoDocente extends ComplementosFrameDocente{
             contenedorScroll.add(Box.createRigidArea(new Dimension(0, 10)));
             contenedorScroll.add(panelPractica);
         }
-
-        
+  
         scrollPane = new JScrollPane(contenedorScroll);
-        scrollPane.setBounds(100, 190, 850, 420);
+        scrollPane.setBounds(100, 190, 850, 370);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
@@ -90,6 +91,5 @@ public class ContenidoDocente extends ComplementosFrameDocente{
 
         setVisible(true);
    }
-
-    
+ 
 }
