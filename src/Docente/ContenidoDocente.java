@@ -3,120 +3,123 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package Docente;
+
+import Complementos.ComplementosFrameDocente;
+import Conexion.ConexionBD;
+import Modelos.Formulario;
+import Modelos.FormularioBD;
+import Modelos.Usuario;
+import java.util.List;
 import javax.swing.*;
 import java.awt.*;
-import Complementos.ComplementosFrameDocente;
-import Estudiante.CalifiEstudiante;
-import Modelos.Usuario;
+import java.util.Comparator;
 
-public class ContenidoDocente extends ComplementosFrameDocente {
-    private JScrollPane scrollPaneFormulario;
-    private JPanel panelFormulario;
-    private JPanel panelVistaPrevia;
+public class ContenidoDocente extends ComplementosFrameDocente{
+    private JScrollPane scrollPane;
+    private JPanel contenedorScroll;
     
-   public ContenidoDocente(Usuario usuario) {
+    public ContenidoDocente (Usuario usuario) {
         super(usuario);
         this.usuario = usuario;
         
-        add(crearPanelIzquierdo());
-
         
-        add(crearPanelDerecho("CONTENIDO - MICOLEDIGITAL"));
-
+              
+        add(crearPanelIzquierdo());   
+        add(crearPanelDerecho(" CONTENIDO  -  MICOLEDIGITAL   "));
         
         JButton btnCabecera1 = new JButton("Contenido");
         btnCabecera1.setBounds(100, 140, 425, 40);
         btnCabecera1.setBackground(Color.WHITE);
-        btnCabecera1.setBorder(BorderFactory.createLineBorder(new Color(178, 0, 38), 2));
+        btnCabecera1.setBorder(BorderFactory.createLineBorder(new Color(39,87,117), 2));
         panelDerecho.add(btnCabecera1);
 
         
         JButton btnCabecera2 = new JButton("Calificaciones");
         btnCabecera2.setBounds(525, 140, 425, 40); 
         btnCabecera2.setBackground(Color.WHITE);
-        btnCabecera2.setBorder(BorderFactory.createLineBorder(new Color(178, 0, 38), 2));
+        btnCabecera2.setBorder(BorderFactory.createLineBorder(new Color(39,87,117), 2));
         btnCabecera2.addActionListener(e -> {
-        new CalifiEstudiante(usuario).setVisible(true);
+        new CalifiDocente(usuario).setVisible(true);
         dispose();
         });
         panelDerecho.add(btnCabecera2);
-
         
-        panelFormulario = new JPanel();
-        panelFormulario.setLayout(null);
-        panelFormulario.setPreferredSize(new Dimension(500, 600));
-        panelFormulario.setBackground(Color.WHITE);
+        JButton btnAgregarPractica = new JButton("AGREGAR PRACTICA");
+        btnAgregarPractica.setBounds(745, 580, 220, 40);
+        btnAgregarPractica.setBackground(new Color(39,87,117));
+        btnAgregarPractica.setForeground(Color.WHITE);
+        btnAgregarPractica.addActionListener(e -> {
+        new AgregarContenido(usuario).setVisible(true);
+        dispose();
+        });
+        panelDerecho.add(btnAgregarPractica);
+        
+        contenedorScroll = new JPanel();
+        contenedorScroll.setLayout(new BoxLayout(contenedorScroll, BoxLayout.Y_AXIS));
+        contenedorScroll.setBackground(Color.WHITE);
+    
+        try {
+            ConexionBD conexionBD = new ConexionBD();
+    FormularioBD formularioBD = new FormularioBD(conexionBD.obtenerConexion());
+    List<Formulario> listaFormularios = formularioBD.obtenerTodosFormularios();
 
-        int y = 20;
+    // Ordenar por idFor ASCENDENTE (de menor a mayor)
+    listaFormularios.sort(Comparator.comparingInt(Formulario::getIdFor));
 
-        panelFormulario.add(crearLabel("Ingrese nombre de la Práctica:", 30, y));
-        panelFormulario.add(crearTextField(270, y, 200));
-        y += 40;
+    // Limpiar el contenedor
+    contenedorScroll.removeAll();
 
-        panelFormulario.add(crearLabel("Ingrese tema de la práctica:", 30, y));
-        panelFormulario.add(crearTextField(270, y, 200));
-        y += 40;
+    // Agregar prácticas al final (manteniendo orden correcto)
+    for (Formulario form : listaFormularios) {
+        int idFormulario = form.getIdFor();
+        String nombre = form.getNombreFor();
 
-        panelFormulario.add(crearLabel("Video:", 30, y));
-        panelFormulario.add(crearTextField(270, y, 200));
-        y += 40;
+        JPanel panelPractica = new JPanel(null);
+        panelPractica.setMaximumSize(new Dimension(Integer.MAX_VALUE, 110));
+        panelPractica.setPreferredSize(new Dimension(850, 110));
+        panelPractica.setBackground(new Color(240, 240, 240));
+        panelPractica.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
-        panelFormulario.add(crearLabel("Ingrese número de pregunta:", 30, y));
-        JComboBox<String> comboNumero = new JComboBox<>(new String[]{"1", "2", "3", "4", "5"});
-        comboNumero.setBounds(270, y, 100, 25);
-        panelFormulario.add(comboNumero);
-        y += 40;
+        JLabel lblSemana = new JLabel(nombre);
+        lblSemana.setBounds(50, 35, 400, 20);
+        lblSemana.setFont(new Font("SansSerif", Font.BOLD, 20));
+        panelPractica.add(lblSemana);
 
-        panelFormulario.add(crearLabel("Pregunta:", 30, y));
-        panelFormulario.add(crearTextField(270, y, 300));
-        y += 40;
+        JButton btnVer = new JButton("Ver práctica");
+        btnVer.setBounds(650, 35, 120, 30);
+        btnVer.setBackground(new Color(39,87,117));
+        btnVer.setForeground(Color.WHITE);
+        btnVer.addActionListener(e -> {
+            new AgregarContenido(usuario, idFormulario).setVisible(true);
+            dispose();
+        });
 
-        for (int i = 1; i <= 4; i++) {
-            panelFormulario.add(crearLabel("Opción " + i + ":", 30, y));
-            panelFormulario.add(crearTextField(270, y, 300));
-            y += 40;
+        panelPractica.add(btnVer);
+
+        // Separador + panel
+        contenedorScroll.add(Box.createRigidArea(new Dimension(0, 10)));
+        contenedorScroll.add(panelPractica);
+    }
+
+    // IMPORTANTE: actualiza visualmente
+    contenedorScroll.revalidate();
+    contenedorScroll.repaint();
+
+} catch (Exception e) {
+    JOptionPane.showMessageDialog(this, "Error cargando prácticas: " + e.getMessage());
         }
-
-        panelFormulario.add(crearLabel("Alternativa correcta:", 30, y));
-        JComboBox<String> comboAlternativa = new JComboBox<>(new String[]{"A", "B", "C", "D"});
-        comboAlternativa.setBounds(270, y, 100, 25);
-        panelFormulario.add(comboAlternativa);
-        y += 50;
-
-        JButton btnGuardar = new JButton("Guardar");
-        btnGuardar.setBounds(270, y, 150, 35);
-        btnGuardar.setBackground(new Color(178, 0, 38));
-        btnGuardar.setForeground(Color.WHITE);
-        panelFormulario.add(btnGuardar);
-
+  
+        scrollPane = new JScrollPane(contenedorScroll);
+        scrollPane.setBounds(100, 190, 850, 370);
+        scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
+        panelDerecho.add(scrollPane);
         
-        scrollPaneFormulario = new JScrollPane(panelFormulario);
-        scrollPaneFormulario.setBounds(100, 180, 500, 450);  
-        scrollPaneFormulario.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        scrollPaneFormulario.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
-        panelDerecho.add(scrollPaneFormulario);
-
+        contenedorScroll.setPreferredSize(new Dimension(850, 600)); 
         
-        panelVistaPrevia = new JPanel();
-        panelVistaPrevia.setBounds(630, 180, 320, 450); 
-        panelVistaPrevia.setBackground(Color.LIGHT_GRAY);
-        panelVistaPrevia.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        panelDerecho.add(panelVistaPrevia);
 
         setVisible(true);
-    }
-
-    private JLabel crearLabel(String texto, int x, int y) {
-        JLabel label = new JLabel(texto);
-        label.setBounds(x, y, 250, 25);
-        return label;
-    }
-
-    private JTextField crearTextField(int x, int y, int ancho) {
-        JTextField field = new JTextField();
-        field.setBounds(x, y, ancho, 25);
-        return field;
-    }
-}
+   }
  
-
+}
