@@ -11,7 +11,6 @@ public class CursoBD {
 
     public CursoBD() {}
 
-    // Listar todos los cursos con su aula y docente completo
     public List<Curso> listarCurso() {
         List<Curso> lista = new ArrayList<>();
         String sql = "SELECT idCurso, nombre, idDocente, idAula FROM Curso";
@@ -24,7 +23,6 @@ public class CursoBD {
                     int idCurso = rs.getInt("idCurso");
                     String nombreCurso = rs.getString("nombre");
 
-                    // Corrección: usa el nombre correcto de las columnas
                     Usuario docente = usuarioBD.obtenerUsuario(rs.getInt("idDocente"));
                     Aula aula = aulaBD.obtenerAula(rs.getInt("idAula"));
 
@@ -39,7 +37,6 @@ public class CursoBD {
         return lista;
     }
 
-    // Obtener un curso por su ID
     public Curso obtenerCurso(int idCurso) {
         Curso curso = null;
         String sql = "SELECT idCurso, nombre, idDocente, idAula FROM Curso WHERE idCurso = ?";
@@ -69,7 +66,6 @@ public class CursoBD {
         return curso;
     }
 
-    // Agregar un nuevo curso
     public boolean agregarCurso(Curso curso) {
         String sql = "INSERT INTO Curso (nombre, idDocente, idAula) VALUES (?, ?, ?)";
 
@@ -89,7 +85,6 @@ public class CursoBD {
         }
     }
 
-    // Actualizar un curso existente
     public boolean actualizarCurso(Curso curso) {
         String sql = "UPDATE Curso SET nombre = ?, idDocente = ?, idAula = ? WHERE idCurso = ?";
 
@@ -110,7 +105,6 @@ public class CursoBD {
         }
     }
 
-    // Eliminar un curso
     public boolean eliminarCurso(int idCurso) {
         String sql = "DELETE FROM Curso WHERE idCurso = ?";
 

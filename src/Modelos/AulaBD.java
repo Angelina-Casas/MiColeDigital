@@ -12,19 +12,15 @@ public class AulaBD {
     public List<Aula> listarAulas() {
         List<Aula> lista = new ArrayList<>();
         String sql = "SELECT idAula, grado, seccion FROM Aula";
-
         try (Connection con = new ConexionBD().obtenerConexion();
              PreparedStatement ps = con.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
-
             while (rs.next()) {
-                Aula aula = new Aula(
-                    rs.getInt("idAula"),
-                    rs.getInt("grado"),
-                    rs.getString("seccion")
-                );
-                lista.add(aula);
-            }
+            int id = rs.getInt("idAula");
+            int grado = rs.getInt("grado");
+            String seccion = rs.getString("seccion");
+            Aula aula = new Aula(id, grado, seccion);
+            lista.add(aula);}
         } catch (SQLException e) {
             e.printStackTrace();
         }

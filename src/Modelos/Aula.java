@@ -1,7 +1,5 @@
 package Modelos;
 
-import java.time.LocalDate;
-
 public class Aula {
     private int idAula;
     private int grado;
@@ -49,5 +47,9 @@ public class Aula {
             case 6: return "Sexto";
             default: return "Desconocido";
         }
+    }
+    @Override
+    public String toString() {
+        return grado + "° " + seccion;
     }
 }

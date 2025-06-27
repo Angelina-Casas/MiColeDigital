@@ -62,7 +62,7 @@ public class MenuAdm extends BaseFrame {
         btnCursos.setForeground(Color.WHITE);
         btnCursos.setFont(new Font("Arial", Font.BOLD, 14));
         btnCursos.addActionListener(e -> {
-        new AdmCurso().setVisible(true);
+            new AdmCurso(usuario).setVisible(true);
             dispose();
         });
         panelContenido.add(btnCursos);
