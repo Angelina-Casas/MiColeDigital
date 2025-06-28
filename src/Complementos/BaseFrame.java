@@ -28,8 +28,6 @@ public abstract class BaseFrame extends JFrame{
         panelContenido.setLayout(null);
         panelFondo.add(panelContenido);
 
-        //initContenido();
-        
         setVisible(true);
     }
     protected abstract void initContenido(); 

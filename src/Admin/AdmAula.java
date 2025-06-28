@@ -22,27 +22,38 @@ public class AdmAula extends BaseFrame {
 
     @Override
     protected void initContenido() {
+        JLabel lblBienvenida = new JLabel("Bienvenido, " + usuario.getNombre());
+        lblBienvenida.setFont(new Font("Arial", Font.BOLD, 16));
+        lblBienvenida.setBounds(20, 20, 400, 25);
+        panelContenido.add(lblBienvenida);
+
         JLabel lblGrado = new JLabel("Grado:");
-        lblGrado.setBounds(80, 60, 100, 30);
+        lblGrado.setBounds(30, 110, 100, 30);
         lblGrado.setFont(new Font("Arial", Font.BOLD, 14));
         panelContenido.add(lblGrado);
 
         txtGrado = new JTextField();
-        txtGrado.setBounds(150, 60, 200, 30);
+        txtGrado.setBounds(110, 110, 180, 28);
         panelContenido.add(txtGrado);
 
         JLabel lblSeccion = new JLabel("Sección:");
-        lblSeccion.setBounds(80, 110, 100, 30);
+        lblSeccion.setBounds(30, 160, 100, 30);
         lblSeccion.setFont(new Font("Arial", Font.BOLD, 14));
         panelContenido.add(lblSeccion);
 
         txtSeccion = new JTextField();
-        txtSeccion.setBounds(150, 110, 200, 30);
+        txtSeccion.setBounds(110, 160, 180, 28);
         panelContenido.add(txtSeccion);
 
+        int btnWidth = 160;
+        int btnHeight = 30;
+        int xBtn = 80;
+        int startY = 250;
+        int gap = 50;
+
         JButton btnVerEstudiantes = new JButton("VER ESTUDIANTES");
-        btnVerEstudiantes.setBounds(80, 180, 280, 35);
-        btnVerEstudiantes.setBackground(new Color(173, 216, 230));
+        btnVerEstudiantes.setBounds(xBtn, startY, btnWidth, btnHeight);
+        btnVerEstudiantes.setBackground(new Color(255, 249, 200));
         panelContenido.add(btnVerEstudiantes);
         btnVerEstudiantes.addActionListener(e -> {
             int fila = tablaAulas.getSelectedRow();
@@ -61,20 +72,20 @@ public class AdmAula extends BaseFrame {
         });
 
         JButton btnAgregar = new JButton("AGREGAR");
-        btnAgregar.setBounds(80, 250, 280, 35);
-        btnAgregar.setBackground(new Color(173, 216, 230));
+        btnAgregar.setBounds(xBtn, startY + gap, btnWidth, btnHeight);
+        btnAgregar.setBackground(new Color(144, 238, 144));
         btnAgregar.addActionListener(e -> agregarAula());
         panelContenido.add(btnAgregar);
 
         JButton btnEditar = new JButton("EDITAR");
-        btnEditar.setBounds(80, 320, 280, 35);
+        btnEditar.setBounds(xBtn, startY + 2 * gap, btnWidth, btnHeight);
         btnEditar.setBackground(new Color(173, 216, 230));
         btnEditar.addActionListener(e -> editarAula());
         panelContenido.add(btnEditar);
 
         JButton btnEliminar = new JButton("ELIMINAR");
-        btnEliminar.setBounds(80, 390, 280, 35);
-        btnEliminar.setBackground(new Color(173, 216, 230));
+        btnEliminar.setBounds(xBtn, startY + 3 * gap, btnWidth, btnHeight);
+        btnEliminar.setBackground(new Color(255, 102, 102));
         btnEliminar.addActionListener(e -> eliminarAula());
         panelContenido.add(btnEliminar);
 
@@ -89,7 +100,7 @@ public class AdmAula extends BaseFrame {
 
         JButton btnRegresar = new JButton("REGRESAR");
         btnRegresar.setBounds(1000, 500, 120, 35);
-        btnRegresar.setBackground(new Color(173, 216, 230));
+        btnRegresar.setBackground(new Color(255, 249, 200));
         btnRegresar.addActionListener(e -> {
             new MenuAdm(usuario).setVisible(true);
             dispose();
@@ -176,7 +187,6 @@ public class AdmAula extends BaseFrame {
             JOptionPane.showMessageDialog(this, "Error al eliminar aula.");
         }
     }
-    
 
     private void limpiarCampos() {
         txtGrado.setText("");
@@ -205,3 +215,5 @@ public class AdmAula extends BaseFrame {
         return true;
     }
 }
+
+
