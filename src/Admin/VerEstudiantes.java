@@ -15,7 +15,7 @@ public class VerEstudiantes extends BaseFrame {
     private JComboBox<Usuario> comboEstudiantes;
     private int idAulaActual;
 
-    public VerEstudiantes(Aula aula,Usuario usuari) {
+    public VerEstudiantes(Aula aula,Usuario usuario) {
         super();
         this.usuario = usuario;
         initContenido();
