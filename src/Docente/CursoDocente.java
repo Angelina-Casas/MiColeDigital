@@ -22,7 +22,7 @@ public class CursoDocente extends ComplementosFrameDocente{
 
         btnCursoMatematica = new JButton("Matemáticas 6°");
         btnCursoMatematica.setBounds(300, 200, 400, 100);
-        btnCursoMatematica.setBackground(new Color(255, 248, 180));
+        btnCursoMatematica.setBackground(new Color(255, 220, 80));
         btnCursoMatematica.setFont(new Font("Serif", Font.PLAIN, 20));
         btnCursoMatematica.addActionListener(e -> {
             new ContenidoDocente(usuario).setVisible(true);

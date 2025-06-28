@@ -2,8 +2,10 @@ package Complementos;
 import javax.swing.*;
 import java.awt.*;
 
-public class PruebasSemanales {
+public class PruebasSemanales { 
     public static void agregarPregunta(JPanel destino, int numero, String textoPregunta, int y, String[] opciones) {
+shakalaka
+master
         JLabel lblPregunta = new JLabel("    PREGUNTA " + numero);
         lblPregunta.setBounds(20, y, 120, 25);
         lblPregunta.setBorder(BorderFactory.createLineBorder(Color.BLACK));

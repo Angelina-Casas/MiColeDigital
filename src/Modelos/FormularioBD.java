@@ -12,10 +12,10 @@ public class FormularioBD {
         this.conexion = conexion;
     }
 
-    // Inserta un formulario y sus preguntas asociadas
+    
     public boolean insertarFormularioYPreguntas(Formulario formulario, List<PreguntaFormulario> preguntas) {
         try {
-            // Insertar formulario y obtener el id generado
+            
             String sqlFormulario = "INSERT INTO Formulario (nombreFor, tema, video_url) OUTPUT INSERTED.idFor VALUES (?, ?, ?)";
             PreparedStatement psFormulario = conexion.prepareStatement(sqlFormulario);
             psFormulario.setString(1, formulario.getNombreFor());
@@ -30,7 +30,7 @@ public class FormularioBD {
                 return false;
             }
 
-            // Insertar preguntas asociadas
+            
             String sqlPregunta = "INSERT INTO PreguntaFormulario (idFormulario, nroPregunta, pregunta, opcion1, opcion2, opcion3, opcion4, respuestaCorrecta) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement psPregunta = conexion.prepareStatement(sqlPregunta);
 
@@ -55,8 +55,8 @@ public class FormularioBD {
         }
     }
 
-    // Obtener un formulario por ID
-    public Formulario obtenerFormulario(int idFormulario) throws SQLException {
+    
+    public Formulario obtenerFormularioPorId(int idFormulario) throws SQLException {
         String sql = "SELECT * FROM Formulario WHERE idFor = ?";
         PreparedStatement ps = conexion.prepareStatement(sql);
         ps.setInt(1, idFormulario);
@@ -72,25 +72,26 @@ public class FormularioBD {
         return null;
     }
 
-    // Obtener todos los formularios
-    public List<Formulario> obtenerTodosFormularios() {
-        List<Formulario> formularios = new ArrayList<>();
-        String sql = "SELECT idFor, nombreFor FROM Formulario";
-        try (PreparedStatement stmt = conexion.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-            while (rs.next()) {
-                Formulario f = new Formulario();
-                f.setIdFor(rs.getInt("idFor"));
-                f.setNombreFor(rs.getString("nombreFor"));
-                formularios.add(f);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return formularios;
+    
+    public List<Formulario> obtenerTodosFormularios() throws SQLException {
+    List<Formulario> lista = new ArrayList<>();
+    String sql = "SELECT * FROM Formulario";
+    
+    Statement stmt = conexion.createStatement();
+    ResultSet rs = stmt.executeQuery(sql);
+
+    while (rs.next()) {
+        Formulario f = new Formulario();
+        f.setIdFor(rs.getInt("idFor"));
+        f.setNombreFor(rs.getString("nombreFor"));
+        f.setTema(rs.getString("tema"));
+        f.setVideoUrl(rs.getString("video_url"));
+        lista.add(f);
+    }
+        return lista;
     }
 
-    // Obtener preguntas por formulario
+    
     public List<PreguntaFormulario> obtenerPreguntas(int idFormulario) throws SQLException {
         List<PreguntaFormulario> lista = new ArrayList<>();
         String sql = "SELECT * FROM PreguntaFormulario WHERE idFormulario = ? ORDER BY nroPregunta";
@@ -110,5 +111,63 @@ public class FormularioBD {
             ));
         }
         return lista;
+    }
+    
+    public boolean eliminarFormularioYPreguntas(int idFormulario) {
+        try {
+            String sqlPreguntas = "DELETE FROM PreguntaFormulario WHERE idFormulario = ?";
+            PreparedStatement psPreguntas = conexion.prepareStatement(sqlPreguntas);
+            psPreguntas.setInt(1, idFormulario);
+            psPreguntas.executeUpdate();
+
+            String sqlFormulario = "DELETE FROM Formulario WHERE idFor = ?";
+            PreparedStatement psFormulario = conexion.prepareStatement(sqlFormulario);
+            psFormulario.setInt(1, idFormulario);
+            int filas = psFormulario.executeUpdate();
+
+            return filas > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        return false;
+        }
+    }
+    public boolean actualizarFormularioYPreguntas(Formulario formulario, List<PreguntaFormulario> preguntas) {
+        try {
+        
+        String updateFormulario = "UPDATE Formulario SET nombreFor = ?, tema = ?, video_url = ? WHERE idFor = ?";
+        PreparedStatement stmtFormulario = conexion.prepareStatement(updateFormulario);
+        stmtFormulario.setString(1, formulario.getNombreFor());
+        stmtFormulario.setString(2, formulario.getTema());
+        stmtFormulario.setString(3, formulario.getVideoUrl());
+        stmtFormulario.setInt(4, formulario.getIdFor());
+        stmtFormulario.executeUpdate();
+
+        
+        String deletePreguntas = "DELETE FROM PreguntaFormulario WHERE idFormulario = ?";
+        PreparedStatement stmtDelete = conexion.prepareStatement(deletePreguntas);
+        stmtDelete.setInt(1, formulario.getIdFor());
+        stmtDelete.executeUpdate();
+
+        
+        String insertPregunta = "INSERT INTO PreguntaFormulario (idFormulario, nroPregunta, pregunta, opcion1, opcion2, opcion3, opcion4, respuestaCorrecta) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        PreparedStatement stmtInsert = conexion.prepareStatement(insertPregunta);
+        for (PreguntaFormulario p : preguntas) {
+            stmtInsert.setInt(1, formulario.getIdFor());
+            stmtInsert.setInt(2, p.getNroPregunta());
+            stmtInsert.setString(3, p.getPregunta());
+            stmtInsert.setString(4, p.getOpcion1());
+            stmtInsert.setString(5, p.getOpcion2());
+            stmtInsert.setString(6, p.getOpcion3());
+            stmtInsert.setString(7, p.getOpcion4());
+            stmtInsert.setString(8, p.getRespuestaCorrecta());
+            stmtInsert.addBatch();
+            }
+            stmtInsert.executeBatch();
+
+            return true;
+        } catch (Exception e) {
+        e.printStackTrace();
+        return false;
+       }
     }
 }
