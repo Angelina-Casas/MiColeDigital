@@ -6,7 +6,7 @@ package Complementos;
 import javax.swing.*;
 import java.awt.*;
 
-public class PruebasSemanales {
+public class PruebasSemanales { 
     public static void agregarPregunta(JPanel destino, int numero, String textoPregunta, int y, String[] opciones) {
         
         JLabel lblPregunta = new JLabel("    PREGUNTA " + numero);
