@@ -1,107 +1,183 @@
 package Estudiante;
 
-import Complementos.PruebasSemanales;
 import Complementos.ComplementosFrameEstudiante;
+import Conexion.ConexionBD;
+import Modelos.Evaluador;
 import Modelos.Usuario;
+
 import javax.swing.*;
 import java.awt.*;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
-public class Practica extends ComplementosFrameEstudiante{
-    private JButton btnEnviar;
+public class Practica extends ComplementosFrameEstudiante {
+    private boolean enviada = false;
+    private JRadioButton[] respuestasCorrectas;
+    private ButtonGroup[] grupos;
     private JPanel panelScroll;
     private JScrollPane scrollPane;
     private int numeroPractica;
-    
-    
-    public Practica(Usuario usuario, int numeroPractica){
+
+    public Practica(Usuario usuario, int numeroPractica) {
         super(usuario);
         this.usuario = usuario;
         this.numeroPractica = numeroPractica;
-        
+
         add(crearPanelIzquierdo());
         add(crearPanelDerecho("     PRACTICAS"));
-        
+
         JButton btnCabecera1 = new JButton("Contenido");
-        btnCabecera1.setBounds(100, 140, 425, 40); // mismo ancho que la mitad del scroll (850 / 2)
+        btnCabecera1.setBounds(100, 140, 425, 40);
         btnCabecera1.setBackground(Color.WHITE);
-        btnCabecera1.setBorder(BorderFactory.createLineBorder(new Color(39,87,117), 2));
+        btnCabecera1.setBorder(BorderFactory.createLineBorder(new Color(39, 87, 117), 2));
         btnCabecera1.addActionListener(e -> {
-        new ContenidoEstudiante(usuario).setVisible(true);
+            new ContenidoEstudiante(usuario).setVisible(true);
             dispose();
         });
         panelDerecho.add(btnCabecera1);
 
-        // Botón 2 - Prácticas completadas
         JButton btnCabecera2 = new JButton("Calificaciones");
-        btnCabecera2.setBounds(525, 140, 425, 40); // empieza donde terminó el anterior
+        btnCabecera2.setBounds(525, 140, 425, 40);
         btnCabecera2.setBackground(Color.WHITE);
-        btnCabecera2.setBorder(BorderFactory.createLineBorder(new Color(39,87,117), 2));
+        btnCabecera2.setBorder(BorderFactory.createLineBorder(new Color(39, 87, 117), 2));
         btnCabecera2.addActionListener(e -> {
             new CalifiEstudiante(usuario).setVisible(true);
             dispose();
         });
         panelDerecho.add(btnCabecera2);
-       crearPanelPreguntas();
-       
-    }
-    
-    private void crearPanelPreguntas() {      
 
+        crearPanelPreguntas();
+    }
+
+    private void crearPanelPreguntas() {
         panelScroll = new JPanel();
         panelScroll.setLayout(null);
-        panelScroll.setPreferredSize(new Dimension(800, 800)); // altura suficiente para scroll
+        panelScroll.setPreferredSize(new Dimension(800, 1000));
         panelScroll.setBackground(Color.WHITE);
 
-        // Agregamos 4 preguntas por escrito  y radio buttons MODIFIQUEN LAS PREGUNTAS Y SUS RESPUESTAS(para saber cual es la correcta lo hacen desde su codigo, no en diseno)
-        switch(numeroPractica){
-            
-            case 1: 
-                PruebasSemanales.agregarPregunta(panelScroll, 1, "¿Cuánto es: 50 + 3 x 4 - 8 ÷ 2?", 30, new String[]{"58", "60", "62", "56"});
-                PruebasSemanales.agregarPregunta(panelScroll, 2, "¿Resultado de: (6 + 4) × 5 - 12 ÷ 4? ", 180, new String[]{"48", "50", "45", "44"});
-                PruebasSemanales.agregarPregunta(panelScroll, 3, "Calcula: 72 ÷ (6 x 2) + 3²", 330, new String[]{"9", "15", "12", "18"});
-                PruebasSemanales.agregarPregunta(panelScroll, 4, "¿Resultado de: 100 - (8 + 2 x 5)", 480, new String[]{"90", "80", "70", "85"});
-                break;
-                
-            case 2: 
-                PruebasSemanales.agregarPregunta(panelScroll, 1, "Resuelve:(15 - 3) x 2 + 6² ÷ 3", 30, new String[]{"42", "44", "40", "38"});
-                PruebasSemanales.agregarPregunta(panelScroll, 2, "¿Cuando da: 48 ÷ 4 + (2 x 5) - 3²?", 180, new String[]{"9", "12", "15", "18"});
-                PruebasSemanales.agregarPregunta(panelScroll, 3, "Resuelve: [(5 + 5) x 2] - 4 + 8", 330, new String[]{"24", "20", "22", "26"});
-                PruebasSemanales.agregarPregunta(panelScroll, 4, "Resultado de: 10² - 6 x 3 + (12 ÷ 4)", 480, new String[]{"76", "70", "60", "64"});
-                break;
-                
-            case 3:
-                PruebasSemanales.agregarPregunta(panelScroll, 1, "¿Cuál de estos numero NO es multiplo de 8?", 30, new String[]{"32", "56", "96", "45"});
-                PruebasSemanales.agregarPregunta(panelScroll, 2, "¿Cuál de estos es divisor de 72?", 180, new String[]{"8", "7", "9", "98"});
-                PruebasSemanales.agregarPregunta(panelScroll, 3, "Si un número es multiplo de 5, termina en:", 330, new String[]{"5 o 10", "5 o 0", "2 o 5", "0 o 2"});
-                PruebasSemanales.agregarPregunta(panelScroll, 4, "¿Cual es el menor múltiplo común de 6 y 4?", 480, new String[]{"24", "12", "8", "6"});
-                break;
-                
-            case 4:
-                PruebasSemanales.agregarPregunta(panelScroll, 1, "¿Cuál es el MCM de 4 y 6?", 30, new String[]{"24", "12", "8", "10"});
-                PruebasSemanales.agregarPregunta(panelScroll, 2, "El MCM de 8 y 10 es: ", 180, new String[]{"40", "20", "10", "80"});
-                PruebasSemanales.agregarPregunta(panelScroll, 3, "Si el MCM de 3 y 7 es: ", 330, new String[]{"21", "10", "14", "35"});
-                PruebasSemanales.agregarPregunta(panelScroll, 4, "¿Cuál es el MCM de 5, 10 y 15?", 480, new String[]{"15", "30", "60", "45"});
-                break;
-                
-            default:
-                JOptionPane.showMessageDialog(this, "Práctica no disponible.");
-                break;
-        }
-                
-        // Botón Enviar
-        btnEnviar = new JButton("ENVIAR");
-        btnEnviar.setBounds(300, 650, 200, 30);
-        btnEnviar.setBackground(new Color(178, 0, 38)); 
-        btnEnviar.setForeground(Color.WHITE);
-        panelScroll.add(btnEnviar);
+        try (Connection conn = new ConexionBD().obtenerConexion()) {
 
-        // Scroll
+            // Verificar si ya envió esta práctica
+            PreparedStatement psCheck = conn.prepareStatement(
+                "SELECT nota FROM ResultadoPractica WHERE idUsuario = ? AND idFormulario = ?"
+            );
+            psCheck.setInt(1, usuario.getIdUsuario());
+            psCheck.setInt(2, numeroPractica);
+            ResultSet rsCheck = psCheck.executeQuery();
+
+            if (rsCheck.next()) {
+                int notaAnterior = rsCheck.getInt("nota");
+                enviada = true;
+
+                JLabel mensaje = new JLabel("Ya enviaste esta práctica. Nota anterior: " + notaAnterior);
+                mensaje.setFont(new Font("Arial", Font.BOLD, 16));
+                mensaje.setBounds(50, 50, 600, 30);
+                panelScroll.add(mensaje);
+
+            } else {
+                // Cargar preguntas
+                PreparedStatement ps = conn.prepareStatement(
+                    "SELECT * FROM PreguntaFormulario WHERE idFormulario = ? ORDER BY nroPregunta"
+                );
+                ps.setInt(1, numeroPractica);
+                ResultSet rs = ps.executeQuery();
+
+                List<ButtonGroup> grupoList = new ArrayList<>();
+                List<JRadioButton> correctasList = new ArrayList<>();
+                int yBase = 30;
+
+                while (rs.next()) {
+                    int nroPregunta = rs.getInt("nroPregunta");
+                    String pregunta = rs.getString("pregunta");
+                    String[] opciones = {
+                        rs.getString("opcion1"),
+                        rs.getString("opcion2"),
+                        rs.getString("opcion3"),
+                        rs.getString("opcion4")
+                    };
+                    String respuestaCorrecta = rs.getString("respuestaCorrecta"); // debe ser "1", "2", etc.
+
+                    JLabel lbl = new JLabel(nroPregunta + ". " + pregunta);
+                    lbl.setBounds(30, yBase, 700, 20);
+                    panelScroll.add(lbl);
+
+                    ButtonGroup grupo = new ButtonGroup();
+                    grupoList.add(grupo);
+
+                    for (int i = 0; i < opciones.length; i++) {
+                        if (opciones[i] == null) continue;
+
+                        JRadioButton radio = new JRadioButton(opciones[i]);
+                        radio.setBounds(50, yBase + 30 + i * 25, 700, 20);
+                        panelScroll.add(radio);
+                        grupo.add(radio);
+
+                        if (respuestaCorrecta != null && respuestaCorrecta.equals("" + (i + 1))) {
+                            correctasList.add(radio);
+                        }
+                    }
+
+                    yBase += 150;
+                }
+
+                respuestasCorrectas = correctasList.toArray(new JRadioButton[0]);
+                grupos = grupoList.toArray(new ButtonGroup[0]);
+
+                JButton btnEnviar = new JButton("ENVIAR");
+                btnEnviar.setBounds(300, yBase, 200, 30);
+                btnEnviar.setBackground(new Color(178, 0, 38));
+                btnEnviar.setForeground(Color.WHITE);
+                panelScroll.add(btnEnviar);
+
+                // Validación si no hay preguntas
+                if (grupos.length == 0 || respuestasCorrectas.length == 0) {
+                    JOptionPane.showMessageDialog(this,
+                            "Esta práctica aún no tiene preguntas registradas.",
+                            "Sin preguntas", JOptionPane.WARNING_MESSAGE);
+                    btnEnviar.setEnabled(false);
+                    return;
+                }
+
+                // Acción al hacer clic en ENVIAR
+                btnEnviar.addActionListener(e -> {
+                    if (!Evaluador.todosLosGruposRespondidos(grupos)) {
+                        JOptionPane.showMessageDialog(this, "Responde todas las preguntas antes de enviar.");
+                        return;
+                    }
+
+                    int nota = Evaluador.calcularNota(grupos, respuestasCorrectas);
+
+                    // NUEVA CONEXIÓN para guardar resultado
+                    try (Connection nuevaConn = new ConexionBD().obtenerConexion()) {
+                        PreparedStatement psInsert = nuevaConn.prepareStatement(
+                            "INSERT INTO ResultadoPractica (idUsuario, idFormulario, nota) VALUES (?, ?, ?)"
+                        );
+                        psInsert.setInt(1, usuario.getIdUsuario());
+                        psInsert.setInt(2, numeroPractica);
+                        psInsert.setInt(3, nota);
+                        psInsert.executeUpdate();
+
+                        JOptionPane.showMessageDialog(this,
+                            "\u00a1Tu nota fue subida con \u00e9xito!\nObtuviste " + nota + " puntos.",
+                            "Resultado enviado", JOptionPane.INFORMATION_MESSAGE);
+                        enviada = true;
+                        btnEnviar.setEnabled(false);
+
+                    } catch (SQLException ex) {
+                        ex.printStackTrace();
+                        JOptionPane.showMessageDialog(this, "Error al guardar tu resultado:\n" + ex.getMessage());
+                    }
+                });
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al conectar con la base de datos.");
+        }
+
         scrollPane = new JScrollPane(panelScroll);
         scrollPane.setBounds(100, 200, 850, 460);
         panelDerecho.add(scrollPane);
     }
-
-    
 }
-    
-
