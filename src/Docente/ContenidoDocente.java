@@ -45,7 +45,7 @@ public class ContenidoDocente extends ComplementosFrameDocente{
         panelDerecho.add(btnCabecera2);
         
         JButton btnAgregarPractica = new JButton("AGREGAR PRACTICA");
-        btnAgregarPractica.setBounds(745, 580, 220, 40);
+        btnAgregarPractica.setBounds(735, 580, 220, 40);
         btnAgregarPractica.setBackground(new Color(39,87,117));
         btnAgregarPractica.setForeground(Color.WHITE);
         btnAgregarPractica.addActionListener(e -> {
@@ -53,6 +53,8 @@ public class ContenidoDocente extends ComplementosFrameDocente{
         dispose();
         });
         panelDerecho.add(btnAgregarPractica);
+        
+        
         
         contenedorScroll = new JPanel();
         contenedorScroll.setLayout(new BoxLayout(contenedorScroll, BoxLayout.Y_AXIS));
@@ -110,7 +112,7 @@ public class ContenidoDocente extends ComplementosFrameDocente{
         }
   
         scrollPane = new JScrollPane(contenedorScroll);
-        scrollPane.setBounds(100, 190, 850, 370);
+        scrollPane.setBounds(100, 190, 850, 380);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));

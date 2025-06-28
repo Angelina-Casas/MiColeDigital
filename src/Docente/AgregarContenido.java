@@ -29,6 +29,8 @@ public class AgregarContenido extends ComplementosFrameDocente {
         
         this.usuario = usuario;
         this.idFormularioActual = idFormulario;
+        
+        
 
         add(crearPanelIzquierdo());
         add(crearPanelDerecho("CONTENIDO - MICOLEDIGITAL"));
@@ -36,13 +38,17 @@ public class AgregarContenido extends ComplementosFrameDocente {
         JButton btnCabecera1 = new JButton("Contenido");
         btnCabecera1.setBounds(100, 140, 425, 40);
         btnCabecera1.setBackground(Color.WHITE);
-        btnCabecera1.setBorder(BorderFactory.createLineBorder(new Color(178, 0, 38), 2));
+        btnCabecera1.setBorder(BorderFactory.createLineBorder(new Color(39,87,117), 2));
+        btnCabecera1.addActionListener(e -> {
+            new ContenidoDocente(usuario).setVisible(true);
+            dispose();
+        });
         panelDerecho.add(btnCabecera1);
 
         JButton btnCabecera2 = new JButton("Calificaciones");
         btnCabecera2.setBounds(525, 140, 425, 40);
         btnCabecera2.setBackground(Color.WHITE);
-        btnCabecera2.setBorder(BorderFactory.createLineBorder(new Color(178, 0, 38), 2));
+        btnCabecera2.setBorder(BorderFactory.createLineBorder(new Color(39,87,117), 2));
         btnCabecera2.addActionListener(e -> {
             new CalifiDocente(usuario).setVisible(true);
             dispose();
@@ -69,6 +75,27 @@ public class AgregarContenido extends ComplementosFrameDocente {
         txtVideo = crearTextField(270, y, 200);
         panelFormulario.add(txtVideo);
         y += 40;
+        
+        try {
+            ConexionBD conexionBD = new ConexionBD();
+            FormularioBD formularioBD = new FormularioBD(conexionBD.obtenerConexion());
+
+
+            if (idFormularioActual != 0) {
+                Formulario formulario = formularioBD.obtenerFormularioPorId(idFormularioActual);
+            if (formulario != null) {
+                txtNombre.setText(formulario.getNombreFor());
+                txtTema.setText(formulario.getTema());
+                txtVideo.setText(formulario.getVideoUrl());
+            }
+
+        
+            preguntas = formularioBD.obtenerPreguntas(idFormularioActual);
+        }
+
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error al cargar datos del formulario: " + ex.getMessage());
+        }
 
         panelFormulario.add(crearLabel("Número de preguntas: 4", 30, y));
         comboNumero = new JComboBox<>(new String[]{"1", "2", "3", "4"});
@@ -89,34 +116,71 @@ public class AgregarContenido extends ComplementosFrameDocente {
         }
 
         panelFormulario.add(crearLabel("Alternativa correcta:", 30, y));
-        comboAlternativa = new JComboBox<>(new String[]{"A", "B", "C", "D"});
+        comboAlternativa = new JComboBox<>(new String[]{"1", "2", "3", "4"});
         comboAlternativa.setBounds(270, y, 100, 25);
         panelFormulario.add(comboAlternativa);
         y += 50;
+        
+        //boton eliminar
+        JButton btnEliminar = new JButton("Eliminar");
+            btnEliminar.setBounds(340, y+138, 100, 35);
+            btnEliminar.setBackground(new Color(234, 98, 85));
+            btnEliminar.setForeground(Color.WHITE);
+            btnEliminar.addActionListener(e -> {
+            if (idFormulario == 0) {
+            JOptionPane.showMessageDialog(this, "No se puede eliminar una práctica que aún no ha sido guardada.");
+            return;
+            }
 
+            int confirmacion = JOptionPane.showConfirmDialog(this,
+            "¿Seguro que desea borrar la práctica?", "Confirmación",
+            JOptionPane.OK_CANCEL_OPTION);
+
+            if (confirmacion == JOptionPane.OK_OPTION) {
+            try {
+                ConexionBD conexionBD = new ConexionBD();
+                FormularioBD formularioBD = new FormularioBD(conexionBD.obtenerConexion());
+
+                boolean exito = formularioBD.eliminarFormularioYPreguntas(idFormulario);
+                if (exito) {
+                    JOptionPane.showMessageDialog(this, "Práctica eliminada correctamente.");
+                    new ContenidoDocente(usuario).setVisible(true);
+                    dispose(); 
+                } else {
+                    JOptionPane.showMessageDialog(this, "Error al eliminar la práctica.");
+                }
+                } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Error de conexión: " + ex.getMessage());
+                }
+            }
+            });
+            panelDerecho.add(btnEliminar);
+
+        
         JButton btnVisualizar = new JButton("Visualizar");
-        btnVisualizar.setBounds(100, y, 150, 35);
-        btnVisualizar.setBackground(new Color(178, 0, 38));
+        btnVisualizar.setBounds(100, y+138, 100, 35);
+        btnVisualizar.setBackground(new Color(134, 199, 231));
         btnVisualizar.setForeground(Color.WHITE);
         btnVisualizar.addActionListener(e -> mostrarPrevisualizacion());
-        panelFormulario.add(btnVisualizar);
+        panelDerecho.add(btnVisualizar);
 
         btnGuardar = new JButton("Guardar");
-        btnGuardar.setBounds(270, y, 150, 35);
-        btnGuardar.setBackground(new Color(178, 0, 38));
+        btnGuardar.setBounds(220, y+138, 100, 35);
+        btnGuardar.setBackground(new Color(89, 196, 107));
         btnGuardar.setForeground(Color.WHITE);
         btnGuardar.addActionListener(e -> {
             String msg = (idFormularioActual == 0)
                 ? "¿Estás seguro de subir esta nueva práctica?" : "¿Deseas actualizar esta práctica existente?";
             int confirmacion = JOptionPane.showConfirmDialog(this, msg, "Confirmación", JOptionPane.OK_CANCEL_OPTION);
             if (confirmacion == JOptionPane.OK_OPTION) {
+            actualizarPreguntaDesdeCampos();  // <-- nuevo método
             guardarEnBaseDeDatos();
             }
         });
-        panelFormulario.add(btnGuardar);
+        panelDerecho.add(btnGuardar);
 
         scrollPaneFormulario = new JScrollPane(panelFormulario);
-        scrollPaneFormulario.setBounds(100, 200, 520, 430);
+        scrollPaneFormulario.setBounds(100, 200, 520, 350);
         scrollPaneFormulario.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPaneFormulario.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
         panelDerecho.add(scrollPaneFormulario);
@@ -131,33 +195,51 @@ public class AgregarContenido extends ComplementosFrameDocente {
         setVisible(true);
     }
     
+    
+    
     public AgregarContenido(Usuario usuario) {
     this(usuario, 0); 
 }
 
     private void mostrarPrevisualizacion() {
         int numero = Integer.parseInt((String) comboNumero.getSelectedItem());
-        PreguntaFormulario pregunta = new PreguntaFormulario(
-                numero,
-                txtPregunta.getText(),
-                txtOpciones[0].getText(),
-                txtOpciones[1].getText(),
-                txtOpciones[2].getText(),
-                txtOpciones[3].getText(),
-                (String) comboAlternativa.getSelectedItem()
-        );
 
-        // Agregar o reemplazar la pregunta
-        if (preguntas.size() >= numero) {
-            preguntas.set(numero - 1, pregunta);
+    String preguntaTexto = txtPregunta.getText().trim();
+    String[] opciones = {
+        txtOpciones[0].getText().trim(),
+        txtOpciones[1].getText().trim(),
+        txtOpciones[2].getText().trim(),
+        txtOpciones[3].getText().trim()
+    };
+    String alternativa = (String) comboAlternativa.getSelectedItem();
+
+    
+        if (preguntaTexto.isEmpty() && opciones[0].isEmpty() && opciones[1].isEmpty()
+            && opciones[2].isEmpty() && opciones[3].isEmpty()) {
+        
         } else {
-            preguntas.add(pregunta);
+            PreguntaFormulario nueva = new PreguntaFormulario(numero, preguntaTexto,
+                opciones[0], opciones[1], opciones[2], opciones[3], alternativa);
+
+            boolean reemplazada = false;
+            for (int i = 0; i < preguntas.size(); i++) {
+                if (preguntas.get(i).getNroPregunta() == numero) {
+                preguntas.set(i, nueva);
+                reemplazada = true;
+                break;
+                }
+            }
+            if (!reemplazada) {
+            preguntas.add(nueva);
+            }
         }
 
+ 
         JTextArea area = new JTextArea();
         area.setText("Nombre práctica: " + txtNombre.getText() +
-                "\nTema: " + txtTema.getText() +
-                "\nVideo: " + txtVideo.getText());
+            "\nTema: " + txtTema.getText() +
+            "\nVideo: " + txtVideo.getText());
+
         for (PreguntaFormulario pf : preguntas) {
             area.append("\n\nNro pregunta: " + pf.getNroPregunta());
             area.append("\nPregunta: " + pf.getPregunta());
@@ -167,12 +249,41 @@ public class AgregarContenido extends ComplementosFrameDocente {
             area.append("\nOpción 4: " + pf.getOpcion4());
             area.append("\nAlternativa correcta: " + pf.getRespuestaCorrecta());
         }
+
         area.setEditable(false);
         panelVistaPrevia.removeAll();
         panelVistaPrevia.add(new JScrollPane(area), BorderLayout.CENTER);
         panelVistaPrevia.revalidate();
         panelVistaPrevia.repaint();
     }
+    
+    private void actualizarPreguntaDesdeCampos() {
+    int numero = Integer.parseInt((String) comboNumero.getSelectedItem());
+
+    PreguntaFormulario nueva = new PreguntaFormulario(
+        numero,
+        txtPregunta.getText(),
+        txtOpciones[0].getText(),
+        txtOpciones[1].getText(),
+        txtOpciones[2].getText(),
+        txtOpciones[3].getText(),
+        (String) comboAlternativa.getSelectedItem()
+    );
+
+    boolean reemplazada = false;
+    for (int i = 0; i < preguntas.size(); i++) {
+        if (preguntas.get(i).getNroPregunta() == numero) {
+            preguntas.set(i, nueva);
+            reemplazada = true;
+            break;
+        }
+    }
+
+    if (!reemplazada) {
+        preguntas.add(nueva);
+    }
+}
+
 
     private void guardarEnBaseDeDatos() {
         Formulario formulario = new Formulario(

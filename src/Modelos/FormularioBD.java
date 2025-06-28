@@ -56,7 +56,7 @@ public class FormularioBD {
     }
 
     
-    public Formulario obtenerFormulario(int idFormulario) throws SQLException {
+    public Formulario obtenerFormularioPorId(int idFormulario) throws SQLException {
         String sql = "SELECT * FROM Formulario WHERE idFor = ?";
         PreparedStatement ps = conexion.prepareStatement(sql);
         ps.setInt(1, idFormulario);
@@ -73,21 +73,22 @@ public class FormularioBD {
     }
 
     
-    public List<Formulario> obtenerTodosFormularios() {
-        List<Formulario> formularios = new ArrayList<>();
-        String sql = "SELECT idFor, nombreFor FROM Formulario";
-        try (PreparedStatement stmt = conexion.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
-            while (rs.next()) {
-                Formulario f = new Formulario();
-                f.setIdFor(rs.getInt("idFor"));
-                f.setNombreFor(rs.getString("nombreFor"));
-                formularios.add(f);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return formularios;
+    public List<Formulario> obtenerTodosFormularios() throws SQLException {
+    List<Formulario> lista = new ArrayList<>();
+    String sql = "SELECT * FROM Formulario";
+    
+    Statement stmt = conexion.createStatement();
+    ResultSet rs = stmt.executeQuery(sql);
+
+    while (rs.next()) {
+        Formulario f = new Formulario();
+        f.setIdFor(rs.getInt("idFor"));
+        f.setNombreFor(rs.getString("nombreFor"));
+        f.setTema(rs.getString("tema"));
+        f.setVideoUrl(rs.getString("video_url"));
+        lista.add(f);
+    }
+        return lista;
     }
 
     
@@ -133,7 +134,7 @@ public class FormularioBD {
     public boolean actualizarFormularioYPreguntas(Formulario formulario, List<PreguntaFormulario> preguntas) {
         try {
         
-        String updateFormulario = "UPDATE Formulario SET nombreFor = ?, tema = ?, video_url = ? WHERE idFormulario = ?";
+        String updateFormulario = "UPDATE Formulario SET nombreFor = ?, tema = ?, video_url = ? WHERE idFor = ?";
         PreparedStatement stmtFormulario = conexion.prepareStatement(updateFormulario);
         stmtFormulario.setString(1, formulario.getNombreFor());
         stmtFormulario.setString(2, formulario.getTema());
