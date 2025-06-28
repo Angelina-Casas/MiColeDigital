@@ -1,8 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Estudiante;
+
 import javax.swing.*;
 import java.awt.*;
 import Complementos.ComplementosFrameEstudiante;
@@ -14,9 +11,7 @@ public class CursoEstudiante extends ComplementosFrameEstudiante{
     public CursoEstudiante(Usuario usuario) {
         super(usuario);
         this.usuario = usuario;
-        // Panel izquierdo reutilizable
         add(crearPanelIzquierdo());
-        // Panel derecho reutilizable 
         add(crearPanelDerecho("BIENVENIDO A MICOLEDIGITAL"));
 
         btnCursoMatematica = new JButton("Matemáticas 6°");

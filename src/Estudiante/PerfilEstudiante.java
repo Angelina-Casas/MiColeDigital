@@ -1,8 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Estudiante;
+
 import Complementos.ComplementosFrameEstudiante;
 import Modelos.Usuario;
 import javax.swing.*;
@@ -28,10 +25,8 @@ public class PerfilEstudiante extends ComplementosFrameEstudiante{
         super(usuario);
         this.usuario = usuario;
         
-        //LLAMANDO A PANEL IZQUIERDO
         add(crearPanelIzquierdo());
 
-        // === PANEL DERECHO ===
         add(crearPanelDerecho("BIENVENIDO A MICOLEDIGITAL"));
         
 
@@ -100,9 +95,6 @@ public class PerfilEstudiante extends ComplementosFrameEstudiante{
         lblSeccionValor.setBounds(800, 450, 100, 30);
         lblSeccionValor.setFont(new Font("Serif", Font.BOLD, 14));
         panelDerecho.add(lblSeccionValor);
-
-        
-        
 
         setVisible(true);
     }

@@ -1,8 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Estudiante;
+
 import javax.swing.*;
 import java.awt.*;
 import Complementos.ComplementosFrameEstudiante;
@@ -15,18 +12,14 @@ public class ContenidoEstudiante extends ComplementosFrameEstudiante {
    public ContenidoEstudiante(Usuario usuario) {
         super(usuario);
         this.usuario = usuario;
-        // Panel izquierdo reutilizable
         add(crearPanelIzquierdo());
-        // Panel derecho reutilizable 
         add(crearPanelDerecho(" CONTENIDO  -  MICOLEDIGITAL   "));
-        //
         JButton btnCabecera1 = new JButton("Contenido");
         btnCabecera1.setBounds(100, 140, 425, 40);
         btnCabecera1.setBackground(Color.WHITE);
         btnCabecera1.setBorder(BorderFactory.createLineBorder(new Color(39,87,117), 2));
         panelDerecho.add(btnCabecera1);
 
-        // Botón 2 - Prácticas completadas
         JButton btnCabecera2 = new JButton("Calificaciones");
         btnCabecera2.setBounds(525, 140, 425, 40); 
         btnCabecera2.setBackground(Color.WHITE);
@@ -41,8 +34,6 @@ public class ContenidoEstudiante extends ComplementosFrameEstudiante {
         contenedorScroll.setLayout(new BoxLayout(contenedorScroll, BoxLayout.Y_AXIS));
         contenedorScroll.setBackground(Color.WHITE);
 
-        
-        // Datos de prácticas
         String[] semanas = { "Semana 1", "Semana 2", "Semana 3", "Semana 4" };
         String[] temas = {
             "Operaciones Combinadas",
@@ -51,7 +42,6 @@ public class ContenidoEstudiante extends ComplementosFrameEstudiante {
             "Ecuaciones Simples"
         };
        
-        //AQUI VAN LOS LIKNS DE LAS CLASES POR SEMANA
         String[] urls = {
             "https://www.youtube.com/watch?v=RZzyWljhMEw",
             "https://www.youtube.com/watch?v=-acFUpFSgo4",
@@ -59,7 +49,6 @@ public class ContenidoEstudiante extends ComplementosFrameEstudiante {
             "https://www.youtube.com/watch?v=-SCa4B7VoAs"
         };
 
-        // Crear los 4 paneles
         for (int i = 0; i < semanas.length; i++) {
             JPanel panelPractica = new JPanel(null); 
             panelPractica.setMaximumSize(new Dimension(Integer.MAX_VALUE, 110)); 
@@ -97,8 +86,6 @@ public class ContenidoEstudiante extends ComplementosFrameEstudiante {
             dispose();
             });
 
-             // para usar dentro del lambda
-
             btnVer.addActionListener(e -> {
                 switch (index) {
                     case 0 -> new Practica(usuario,1).setVisible(true);
@@ -114,7 +101,6 @@ public class ContenidoEstudiante extends ComplementosFrameEstudiante {
             contenedorScroll.add(panelPractica);
         }
 
-        // Scroll con borde visible
         scrollPane = new JScrollPane(contenedorScroll);
         scrollPane.setBounds(100, 190, 850, 420);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
@@ -122,7 +108,7 @@ public class ContenidoEstudiante extends ComplementosFrameEstudiante {
         scrollPane.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
         panelDerecho.add(scrollPane);
         
-        contenedorScroll.setPreferredSize(new Dimension(850, 600)); // ancho igual al scroll
+        contenedorScroll.setPreferredSize(new Dimension(850, 600));
 
         setVisible(true);
    }

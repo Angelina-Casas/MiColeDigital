@@ -106,18 +106,54 @@ public class CursoBD {
     }
 
     public boolean eliminarCurso(int idCurso) {
-        String sql = "DELETE FROM Curso WHERE idCurso = ?";
+        String eliminarRelacion = "DELETE FROM CursoEstudiante WHERE idCurso = ?";
+        String eliminarCurso = "DELETE FROM Curso WHERE idCurso = ?";
 
-        try (Connection con = new ConexionBD().obtenerConexion();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = new ConexionBD().obtenerConexion()) {
+            try (PreparedStatement ps1 = con.prepareStatement(eliminarRelacion)) {
+                ps1.setInt(1, idCurso);
+                ps1.executeUpdate();
+            }
 
-            ps.setInt(1, idCurso);
-            int filas = ps.executeUpdate();
-            return filas > 0;
+            try (PreparedStatement ps2 = con.prepareStatement(eliminarCurso)) {
+                ps2.setInt(1, idCurso);
+                int filas = ps2.executeUpdate();
+                return filas > 0;
+            }
 
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
+    }
+    
+    public List<Curso> listarCursosPorEstudiante(int idUsuario) {
+        List<Curso> lista = new ArrayList<>();
+        String sql = """
+            SELECT c.idCurso, c.nombre, c.idDocente, c.idAula
+            FROM Curso c
+            JOIN AulaUsuario au ON au.idAula = c.idAula
+            WHERE au.idUsuario = ?""";
+
+        try (Connection con = new ConexionBD().obtenerConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, idUsuario);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    int idCurso = rs.getInt("idCurso");
+                    String nombreCurso = rs.getString("nombre");
+
+                    Usuario docente = usuarioBD.obtenerUsuario(rs.getInt("idDocente"));
+                    Aula aula = aulaBD.obtenerAula(rs.getInt("idAula"));
+
+                    Curso curso = new Curso(idCurso, nombreCurso, docente, aula);
+                    lista.add(curso);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
     }
 }
