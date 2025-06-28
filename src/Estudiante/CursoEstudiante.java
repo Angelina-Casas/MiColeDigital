@@ -2,30 +2,57 @@ package Estudiante;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.List;
+
 import Complementos.ComplementosFrameEstudiante;
 import Modelos.Usuario;
+import Modelos.Curso;
+import Modelos.CursoBD;
 
-public class CursoEstudiante extends ComplementosFrameEstudiante{
-   private JButton btnCursoMatematica;
+public class CursoEstudiante extends ComplementosFrameEstudiante {
+    private JPanel contenedorCursos;
 
     public CursoEstudiante(Usuario usuario) {
         super(usuario);
         this.usuario = usuario;
+
         add(crearPanelIzquierdo());
         add(crearPanelDerecho("BIENVENIDO A MICOLEDIGITAL"));
 
-        btnCursoMatematica = new JButton("Matemáticas 6°");
-        btnCursoMatematica.setBounds(300, 200, 400, 100);
-        btnCursoMatematica.setBackground(new Color(255, 220, 80));
-        btnCursoMatematica.setFont(new Font("Serif", Font.PLAIN, 20));
-        btnCursoMatematica.addActionListener(e -> {
-        new ContenidoEstudiante(usuario).setVisible(true);
-        dispose();
-    });
-        panelDerecho.add(btnCursoMatematica);
+        contenedorCursos = new JPanel();
+        contenedorCursos.setLayout(new BoxLayout(contenedorCursos, BoxLayout.Y_AXIS));
+        contenedorCursos.setBackground(Color.WHITE);
+        contenedorCursos.setBounds(250, 180, 500, 400);
+        contenedorCursos.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        panelDerecho.setLayout(null);
+        panelDerecho.add(contenedorCursos);
+
+        CursoBD cursoBD = new CursoBD();
+        List<Curso> cursos = cursoBD.listarCursosPorEstudiante(usuario.getIdUsuario());
+
+        if (cursos.isEmpty()) {
+            JLabel lblSinCursos = new JLabel("No tienes cursos asignados.");
+            lblSinCursos.setFont(new Font("SansSerif", Font.BOLD, 16));
+            lblSinCursos.setAlignmentX(Component.CENTER_ALIGNMENT);
+            contenedorCursos.add(lblSinCursos);
+        } else {
+            for (Curso curso : cursos) {
+                JButton btnCurso = new JButton(curso.getNombre() + " - " + curso.getAula().getGrado() + "° " + curso.getAula().getSeccion());
+                btnCurso.setAlignmentX(Component.CENTER_ALIGNMENT);
+                btnCurso.setMaximumSize(new Dimension(400, 50));
+                btnCurso.setFont(new Font("SansSerif", Font.BOLD, 16));
+                btnCurso.setBackground(new Color(255, 220, 80));
+
+                btnCurso.addActionListener(e -> {
+                    new ContenidoEstudiante(usuario, curso);
+                });
+
+                contenedorCursos.add(Box.createRigidArea(new Dimension(0, 10)));
+                contenedorCursos.add(btnCurso);
+            }
+        }
 
         setVisible(true);
     }
 }
-    
 

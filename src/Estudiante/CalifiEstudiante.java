@@ -1,34 +1,32 @@
-
 package Estudiante;
 
 import Complementos.ComplementosFrameEstudiante;
 import Modelos.Usuario;
+import Modelos.Curso;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
-
 public class CalifiEstudiante extends ComplementosFrameEstudiante {
-    private JButton btnContenido;
-    private JButton btnCalificaciones;
     private JTable tablaNotas;
     private JScrollPane scrollPane;
-    
-    public CalifiEstudiante(Usuario usuario){
+    private Curso curso;
+
+    public CalifiEstudiante(Usuario usuario, Curso curso){
         super(usuario);
         this.usuario = usuario;
-        // Panel izquierdo reutilizable
+        this.curso = curso;
+
         add(crearPanelIzquierdo());
-        // Panel derecho reutilizable 
-        add(crearPanelDerecho(" CALIFICACIONES  -  MICOLEDIGITAL   "));
-        
+        add(crearPanelDerecho("CALIFICACIONES - " + curso.getNombre().toUpperCase()));
+
         JButton btnCabecera1 = new JButton("Contenido");
         btnCabecera1.setBounds(100, 140, 425, 40); 
         btnCabecera1.setBackground(Color.WHITE);
         btnCabecera1.setBorder(BorderFactory.createLineBorder(new Color(39,87,117), 2));
         btnCabecera1.addActionListener(e -> {
-        new ContenidoEstudiante(usuario).setVisible(true);
-        dispose();
+            new ContenidoEstudiante(usuario, curso).setVisible(true);
+            dispose();
         });
         panelDerecho.add(btnCabecera1);
 
@@ -36,13 +34,10 @@ public class CalifiEstudiante extends ComplementosFrameEstudiante {
         btnCabecera2.setBounds(525, 140, 425, 40); 
         btnCabecera2.setBackground(Color.WHITE);
         btnCabecera2.setBorder(BorderFactory.createLineBorder(new Color(39,87,117), 2));
-        btnCabecera2.addActionListener(e -> {
-        new CalifiEstudiante(usuario).setVisible(true);
-        dispose();
-        });
+        btnCabecera2.setEnabled(false); // Desactivado porque ya estás en esta vista
         panelDerecho.add(btnCabecera2);
-    
-        String[] columnas = {"Practicas", "Nota"};
+
+        String[] columnas = {"Práctica", "Nota"};
         DefaultTableModel modelo = new DefaultTableModel(null, columnas);
         tablaNotas = new JTable(modelo);
         tablaNotas.setRowHeight(25);
@@ -51,5 +46,6 @@ public class CalifiEstudiante extends ComplementosFrameEstudiante {
         scrollPane.setBounds(100, 200, 850, 400);
         panelDerecho.add(scrollPane);
 
+        // TODO: Aquí puedes cargar desde BD las notas por curso
     }       
 }
