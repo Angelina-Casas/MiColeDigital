@@ -15,13 +15,13 @@ public class VerEstudiantes extends BaseFrame {
     private JComboBox<Usuario> comboEstudiantes;
     private int idAulaActual;
 
-    public VerEstudiantes(Aula aula,Usuario usuario) {
+    public VerEstudiantes(Aula aula,Usuario usuario){
         super();
         this.usuario = usuario;
         initContenido();
         cargarDatos(aula);
     }
-
+    
     @Override
     protected void initContenido() {
         JLabel lblAula = new JLabel("AULA");
@@ -73,7 +73,7 @@ public class VerEstudiantes extends BaseFrame {
         btnAgregar.addActionListener(e -> agregarEstudiante());
         btnEliminar.addActionListener(e -> eliminarEstudiante());
     }
-
+    
     private void cargarDatos(Aula aula) {
         if (aula == null) return;
         this.idAulaActual = aula.getIdAula();
@@ -112,7 +112,7 @@ public class VerEstudiantes extends BaseFrame {
             DefaultTableModel model = (DefaultTableModel) tablaEstudiantes.getModel();
             model.addRow(new Object[]{seleccionado.getIdUsuario(), seleccionado.getNombre(), seleccionado.getCorreo()});
             JOptionPane.showMessageDialog(this, "Estudiante agregado al aula.");
-            comboEstudiantes.removeItem(seleccionado); // eliminar del combo
+            comboEstudiantes.removeItem(seleccionado);
         } else {
             JOptionPane.showMessageDialog(this, "Error al agregar en la base de datos.");
         }

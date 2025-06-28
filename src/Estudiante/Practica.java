@@ -4,6 +4,7 @@ import Complementos.ComplementosFrameEstudiante;
 import Conexion.ConexionBD;
 import Modelos.Evaluador;
 import Modelos.Usuario;
+import Modelos.Curso;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,40 +13,44 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Practica extends ComplementosFrameEstudiante {
+    private Usuario usuario;
+    private Curso curso;
+    private int numeroPractica;
     private boolean enviada = false;
+
     private JRadioButton[] respuestasCorrectas;
     private ButtonGroup[] grupos;
     private JPanel panelScroll;
     private JScrollPane scrollPane;
-    private int numeroPractica;
 
-    public Practica(Usuario usuario, int numeroPractica) {
+    public Practica(Usuario usuario, Curso curso, int numeroPractica) {
         super(usuario);
         this.usuario = usuario;
+        this.curso = curso;
         this.numeroPractica = numeroPractica;
 
         add(crearPanelIzquierdo());
-        add(crearPanelDerecho("     PRACTICAS"));
+        add(crearPanelDerecho("PRACTICAS - " + curso.getNombre().toUpperCase()));
 
-        JButton btnCabecera1 = new JButton("Contenido");
-        btnCabecera1.setBounds(100, 140, 425, 40);
-        btnCabecera1.setBackground(Color.WHITE);
-        btnCabecera1.setBorder(BorderFactory.createLineBorder(new Color(39, 87, 117), 2));
-        btnCabecera1.addActionListener(e -> {
-            new ContenidoEstudiante(usuario).setVisible(true);
+        JButton btnContenido = new JButton("Contenido");
+        btnContenido.setBounds(100, 140, 425, 40);
+        btnContenido.setBackground(Color.WHITE);
+        btnContenido.setBorder(BorderFactory.createLineBorder(new Color(39, 87, 117), 2));
+        btnContenido.addActionListener(e -> {
+            new ContenidoEstudiante(usuario, curso).setVisible(true);
             dispose();
         });
-        panelDerecho.add(btnCabecera1);
+        panelDerecho.add(btnContenido);
 
-        JButton btnCabecera2 = new JButton("Calificaciones");
-        btnCabecera2.setBounds(525, 140, 425, 40);
-        btnCabecera2.setBackground(Color.WHITE);
-        btnCabecera2.setBorder(BorderFactory.createLineBorder(new Color(39, 87, 117), 2));
-        btnCabecera2.addActionListener(e -> {
-            new CalifiEstudiante(usuario).setVisible(true);
+        JButton btnCalificaciones = new JButton("Calificaciones");
+        btnCalificaciones.setBounds(525, 140, 425, 40);
+        btnCalificaciones.setBackground(Color.WHITE);
+        btnCalificaciones.setBorder(BorderFactory.createLineBorder(new Color(39, 87, 117), 2));
+        btnCalificaciones.addActionListener(e -> {
+            new CalifiEstudiante(usuario, curso).setVisible(true);
             dispose();
         });
-        panelDerecho.add(btnCabecera2);
+        panelDerecho.add(btnCalificaciones);
 
         crearPanelPreguntas();
     }
@@ -58,7 +63,7 @@ public class Practica extends ComplementosFrameEstudiante {
 
         try (Connection conn = new ConexionBD().obtenerConexion()) {
 
-            // Verificar si ya envió esta práctica
+            // Verifica si el usuario ya envió esta práctica
             PreparedStatement psCheck = conn.prepareStatement(
                 "SELECT nota FROM ResultadoPractica WHERE idUsuario = ? AND idFormulario = ?"
             );
@@ -76,7 +81,7 @@ public class Practica extends ComplementosFrameEstudiante {
                 panelScroll.add(mensaje);
 
             } else {
-                // Cargar preguntas
+                // Cargar preguntas de la base de datos
                 PreparedStatement ps = conn.prepareStatement(
                     "SELECT * FROM PreguntaFormulario WHERE idFormulario = ? ORDER BY nroPregunta"
                 );
@@ -96,7 +101,7 @@ public class Practica extends ComplementosFrameEstudiante {
                         rs.getString("opcion3"),
                         rs.getString("opcion4")
                     };
-                    String respuestaCorrecta = rs.getString("respuestaCorrecta"); // debe ser "1", "2", etc.
+                    String respuestaCorrecta = rs.getString("respuestaCorrecta"); // "1", "2", etc.
 
                     JLabel lbl = new JLabel(nroPregunta + ". " + pregunta);
                     lbl.setBounds(30, yBase, 700, 20);
@@ -130,16 +135,14 @@ public class Practica extends ComplementosFrameEstudiante {
                 btnEnviar.setForeground(Color.WHITE);
                 panelScroll.add(btnEnviar);
 
-                // Validación si no hay preguntas
                 if (grupos.length == 0 || respuestasCorrectas.length == 0) {
                     JOptionPane.showMessageDialog(this,
-                            "Esta práctica aún no tiene preguntas registradas.",
-                            "Sin preguntas", JOptionPane.WARNING_MESSAGE);
+                        "Esta práctica aún no tiene preguntas registradas.",
+                        "Sin preguntas", JOptionPane.WARNING_MESSAGE);
                     btnEnviar.setEnabled(false);
                     return;
                 }
 
-                // Acción al hacer clic en ENVIAR
                 btnEnviar.addActionListener(e -> {
                     if (!Evaluador.todosLosGruposRespondidos(grupos)) {
                         JOptionPane.showMessageDialog(this, "Responde todas las preguntas antes de enviar.");
@@ -148,7 +151,6 @@ public class Practica extends ComplementosFrameEstudiante {
 
                     int nota = Evaluador.calcularNota(grupos, respuestasCorrectas);
 
-                    // NUEVA CONEXIÓN para guardar resultado
                     try (Connection nuevaConn = new ConexionBD().obtenerConexion()) {
                         PreparedStatement psInsert = nuevaConn.prepareStatement(
                             "INSERT INTO ResultadoPractica (idUsuario, idFormulario, nota) VALUES (?, ?, ?)"
