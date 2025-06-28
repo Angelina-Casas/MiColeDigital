@@ -122,7 +122,7 @@ public class AgregarContenido extends ComplementosFrameDocente {
         y += 50;
         
         //boton eliminar
-        JButton btnEliminar = new JButton("Eliminar");
+        JButton btnEliminar = new JButton("Eliminar"); 
             btnEliminar.setBounds(340, y+138, 100, 35);
             btnEliminar.setBackground(new Color(234, 98, 85));
             btnEliminar.setForeground(Color.WHITE);
