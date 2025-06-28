@@ -24,27 +24,27 @@ public class CalifiDocente extends ComplementosFrameDocente{
         add(crearPanelDerecho("MATEMATICA"));
 
         // Botones superiores
-        btnContenido = new JButton("CONTENIDO");
+        btnContenido = new JButton("Contenido");
         btnContenido.setBounds(100, 140, 425, 40);
         btnContenido.setBackground(Color.WHITE);
-        btnContenido.setBorder(BorderFactory.createLineBorder(new Color(178, 0, 38), 2));
+        btnContenido.setBorder(BorderFactory.createLineBorder(new Color(39, 87, 117), 2));
         btnContenido.addActionListener(e -> {
-        new AgregarContenido(usuario).setVisible(true);
-        dispose();
+            new AgregarContenido(usuario).setVisible(true);
+            dispose();
         });
-        panelDerecho.add(btnContenido);
+        
         panelDerecho.add(btnContenido);
 
-        btnCalificaciones = new JButton("CALIFICACIONES");
+        btnCalificaciones = new JButton("Calificaciones");
         btnCalificaciones.setBounds(525, 140, 425, 40);
         btnCalificaciones.setBackground(Color.WHITE);
-        btnCalificaciones.setBorder(BorderFactory.createLineBorder(new Color(178, 0, 38), 2));
+        btnCalificaciones.setBorder(BorderFactory.createLineBorder(new Color(39, 87, 117), 2));
         btnCalificaciones.addActionListener(e -> {
-        new CalifiDocente(usuario).setVisible(true);
-        dispose();
+            new CalifiDocente(usuario).setVisible(true);
+            dispose();
         });
         panelDerecho.add(btnCalificaciones);
-        panelDerecho.add(btnCalificaciones);
+        
 
         // Tabla
         String[] columnas = {"Nombre y Apellidos", "S1", "S2", "S3", "S4", "S5", "S6"};
@@ -65,7 +65,7 @@ public class CalifiDocente extends ComplementosFrameDocente{
 
         // Scroll
         scroll = new JScrollPane(tabla);
-        scroll.setBounds(100, 200, 850, 460);
+        scroll.setBounds(100, 200, 850, 420);
         panelDerecho.add(scroll);
     }
 }
