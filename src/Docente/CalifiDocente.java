@@ -76,7 +76,6 @@ public class CalifiDocente extends ComplementosFrameDocente {
             WHERE idDocente = ?
             ORDER BY nombreEstudiante;
         """;
-
         try {
             ConexionBD conexion = new ConexionBD();
             Connection con = conexion.obtenerConexion();

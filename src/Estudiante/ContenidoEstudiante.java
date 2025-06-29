@@ -2,9 +2,15 @@ package Estudiante;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.*;
+import java.util.List;
+
 import Complementos.ComplementosFrameEstudiante;
+import Conexion.ConexionBD;
 import Modelos.Usuario;
 import Modelos.Curso;
+import Modelos.Formulario;
+import Modelos.FormularioBD;
 
 public class ContenidoEstudiante extends ComplementosFrameEstudiante {
     private JScrollPane scrollPane;
@@ -20,15 +26,15 @@ public class ContenidoEstudiante extends ComplementosFrameEstudiante {
         JButton btnCabecera1 = new JButton("Contenido");
         btnCabecera1.setBounds(100, 140, 425, 40);
         btnCabecera1.setBackground(Color.WHITE);
-        btnCabecera1.setBorder(BorderFactory.createLineBorder(new Color(39,87,117), 2));
+        btnCabecera1.setBorder(BorderFactory.createLineBorder(new Color(39, 87, 117), 2));
         panelDerecho.add(btnCabecera1);
 
         JButton btnCabecera2 = new JButton("Calificaciones");
-        btnCabecera2.setBounds(525, 140, 425, 40); 
+        btnCabecera2.setBounds(525, 140, 425, 40);
         btnCabecera2.setBackground(Color.WHITE);
-        btnCabecera2.setBorder(BorderFactory.createLineBorder(new Color(39,87,117), 2));
+        btnCabecera2.setBorder(BorderFactory.createLineBorder(new Color(39, 87, 117), 2));
         btnCabecera2.addActionListener(e -> {
-            new CalifiEstudiante(usuario,curso).setVisible(true);
+            new CalifiEstudiante(usuario, curso).setVisible(true);
             dispose();
         });
         panelDerecho.add(btnCabecera2);
@@ -37,77 +43,59 @@ public class ContenidoEstudiante extends ComplementosFrameEstudiante {
         contenedorScroll.setLayout(new BoxLayout(contenedorScroll, BoxLayout.Y_AXIS));
         contenedorScroll.setBackground(Color.WHITE);
 
-        // 👇 Aquí puedes cambiar según el curso recibido
-        String[] semanas;
-        String[] temas;
-        String[] urls;
+        try {
+            Connection conn = new ConexionBD().obtenerConexion();
+            FormularioBD formularioBD = new FormularioBD(conn);
+            List<Formulario> formularios = formularioBD.obtenerTodosFormularios();
 
-        switch (curso.getNombre().toLowerCase()) {
-            case "matemática" -> {
-                semanas = new String[]{"Semana 1", "Semana 2", "Semana 3"};
-                temas = new String[]{"Suma y resta", "Multiplicación", "División"};
-                urls = new String[]{
-                        "https://www.youtube.com/watch?v=RZzyWljhMEw",
-                        "https://www.youtube.com/watch?v=-acFUpFSgo4",
-                        "https://www.youtube.com/watch?v=YW_04Esg4QQ"
-                };
+            for (int i = 0; i < formularios.size(); i++) {
+                Formulario f = formularios.get(i);
+
+                JPanel panelPractica = new JPanel(null);
+                panelPractica.setMaximumSize(new Dimension(Integer.MAX_VALUE, 110));
+                panelPractica.setPreferredSize(new Dimension(850, 110));
+                panelPractica.setBackground(new Color(240, 240, 240));
+                panelPractica.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+
+                JLabel lblSemana = new JLabel("Semana " + (i + 1));
+                lblSemana.setBounds(20, 10, 200, 20);
+                lblSemana.setFont(new Font("SansSerif", Font.BOLD, 14));
+                panelPractica.add(lblSemana);
+
+                JLabel lblTema = new JLabel("Tema: " + f.getTema());
+                lblTema.setBounds(20, 35, 400, 20);
+                panelPractica.add(lblTema);
+
+                JLabel lblURL = new JLabel(f.getVideoUrl());
+                lblURL.setBounds(20, 60, 500, 20);
+                lblURL.setForeground(Color.BLUE);
+                lblURL.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+                lblURL.addMouseListener(new java.awt.event.MouseAdapter() {
+                    @Override
+                    public void mouseClicked(java.awt.event.MouseEvent evt) {
+                        abrirEnlace(f.getVideoUrl());
+                    }
+                });
+                panelPractica.add(lblURL);
+
+                JButton btnVer = new JButton("Ver práctica");
+                btnVer.setBounds(650, 35, 120, 30);
+                btnVer.setBackground(new Color(39, 87, 117));
+                btnVer.setForeground(Color.WHITE);
+                btnVer.addActionListener(e -> {
+                    new Practica(usuario, curso, f.getIdFor()).setVisible(true);
+                    dispose();
+                });
+
+                panelPractica.add(btnVer);
+                contenedorScroll.add(Box.createRigidArea(new Dimension(0, 10)));
+                contenedorScroll.add(panelPractica);
             }
-            case "comunicación" -> {
-                semanas = new String[]{"Semana 1", "Semana 2"};
-                temas = new String[]{"Comprensión lectora", "Tipos de textos"};
-                urls = new String[]{
-                        "https://www.youtube.com/watch?v=-SCa4B7VoAs",
-                        "https://www.youtube.com/watch?v=Xv9aPqFdVPg"
-                };
-            }
-            default -> {
-                semanas = new String[]{"Semana 1"};
-                temas = new String[]{"Contenido no disponible"};
-                urls = new String[]{"https://www.youtube.com"};
-            }
-        }
 
-        for (int i = 0; i < semanas.length; i++) {
-            JPanel panelPractica = new JPanel(null);
-            panelPractica.setMaximumSize(new Dimension(Integer.MAX_VALUE, 110));
-            panelPractica.setPreferredSize(new Dimension(850, 110));
-            panelPractica.setBackground(new Color(240, 240, 240));
-            panelPractica.setBorder(BorderFactory.createLineBorder(Color.GRAY));
-
-            JLabel lblSemana = new JLabel(semanas[i]);
-            lblSemana.setBounds(20, 10, 200, 20);
-            lblSemana.setFont(new Font("SansSerif", Font.BOLD, 14));
-            panelPractica.add(lblSemana);
-
-            JLabel lblTema = new JLabel("Tema: " + temas[i]);
-            lblTema.setBounds(20, 35, 400, 20);
-            panelPractica.add(lblTema);
-
-            int index = i;
-            JLabel lblURL = new JLabel(urls[i]);
-            lblURL.setBounds(20, 60, 500, 20);
-            lblURL.setForeground(Color.BLUE);
-            lblURL.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-            lblURL.addMouseListener(new java.awt.event.MouseAdapter() {
-                @Override
-                public void mouseClicked(java.awt.event.MouseEvent evt) {
-                    abrirEnlace(urls[index]);
-                }
-            });
-            panelPractica.add(lblURL);
-
-            JButton btnVer = new JButton("Ver práctica");
-            btnVer.setBounds(650, 35, 120, 30);
-            btnVer.setBackground(new Color(39, 87, 117));
-            btnVer.setForeground(Color.WHITE);
-            btnVer.addActionListener(e -> {
-                new Practica(usuario, curso, index + 1).setVisible(true);
-                dispose();
-            });
-
-            panelPractica.add(btnVer);
-            contenedorScroll.add(Box.createRigidArea(new Dimension(0, 10)));
-            contenedorScroll.add(panelPractica);
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al cargar formularios: " + e.getMessage());
         }
 
         scrollPane = new JScrollPane(contenedorScroll);
@@ -118,7 +106,6 @@ public class ContenidoEstudiante extends ComplementosFrameEstudiante {
         panelDerecho.add(scrollPane);
 
         contenedorScroll.setPreferredSize(new Dimension(850, 600));
-
         setVisible(true);
     }
 
