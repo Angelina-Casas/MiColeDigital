@@ -22,8 +22,7 @@ public class CursoEstudiante extends ComplementosFrameEstudiante {
         contenedorCursos = new JPanel();
         contenedorCursos.setLayout(new BoxLayout(contenedorCursos, BoxLayout.Y_AXIS));
         contenedorCursos.setBackground(Color.WHITE);
-        contenedorCursos.setBounds(250, 180, 500, 400);
-        contenedorCursos.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+        contenedorCursos.setBounds(300, 180, 400, 400);
         panelDerecho.setLayout(null);
         panelDerecho.add(contenedorCursos);
 
