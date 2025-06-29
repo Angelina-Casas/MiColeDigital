@@ -198,8 +198,9 @@ public class FormularioBD {
         String sql = """
             SELECT f.*
             FROM Formulario f
-            JOIN Curso c ON c.idCurso = f.idCurso
+            JOIN Curso c ON f.idCurso = c.idCurso
             WHERE c.idDocente = ?
+            ORDER BY f.idFor;
         """;
 
         PreparedStatement ps = conexion.prepareStatement(sql);
