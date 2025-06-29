@@ -37,7 +37,7 @@ public class CalifiEstudiante extends ComplementosFrameEstudiante {
         btnCabecera2.setBounds(525, 140, 425, 40);
         btnCabecera2.setBackground(Color.WHITE);
         btnCabecera2.setBorder(BorderFactory.createLineBorder(new Color(39, 87, 117), 2));
-        btnCabecera2.setEnabled(false); // ya estamos en esta vista
+        btnCabecera2.setEnabled(false);
         panelDerecho.add(btnCabecera2);
 
         String[] columnas = {"Práctica", "Nota", "Fecha de Envío"};
@@ -66,7 +66,7 @@ public class CalifiEstudiante extends ComplementosFrameEstudiante {
         while (rs.next()) {
             String practica = rs.getString("nombreFor");
             double nota = rs.getDouble("nota");
-            Date fecha = rs.getDate("fechaEnvio"); // 🔥 solo la fecha
+            Date fecha = rs.getDate("fechaEnvio");
             modelo.addRow(new Object[]{practica, nota, fecha});
         }
     } catch (SQLException e) {
