@@ -1,8 +1,8 @@
 package Main;
 
 import Admin.MenuAdm;
-import Estudiante.PerfilEstudiante;
-import Docente.PerfilDocente;
+import Docente.CursoDocente;
+import Estudiante.CursoEstudiante;
 import Modelos.Usuario;
 import Modelos.UsuarioBD;
 import javax.swing.*;
@@ -48,19 +48,16 @@ public class LoginGeneral extends JFrame{
         lblLogoDerecha.setIcon(new ImageIcon(getClass().getResource("/Img/logoMiColePequeno.png")));
         panelDerechoLogin.add(lblLogoDerecha); 
 
-        // Título
         lblTitulo = new JLabel("INICIAR SESION");
         lblTitulo.setFont(new Font("Serif", Font.BOLD, 22));
         lblTitulo.setBounds(215, 160, 200, 30);
         panelDerechoLogin.add(lblTitulo);
 
-        
         lblIconoUsuario = new JLabel();
         lblIconoUsuario.setBounds(250, 230, 95, 95);
         lblIconoUsuario.setIcon(new ImageIcon(getClass().getResource("/Img/personaIniciarSesion.png")));
         panelDerechoLogin.add(lblIconoUsuario);
 
-        
         lblUsuario = new JLabel("Usuario");
         lblUsuario.setFont(new Font("SansSerif", Font.BOLD, 14));
         lblUsuario.setBounds(215, 350, 100, 20);
@@ -71,7 +68,6 @@ public class LoginGeneral extends JFrame{
         txtUsuario.setBackground(new Color(210, 235, 255)); // azul clarito
         panelDerechoLogin.add(txtUsuario);
 
-        
         lblContrasena = new JLabel("Contraseña");
         lblContrasena.setFont(new Font("SansSerif", Font.BOLD, 14));
         lblContrasena.setBounds(215, 420, 100, 20);
@@ -82,7 +78,6 @@ public class LoginGeneral extends JFrame{
         txtContrasena.setBackground(new Color(210, 235, 255));
         panelDerechoLogin.add(txtContrasena);
 
-        
         btnIngresar = new JButton("Ingresar");
         btnIngresar.setBounds(215, 500, 200, 40);
         btnIngresar.setBackground(new Color(39,87,117)); 
@@ -102,10 +97,10 @@ public class LoginGeneral extends JFrame{
 
             switch (rol.toLowerCase()) {
                 case "estudiante":
-                    new PerfilEstudiante(usuario).setVisible(true);
+                    new CursoEstudiante(usuario).setVisible(true);
                 break;
                 case "docente":
-                    new PerfilDocente(usuario).setVisible(true);
+                    new CursoDocente(usuario).setVisible(true);
                 break;
                 case "administrador":
                     new MenuAdm(usuario).setVisible(true);
@@ -122,7 +117,6 @@ public class LoginGeneral extends JFrame{
         });
         panelDerechoLogin.add(btnIngresar);
 
-        
         add(panelIzquierdologin);
         add(panelDerechoLogin);
 
