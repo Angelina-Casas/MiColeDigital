@@ -44,7 +44,7 @@ public class LoginGeneral extends JFrame{
 
         
         lblLogoDerecha = new JLabel();
-        lblLogoDerecha.setBounds(494,15,98,78);
+        lblLogoDerecha.setBounds(494,15,125,101);
         lblLogoDerecha.setIcon(new ImageIcon(getClass().getResource("/Img/logoMiColePequeno.png")));
         panelDerechoLogin.add(lblLogoDerecha); 
 
@@ -116,6 +116,7 @@ public class LoginGeneral extends JFrame{
     
         });
         panelDerechoLogin.add(btnIngresar);
+        getRootPane().setDefaultButton(btnIngresar);
 
         add(panelIzquierdologin);
         add(panelDerechoLogin);

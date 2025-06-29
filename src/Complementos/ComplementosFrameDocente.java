@@ -88,8 +88,8 @@ public class ComplementosFrameDocente extends JFrame{
         panelDerecho.add(lblLogoDerecha);
 
         lblTitulo = new JLabel(titulo);
-        lblTitulo.setFont(new Font("Serif", Font.BOLD, 24));
-        lblTitulo.setBounds(350, 30, 500, 30);
+        lblTitulo.setFont(new Font("Georgia", Font.BOLD, 24));
+        lblTitulo.setBounds(300, 30, 500, 30);
         panelDerecho.add(lblTitulo);
 
         lineaRoja = new JPanel();
