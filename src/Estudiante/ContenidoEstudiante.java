@@ -48,7 +48,7 @@ public class ContenidoEstudiante extends ComplementosFrameEstudiante {
             Connection conexion = conexionBD.obtenerConexion();
             FormularioBD formularioBD = new FormularioBD(conexion);
 
-            List<Formulario> formularios = formularioBD.obtenerTodosFormularios();
+            List<Formulario> formularios = formularioBD.obtenerFormulariosPorCurso(curso.getIdCurso());
 
             for (int i = 0; i < formularios.size(); i++) {
                 Formulario f = formularios.get(i);

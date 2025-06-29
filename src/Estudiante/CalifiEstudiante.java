@@ -59,7 +59,7 @@ public class CalifiEstudiante extends ComplementosFrameEstudiante {
             SELECT f.nombreFor AS practica, r.nota, r.fechaEnvio
             FROM ResultadoPractica r
             INNER JOIN Formulario f ON r.idFormulario = f.idFor
-            WHERE r.idUsuario = ?
+            WHERE r.idUsuario = ? AND f.idCurso = ?
             ORDER BY f.idFor
         """;
 
@@ -67,6 +67,7 @@ public class CalifiEstudiante extends ComplementosFrameEstudiante {
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, usuario.getIdUsuario());
+            ps.setInt(2, curso.getIdCurso()); // Filtramos por curso
             ResultSet rs = ps.executeQuery();
 
             boolean hayDatos = false;
@@ -79,7 +80,7 @@ public class CalifiEstudiante extends ComplementosFrameEstudiante {
             }
 
             if (!hayDatos) {
-                JOptionPane.showMessageDialog(this, "No tienes calificaciones registradas todavía.");
+                JOptionPane.showMessageDialog(this, "No tienes calificaciones registradas para este curso todavía.");
             }
 
         } catch (SQLException e) {

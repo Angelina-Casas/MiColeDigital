@@ -2,13 +2,19 @@ package Docente;
 
 import Complementos.ComplementosFrameDocente;
 import Conexion.ConexionBD;
+import Modelos.Formulario;
+import Modelos.FormularioBD;
 import Modelos.Usuario;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import java.awt.*;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
 import java.util.Vector;
 
 public class CalifiDocente extends ComplementosFrameDocente {
@@ -23,17 +29,29 @@ public class CalifiDocente extends ComplementosFrameDocente {
         add(crearPanelIzquierdo());
         add(crearPanelDerecho("Calificaciones por Práctica"));
 
-        // Botones por práctica
-        int x = 100;
-        for (int i = 1; i <= 4; i++) {
-            int idFormulario = i;
-            JButton btn = new JButton("Práctica " + i);
-            btn.setBounds(x, 140, 200, 40);
-            btn.setBackground(Color.WHITE);
-            btn.setBorder(BorderFactory.createLineBorder(new Color(39, 87, 117), 2));
-            btn.addActionListener(e -> cargarNotasPorPractica(idFormulario, usuario.getIdUsuario()));
-            panelDerecho.add(btn);
-            x += 210;
+        // Obtener formularios del docente
+        try {
+            FormularioBD formularioBD = new FormularioBD(new ConexionBD().obtenerConexion());
+            List<Formulario> formularios = formularioBD.obtenerFormulariosPorDocente(usuario.getIdUsuario());
+
+            int x = 100;
+            for (Formulario f : formularios) {
+                int idFormulario = f.getIdFor();
+                String nombre = f.getNombreFor();
+
+                JButton btn = new JButton(nombre);
+                btn.setBounds(x, 140, 200, 40);
+                btn.setBackground(Color.WHITE);
+                btn.setBorder(BorderFactory.createLineBorder(new Color(39, 87, 117), 2));
+                btn.addActionListener(e -> cargarNotasPorPractica(idFormulario, usuario.getIdUsuario()));
+                panelDerecho.add(btn);
+                x += 210;
+
+                // Si los botones se salen del panel, puedes ajustar esto con scroll o cambio de diseño
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error al obtener formularios del docente:\n" + e.getMessage());
         }
 
         // Crear tabla
@@ -55,29 +73,21 @@ public class CalifiDocente extends ComplementosFrameDocente {
     private void cargarNotasPorPractica(int idFormulario, int idDocente) {
         modelo.setRowCount(0); // Limpiar tabla
 
-        System.out.println("📌 Consultando:");
-        System.out.println("🔹 idFormulario = " + idFormulario);
-        System.out.println("🔹 idDocente = " + idDocente);
-
         String sql = """
             SELECT DISTINCT u.nombre AS nombreEstudiante, r.nota
             FROM ResultadoPractica r
             JOIN Usuario u ON u.idUsuario = r.idUsuario
-            JOIN AulaUsuario au ON au.idUsuario = u.idUsuario
-            JOIN Aula a ON a.idAula = au.idAula
-            JOIN Curso c ON c.idAula = a.idAula AND c.idDocente = ?
             JOIN Formulario f ON f.idFor = r.idFormulario
-            WHERE r.idFormulario = ?
+            JOIN Curso c ON f.idCurso = c.idCurso
+            WHERE f.idFor = ? AND c.idDocente = ?
             ORDER BY u.nombre;
         """;
 
-        try {
-            ConexionBD conexion = new ConexionBD();
-            Connection con = conexion.obtenerConexion();
-            PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, idDocente);
-            ps.setInt(2, idFormulario);
-            System.out.println("🔎 Ejecutando SQL...");
+        try (Connection con = new ConexionBD().obtenerConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, idFormulario);
+            ps.setInt(2, idDocente);
             ResultSet rs = ps.executeQuery();
 
             boolean tieneDatos = false;
@@ -91,17 +101,11 @@ public class CalifiDocente extends ComplementosFrameDocente {
             }
 
             if (!tieneDatos) {
-                System.out.println("❗ Consulta no devolvió resultados.");
                 JOptionPane.showMessageDialog(this, "No se encontraron calificaciones para esta práctica.");
-            } else {
-                System.out.println("✅ Datos cargados correctamente.");
             }
 
-            rs.close();
-            ps.close();
-            con.close();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "❌ Error al cargar notas:\n" + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error al cargar notas:\n" + e.getMessage());
             e.printStackTrace();
         }
     }
