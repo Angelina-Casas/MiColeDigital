@@ -25,15 +25,15 @@ public class AdmUsuario extends BaseFrame {
 
     @Override
     protected void initContenido() {
-        int xForm = 40;
-        int yForm = 90;
+        int xForm = 70;
+        int yForm = 80;
         int alturaCampo = 30;
         int anchoCampo = 220;
         int separacion = 60;
 
         JLabel lblBienvenido = new JLabel("Bienvenido, " + usuario.getNombre());
-        lblBienvenido.setFont(new Font("Arial", Font.BOLD, 16));
-        lblBienvenido.setBounds(xForm, 10, 500, 25);
+        lblBienvenido.setFont(new Font("Serif", Font.BOLD, 16));
+        lblBienvenido.setBounds(45, 20, 500, 25);
         lblBienvenido.setHorizontalAlignment(SwingConstants.LEFT);
         lblBienvenido.setToolTipText("Bienvenido, " + usuario.getNombre());
         panelContenido.add(lblBienvenido);
@@ -94,7 +94,8 @@ public class AdmUsuario extends BaseFrame {
 
         JButton btnRegresar = new JButton("REGRESAR");
         btnRegresar.setBounds(970, 510, 150, 40);
-        btnRegresar.setBackground(new Color(255, 249, 200));
+        btnRegresar.setBackground(new Color(39,87,117));
+        btnRegresar.setForeground(Color.WHITE);
         btnRegresar.setFont(new Font("Arial", Font.BOLD, 13));
         btnRegresar.addActionListener((var e) -> {
             new MenuAdm(usuario).setVisible(true);
