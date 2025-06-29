@@ -55,19 +55,13 @@ public class CalifiDocente extends ComplementosFrameDocente {
     private void cargarNotasPorPractica(int idFormulario, int idDocente) {
         modelo.setRowCount(0); // Limpiar tabla
 
-        System.out.println("📌 Consultando:");
-        System.out.println("🔹 idFormulario = " + idFormulario);
-        System.out.println("🔹 idDocente = " + idDocente);
-
         String sql = """
             SELECT DISTINCT u.nombre AS nombreEstudiante, r.nota
             FROM ResultadoPractica r
             JOIN Usuario u ON u.idUsuario = r.idUsuario
-            JOIN AulaUsuario au ON au.idUsuario = u.idUsuario
-            JOIN Aula a ON a.idAula = au.idAula
-            JOIN Curso c ON c.idAula = a.idAula AND c.idDocente = ?
             JOIN Formulario f ON f.idFor = r.idFormulario
-            WHERE r.idFormulario = ?
+            JOIN Curso c ON f.idCurso = c.idCurso
+            WHERE f.idFor = ? AND c.idDocente = ?
             ORDER BY u.nombre;
         """;
 
@@ -75,9 +69,8 @@ public class CalifiDocente extends ComplementosFrameDocente {
             ConexionBD conexion = new ConexionBD();
             Connection con = conexion.obtenerConexion();
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setInt(1, idDocente);
-            ps.setInt(2, idFormulario);
-            System.out.println("🔎 Ejecutando SQL...");
+            ps.setInt(1, idFormulario);
+            ps.setInt(2, idDocente);
             ResultSet rs = ps.executeQuery();
 
             boolean tieneDatos = false;
@@ -91,17 +84,14 @@ public class CalifiDocente extends ComplementosFrameDocente {
             }
 
             if (!tieneDatos) {
-                System.out.println("❗ Consulta no devolvió resultados.");
                 JOptionPane.showMessageDialog(this, "No se encontraron calificaciones para esta práctica.");
-            } else {
-                System.out.println("✅ Datos cargados correctamente.");
             }
 
             rs.close();
             ps.close();
             con.close();
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "❌ Error al cargar notas:\n" + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error al cargar notas:\n" + e.getMessage());
             e.printStackTrace();
         }
     }

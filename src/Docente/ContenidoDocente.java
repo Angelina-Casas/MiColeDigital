@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Docente;
 
 import Complementos.ComplementosFrameDocente;
@@ -22,8 +18,6 @@ public class ContenidoDocente extends ComplementosFrameDocente{
         super(usuario);
         this.usuario = usuario;
         
-        
-              
         add(crearPanelIzquierdo());   
         add(crearPanelDerecho(" CONTENIDO  -  MICOLEDIGITAL   "));
         
@@ -63,7 +57,7 @@ public class ContenidoDocente extends ComplementosFrameDocente{
         try {
             ConexionBD conexionBD = new ConexionBD();
         FormularioBD formularioBD = new FormularioBD(conexionBD.obtenerConexion());
-        List<Formulario> listaFormularios = formularioBD.obtenerTodosFormularios();
+        List<Formulario> listaFormularios = formularioBD.obtenerFormulariosPorDocente(usuario.getIdUsuario());
 
     
         listaFormularios.sort(Comparator.comparingInt(Formulario::getIdFor));

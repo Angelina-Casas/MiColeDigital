@@ -5,6 +5,8 @@ public class Formulario {
     private String nombreFor;
     private String tema;
     private String videoUrl;
+    private int idCurso;
+
     private int nroPregunta;
     private String pregunta;
     private String opcion1;
@@ -20,17 +22,16 @@ public class Formulario {
         this.tema = tema;
         this.videoUrl = videoUrl;
     }
-    public String getNombre() {
-        return nombreFor;
+
+    public Formulario(String nombreFor, String tema, String videoUrl, int idCurso) {
+        this.nombreFor = nombreFor;
+        this.tema = tema;
+        this.videoUrl = videoUrl;
+        this.idCurso = idCurso;
     }
 
-    public String getVideoURL() {
-        return videoUrl;
-    }
-    
-    
     public Formulario(String nombreFor, String tema, String videoUrl, 
-            int nroPregunta, String pregunta,String opcion1, String opcion2, 
+            int nroPregunta, String pregunta, String opcion1, String opcion2, 
             String opcion3, String opcion4, String respuestaCorrecta) {
         this.nombreFor = nombreFor;
         this.tema = tema;
@@ -44,9 +45,10 @@ public class Formulario {
         this.respuestaCorrecta = respuestaCorrecta;
     }
 
+    // Getters y Setters
     public int getIdFor() { return idFor; }
     public void setIdFor(int idFor) { this.idFor = idFor; }
-    
+
     public String getNombreFor() { return nombreFor; }
     public void setNombreFor(String nombreFor) { this.nombreFor = nombreFor; }
 
@@ -56,9 +58,11 @@ public class Formulario {
     public String getVideoUrl() { return videoUrl; }
     public void setVideoUrl(String videoUrl) { this.videoUrl = videoUrl; }
 
+    public int getIdCurso() { return idCurso; }
+    public void setIdCurso(int idCurso) { this.idCurso = idCurso; }
+
     public int getNroPregunta() { return nroPregunta; }
-    public void setNroPregunta(int nroPregunta) 
-    { this.nroPregunta = nroPregunta; }
+    public void setNroPregunta(int nroPregunta) { this.nroPregunta = nroPregunta; }
 
     public String getPregunta() { return pregunta; }
     public void setPregunta(String pregunta) { this.pregunta = pregunta; }
@@ -76,6 +80,5 @@ public class Formulario {
     public void setOpcion4(String opcion4) { this.opcion4 = opcion4; }
 
     public String getRespuestaCorrecta() { return respuestaCorrecta; }
-    public void setRespuestaCorrecta(String respuestaCorrecta) {
-        this.respuestaCorrecta = respuestaCorrecta; }
+    public void setRespuestaCorrecta(String respuestaCorrecta) { this.respuestaCorrecta = respuestaCorrecta; }
 }
