@@ -45,6 +45,7 @@ public class CursoEstudiante extends ComplementosFrameEstudiante {
 
                 btnCurso.addActionListener(e -> {
                     new ContenidoEstudiante(usuario, curso);
+                    dispose();
                 });
 
                 contenedorCursos.add(Box.createRigidArea(new Dimension(0, 10)));
