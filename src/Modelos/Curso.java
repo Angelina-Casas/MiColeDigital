@@ -6,6 +6,10 @@ public class Curso {
     private Usuario docente;
     private Aula aula;
 
+    // Nuevos campos agregados
+    private int grado;
+    private String seccion;
+
     public Curso() {}
 
     public Curso(int idCurso, String nombre, Usuario docente, Aula aula) {
@@ -45,6 +49,23 @@ public class Curso {
 
     public void setAula(Aula aula) {
         this.aula = aula;
+    }
+
+    // Métodos agregados para grado y seccion
+    public int getGrado() {
+        return grado;
+    }
+
+    public void setGrado(int grado) {
+        this.grado = grado;
+    }
+
+    public String getSeccion() {
+        return seccion;
+    }
+
+    public void setSeccion(String seccion) {
+        this.seccion = seccion;
     }
 
     @Override
