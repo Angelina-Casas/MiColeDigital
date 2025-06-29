@@ -27,7 +27,7 @@ public class LoginGeneral extends JFrame{
         setResizable(false);
         
         JPanel panelIzquierdologin = new JPanel();
-        panelIzquierdologin .setBackground(new Color(255, 217, 80)); 
+        panelIzquierdologin .setBackground(new Color(255, 229, 180)); 
         panelIzquierdologin .setBounds(0, 0, 640, 720);
         panelIzquierdologin .setLayout(null);
 
@@ -36,13 +36,11 @@ public class LoginGeneral extends JFrame{
         lblLogoIzquierda.setIcon(new ImageIcon(getClass().getResource("/Img/montefioriLogoGrande1.png")));
         panelIzquierdologin.add(lblLogoIzquierda);
 
-        
         JPanel panelDerechoLogin = new JPanel();
         panelDerechoLogin.setBackground(Color.WHITE);
         panelDerechoLogin.setBounds(640, 0, 640, 720);
         panelDerechoLogin.setLayout(null);
 
-        
         lblLogoDerecha = new JLabel();
         lblLogoDerecha.setBounds(494,15,125,101);
         lblLogoDerecha.setIcon(new ImageIcon(getClass().getResource("/Img/logoMiColePequeno.png")));
@@ -65,7 +63,7 @@ public class LoginGeneral extends JFrame{
 
         txtUsuario = new JTextField();
         txtUsuario.setBounds(215, 375, 200, 30);
-        txtUsuario.setBackground(new Color(210, 235, 255)); // azul clarito
+        txtUsuario.setBackground(new Color(210, 235, 255));
         panelDerechoLogin.add(txtUsuario);
 
         lblContrasena = new JLabel("Contraseña");
@@ -123,7 +121,4 @@ public class LoginGeneral extends JFrame{
 
         setVisible(true);
     }
-   
-    
-
 }
