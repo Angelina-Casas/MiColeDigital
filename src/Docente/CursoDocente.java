@@ -7,6 +7,7 @@ import java.sql.*;
 import Complementos.ComplementosFrameDocente;
 import Conexion.ConexionBD;
 import Modelos.Usuario;
+import Modelos.Curso;
 
 public class CursoDocente extends ComplementosFrameDocente {
     private JPanel contenedorCursos;
@@ -53,7 +54,13 @@ public class CursoDocente extends ComplementosFrameDocente {
                 btnCurso.setFont(new Font("Serif", Font.PLAIN, 20));
 
                 btnCurso.addActionListener(e -> {
-                    new ContenidoDocente(usuario).setVisible(true); // Si luego deseas filtrar por curso, se puede pasar el idCurso aquí
+                    Curso curso = new Curso();
+                    curso.setIdCurso(idCurso);
+                    curso.setNombre(nombreCurso);
+                    curso.setGrado(grado);       // Requiere que el método exista en la clase Curso
+                    curso.setSeccion(seccion);   // Requiere que el método exista en la clase Curso
+
+                    new ContenidoDocente(usuario, curso).setVisible(true);
                     dispose();
                 });
 
