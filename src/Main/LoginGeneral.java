@@ -27,7 +27,7 @@ public class LoginGeneral extends JFrame{
         setResizable(false);
         
         JPanel panelIzquierdologin = new JPanel();
-        panelIzquierdologin .setBackground(new Color(255, 229, 180)); 
+        panelIzquierdologin .setBackground(new Color(212, 223, 237)); 
         panelIzquierdologin .setBounds(0, 0, 640, 720);
         panelIzquierdologin .setLayout(null);
 
@@ -48,7 +48,7 @@ public class LoginGeneral extends JFrame{
 
         lblTitulo = new JLabel("INICIAR SESION");
         lblTitulo.setFont(new Font("Serif", Font.BOLD, 22));
-        lblTitulo.setBounds(215, 160, 200, 30);
+        lblTitulo.setBounds(217, 160, 200, 30);
         panelDerechoLogin.add(lblTitulo);
 
         lblIconoUsuario = new JLabel();

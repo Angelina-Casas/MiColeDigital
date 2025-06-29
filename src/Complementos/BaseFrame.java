@@ -17,7 +17,7 @@ public abstract class BaseFrame extends JFrame{
         setResizable(false);
 
         panelFondo = new JPanel();
-        panelFondo.setBackground(new Color(255, 220, 80));
+        panelFondo.setBackground(new Color(212, 223, 237));
         panelFondo.setBounds(0, 0, 1280, 720);
         panelFondo.setLayout(null);
         add(panelFondo);

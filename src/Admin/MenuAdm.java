@@ -19,7 +19,7 @@ public class MenuAdm extends BaseFrame {
     protected void initContenido() {
         
         JLabel lblLogo = new JLabel(new ImageIcon(getClass().getResource("/Img/logoMiColePequeno.png")));
-        lblLogo.setBounds(1050, 30, 128, 101);
+        lblLogo.setBounds(1040, 05, 128, 101);
         panelContenido.add(lblLogo);
 
         JLabel imgUsuarios = new JLabel(new ImageIcon(getClass().getResource("/Img/imgUsuarios.png")));
@@ -31,7 +31,7 @@ public class MenuAdm extends BaseFrame {
         panelContenido.add(imgAulas);
 
         JLabel imgCursos = new JLabel(new ImageIcon(getClass().getResource("/Img/imgCursos.png")));
-        imgCursos.setBounds(770, 180, 220, 140);
+        imgCursos.setBounds(770, 180, 220, 150);
         panelContenido.add(imgCursos);
 
         JButton btnUsuarios = new JButton("USUARIOS");
@@ -69,7 +69,8 @@ public class MenuAdm extends BaseFrame {
 
         JButton btnCerrarSesion = new JButton("CERRAR SESIÓN");
         btnCerrarSesion.setBounds(950, 500, 150, 40);
-        btnCerrarSesion.setBackground(new Color(255, 249, 200));
+        btnCerrarSesion.setBackground(new Color(39,87,117));
+        btnCerrarSesion.setForeground(Color.WHITE);
         btnCerrarSesion.setFont(new Font("Arial", Font.BOLD, 13));
         btnCerrarSesion.addActionListener(e -> {
         new LoginGeneral().setVisible(true);
