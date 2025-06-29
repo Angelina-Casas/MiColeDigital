@@ -1,11 +1,14 @@
 package Estudiante;
 
 import Complementos.ComplementosFrameEstudiante;
+import Conexion.ConexionBD;
 import Modelos.Usuario;
 import Modelos.Curso;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.sql.*;
 
 public class CalifiEstudiante extends ComplementosFrameEstudiante {
     private JTable tablaNotas;
@@ -34,18 +37,54 @@ public class CalifiEstudiante extends ComplementosFrameEstudiante {
         btnCabecera2.setBounds(525, 140, 425, 40); 
         btnCabecera2.setBackground(Color.WHITE);
         btnCabecera2.setBorder(BorderFactory.createLineBorder(new Color(39,87,117), 2));
-        btnCabecera2.setEnabled(false); // Desactivado porque ya estás en esta vista
+        btnCabecera2.setEnabled(false); // ya estás en esta vista
         panelDerecho.add(btnCabecera2);
 
-        String[] columnas = {"Práctica", "Nota"};
+        // Crear tabla
+        String[] columnas = {"Práctica", "Nota", "Fecha de Envío"};
         DefaultTableModel modelo = new DefaultTableModel(null, columnas);
         tablaNotas = new JTable(modelo);
         tablaNotas.setRowHeight(25);
-        tablaNotas.getTableHeader().setFont(new Font("Serif", Font.BOLD, 14));
+        tablaNotas.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 14));
         scrollPane = new JScrollPane(tablaNotas);
         scrollPane.setBounds(100, 200, 850, 400);
         panelDerecho.add(scrollPane);
 
-        // TODO: Aquí puedes cargar desde BD las notas por curso
-    }       
+        // Cargar notas sin filtrar por curso (como tú pediste)
+        cargarNotas(modelo);
+    }
+
+    private void cargarNotas(DefaultTableModel modelo) {
+        String sql = """
+            SELECT f.nombreFor AS practica, r.nota, r.fechaEnvio
+            FROM ResultadoPractica r
+            INNER JOIN Formulario f ON r.idFormulario = f.idFor
+            WHERE r.idUsuario = ?
+            ORDER BY f.idFor
+        """;
+
+        try (Connection con = new ConexionBD().obtenerConexion();
+             PreparedStatement ps = con.prepareStatement(sql)) {
+
+            ps.setInt(1, usuario.getIdUsuario());
+            ResultSet rs = ps.executeQuery();
+
+            boolean hayDatos = false;
+            while (rs.next()) {
+                String practica = rs.getString("practica");
+                double nota = rs.getDouble("nota");
+                Date fecha = rs.getDate("fechaEnvio");
+                modelo.addRow(new Object[]{practica, nota, fecha});
+                hayDatos = true;
+            }
+
+            if (!hayDatos) {
+                JOptionPane.showMessageDialog(this, "No tienes calificaciones registradas todavía.");
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar notas:\n" + e.getMessage());
+            e.printStackTrace();
+        }
+    }
 }

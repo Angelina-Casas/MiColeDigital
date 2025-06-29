@@ -54,7 +54,6 @@ public class FormularioBD {
             return false;
         }
     }
-
     
     public Formulario obtenerFormularioPorId(int idFormulario) throws SQLException {
         String sql = "SELECT * FROM Formulario WHERE idFor = ?";
@@ -71,7 +70,6 @@ public class FormularioBD {
         }
         return null;
     }
-
     
     public List<Formulario> obtenerTodosFormularios() throws SQLException {
     List<Formulario> lista = new ArrayList<>();

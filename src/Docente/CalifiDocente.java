@@ -1,67 +1,108 @@
 package Docente;
 
 import Complementos.ComplementosFrameDocente;
+import Conexion.ConexionBD;
 import Modelos.Usuario;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import java.awt.*;
+import java.sql.*;
+import java.util.Vector;
 
-public class CalifiDocente extends ComplementosFrameDocente{
-    private JButton btnContenido, btnCalificaciones;
+public class CalifiDocente extends ComplementosFrameDocente {
     private JTable tabla;
     private JScrollPane scroll;
-    
+    private DefaultTableModel modelo;
+
     public CalifiDocente(Usuario usuario) {
         super(usuario);
         this.usuario = usuario;
-        
+
         add(crearPanelIzquierdo());
-        add(crearPanelDerecho("MATEMATICA"));
+        add(crearPanelDerecho("Calificaciones por Práctica"));
 
-        // Botones superiores
-        btnContenido = new JButton("Contenido");
-        btnContenido.setBounds(100, 140, 425, 40);
-        btnContenido.setBackground(Color.WHITE);
-        btnContenido.setBorder(BorderFactory.createLineBorder(new Color(39, 87, 117), 2));
-        btnContenido.addActionListener(e -> {
-            new AgregarContenido(usuario).setVisible(true);
-            dispose();
-        });
-        
-        panelDerecho.add(btnContenido);
-
-        btnCalificaciones = new JButton("Calificaciones");
-        btnCalificaciones.setBounds(525, 140, 425, 40);
-        btnCalificaciones.setBackground(Color.WHITE);
-        btnCalificaciones.setBorder(BorderFactory.createLineBorder(new Color(39, 87, 117), 2));
-        btnCalificaciones.addActionListener(e -> {
-            new CalifiDocente(usuario).setVisible(true);
-            dispose();
-        });
-        panelDerecho.add(btnCalificaciones);
-        
-
-        // Tabla
-        String[] columnas = {"Nombre y Apellidos", "S1", "S2", "S3", "S4", "S5", "S6"};
-        DefaultTableModel modelo = new DefaultTableModel(null, columnas);
-        tabla = new JTable(modelo);
-        tabla.setRowHeight(25);
-
-        // Establecer tamaños de columna
-        tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF); // Desactiva autoajuste
-
-        TableColumn colNombre = tabla.getColumnModel().getColumn(0);
-        colNombre.setPreferredWidth(500); // columna "Nombre y Apellidos" más ancha
-
-        for (int i = 1; i <= 6; i++) {
-            TableColumn col = tabla.getColumnModel().getColumn(i);
-            col.setPreferredWidth(60); 
+        // Botones por práctica
+        int x = 100;
+        for (int i = 1; i <= 4; i++) {
+            int idFormulario = i;
+            JButton btn = new JButton("Práctica " + i);
+            btn.setBounds(x, 140, 200, 40);
+            btn.setBackground(Color.WHITE);
+            btn.setBorder(BorderFactory.createLineBorder(new Color(39, 87, 117), 2));
+            btn.addActionListener(e -> cargarNotasPorPractica(idFormulario, usuario.getIdUsuario()));
+            panelDerecho.add(btn);
+            x += 210;
         }
 
-        // Scroll
+        // Crear tabla
+        String[] columnas = {"Nombre del Estudiante", "Nota"};
+        modelo = new DefaultTableModel(null, columnas);
+        tabla = new JTable(modelo);
+        tabla.setRowHeight(25);
+        tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+
+        TableColumn colNombre = tabla.getColumnModel().getColumn(0);
+        colNombre.setPreferredWidth(600);
+        tabla.getColumnModel().getColumn(1).setPreferredWidth(200);
+
         scroll = new JScrollPane(tabla);
         scroll.setBounds(100, 200, 850, 420);
         panelDerecho.add(scroll);
+    }
+
+    private void cargarNotasPorPractica(int idFormulario, int idDocente) {
+        modelo.setRowCount(0); // Limpiar tabla
+
+        System.out.println("📌 Consultando:");
+        System.out.println("🔹 idFormulario = " + idFormulario);
+        System.out.println("🔹 idDocente = " + idDocente);
+
+        String sql = """
+            SELECT DISTINCT u.nombre AS nombreEstudiante, r.nota
+            FROM ResultadoPractica r
+            JOIN Usuario u ON u.idUsuario = r.idUsuario
+            JOIN AulaUsuario au ON au.idUsuario = u.idUsuario
+            JOIN Aula a ON a.idAula = au.idAula
+            JOIN Curso c ON c.idAula = a.idAula AND c.idDocente = ?
+            JOIN Formulario f ON f.idFor = r.idFormulario
+            WHERE r.idFormulario = ?
+            ORDER BY u.nombre;
+        """;
+
+        try {
+            ConexionBD conexion = new ConexionBD();
+            Connection con = conexion.obtenerConexion();
+            PreparedStatement ps = con.prepareStatement(sql);
+            ps.setInt(1, idDocente);
+            ps.setInt(2, idFormulario);
+            System.out.println("🔎 Ejecutando SQL...");
+            ResultSet rs = ps.executeQuery();
+
+            boolean tieneDatos = false;
+
+            while (rs.next()) {
+                Vector<Object> fila = new Vector<>();
+                fila.add(rs.getString("nombreEstudiante"));
+                fila.add(rs.getDouble("nota"));
+                modelo.addRow(fila);
+                tieneDatos = true;
+            }
+
+            if (!tieneDatos) {
+                System.out.println("❗ Consulta no devolvió resultados.");
+                JOptionPane.showMessageDialog(this, "No se encontraron calificaciones para esta práctica.");
+            } else {
+                System.out.println("✅ Datos cargados correctamente.");
+            }
+
+            rs.close();
+            ps.close();
+            con.close();
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "❌ Error al cargar notas:\n" + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }
