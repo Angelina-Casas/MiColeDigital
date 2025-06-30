@@ -117,7 +117,6 @@ public class PerfilEstudiante extends ComplementosFrameEstudiante {
             }
             textoCursos.append("- ").append(curso.getNombre()).append("\n");
         }
-
         areaCursos.setText(textoCursos.length() == 0 ? "Sin cursos asignados." : textoCursos.toString());
         lblGradoValor.setText(grado == null ? "N/A" : grado);
         lblSeccionValor.setText(seccion == null ? "N/A" : seccion);

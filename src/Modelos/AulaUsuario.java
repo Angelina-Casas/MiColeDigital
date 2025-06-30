@@ -12,7 +12,6 @@ public class AulaUsuario {
         this.aula = aula;
     }
 
-    // getters y setters
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
 

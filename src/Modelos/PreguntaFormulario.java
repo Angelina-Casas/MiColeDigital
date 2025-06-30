@@ -1,9 +1,5 @@
 package Modelos;
 
-/**
- *
- * @author atom
- */
 public class PreguntaFormulario {
     private int nroPregunta;
     private String pregunta;

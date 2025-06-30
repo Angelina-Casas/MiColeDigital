@@ -37,10 +37,9 @@ public class CalifiEstudiante extends ComplementosFrameEstudiante {
         btnCabecera2.setBounds(525, 140, 425, 40); 
         btnCabecera2.setBackground(Color.WHITE);
         btnCabecera2.setBorder(BorderFactory.createLineBorder(new Color(39,87,117), 2));
-        btnCabecera2.setEnabled(false); // ya estás en esta vista
+        btnCabecera2.setEnabled(false);
         panelDerecho.add(btnCabecera2);
 
-        // Crear tabla
         String[] columnas = {"Práctica", "Nota", "Fecha de Envío"};
         DefaultTableModel modelo = new DefaultTableModel(null, columnas);
         tablaNotas = new JTable(modelo);
@@ -50,7 +49,6 @@ public class CalifiEstudiante extends ComplementosFrameEstudiante {
         scrollPane.setBounds(100, 200, 850, 400);
         panelDerecho.add(scrollPane);
 
-        // Cargar notas sin filtrar por curso (como tú pediste)
         cargarNotas(modelo);
     }
 
@@ -67,7 +65,7 @@ public class CalifiEstudiante extends ComplementosFrameEstudiante {
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, usuario.getIdUsuario());
-            ps.setInt(2, curso.getIdCurso()); // Filtramos por curso
+            ps.setInt(2, curso.getIdCurso());
             ResultSet rs = ps.executeQuery();
 
             boolean hayDatos = false;

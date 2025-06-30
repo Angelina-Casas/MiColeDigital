@@ -15,8 +15,6 @@ public class ConexionBD {
                       + "password=65w2espf7m;"
                       + "encrypt=true;"
                       + "trustServerCertificate=true;";
-
-
             
                        con = DriverManager.getConnection(url);
         } catch (ClassNotFoundException | SQLException e) {

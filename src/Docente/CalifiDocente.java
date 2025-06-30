@@ -9,7 +9,6 @@ import Modelos.Curso;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.sql.*;
 import java.util.List;
@@ -115,7 +114,7 @@ public class CalifiDocente extends ComplementosFrameDocente {
 
         JLabel lblTitulo = new JLabel("Notas de: " + nombrePractica);
         lblTitulo.setFont(new Font("SansSerif", Font.BOLD, 18));
-        lblTitulo.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10)); // Padding
+        lblTitulo.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         panelContenido.add(lblTitulo, BorderLayout.NORTH);
 
 

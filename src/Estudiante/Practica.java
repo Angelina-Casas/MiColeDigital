@@ -169,7 +169,6 @@ public class Practica extends ComplementosFrameEstudiante {
                     }
                 });
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error al conectar con la base de datos.");

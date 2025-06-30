@@ -11,7 +11,6 @@ public class FormularioBD {
         this.conexion = conexion;
     }
 
-    // Insertar formulario con preguntas y con idCurso
     public boolean insertarFormularioYPreguntas(Formulario formulario, List<PreguntaFormulario> preguntas) {
         try {
             String sqlFormulario = "INSERT INTO Formulario (nombreFor, tema, video_url, idCurso) OUTPUT INSERTED.idFor VALUES (?, ?, ?, ?)";
@@ -54,7 +53,6 @@ public class FormularioBD {
         }
     }
 
-    // Obtener formulario por ID
     public Formulario obtenerFormularioPorId(int idFormulario) throws SQLException {
         String sql = "SELECT * FROM Formulario WHERE idFor = ?";
         PreparedStatement ps = conexion.prepareStatement(sql);
@@ -73,7 +71,6 @@ public class FormularioBD {
         return null;
     }
 
-    // Obtener todos los formularios
     public List<Formulario> obtenerTodosFormularios() throws SQLException {
         List<Formulario> lista = new ArrayList<>();
         String sql = "SELECT * FROM Formulario";
@@ -92,7 +89,6 @@ public class FormularioBD {
         return lista;
     }
 
-    // Obtener formularios por curso
     public List<Formulario> obtenerFormulariosPorCurso(int idCurso) throws SQLException {
         List<Formulario> lista = new ArrayList<>();
         String sql = "SELECT * FROM Formulario WHERE idCurso = ?";
@@ -112,7 +108,6 @@ public class FormularioBD {
         return lista;
     }
 
-    // Obtener preguntas por formulario
     public List<PreguntaFormulario> obtenerPreguntas(int idFormulario) throws SQLException {
         List<PreguntaFormulario> lista = new ArrayList<>();
         String sql = "SELECT * FROM PreguntaFormulario WHERE idFormulario = ? ORDER BY nroPregunta";
@@ -134,27 +129,34 @@ public class FormularioBD {
         return lista;
     }
 
-    // Eliminar formulario con sus preguntas
     public boolean eliminarFormularioYPreguntas(int idFormulario) {
         try {
+            String sqlResultados = "DELETE FROM ResultadoPractica WHERE idFormulario = ?";
+            PreparedStatement psResultados = conexion.prepareStatement(sqlResultados);
+            psResultados.setInt(1, idFormulario);
+            int res = psResultados.executeUpdate();
+            System.out.println("Resultados eliminados: " + res);
+
             String sqlPreguntas = "DELETE FROM PreguntaFormulario WHERE idFormulario = ?";
             PreparedStatement psPreguntas = conexion.prepareStatement(sqlPreguntas);
             psPreguntas.setInt(1, idFormulario);
-            psPreguntas.executeUpdate();
+            int filasPreguntas = psPreguntas.executeUpdate();
+            System.out.println("Preguntas eliminadas: " + filasPreguntas);
+
 
             String sqlFormulario = "DELETE FROM Formulario WHERE idFor = ?";
             PreparedStatement psFormulario = conexion.prepareStatement(sqlFormulario);
             psFormulario.setInt(1, idFormulario);
-            int filas = psFormulario.executeUpdate();
+            int filasFormulario = psFormulario.executeUpdate();
+            System.out.println("Formulario eliminado: " + filasFormulario);
 
-            return filas > 0;
+            return filasFormulario > 0;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+        return false;
         }
     }
 
-    // Actualizar formulario y preguntas
     public boolean actualizarFormularioYPreguntas(Formulario formulario, List<PreguntaFormulario> preguntas) {
         try {
             String updateFormulario = "UPDATE Formulario SET nombreFor = ?, tema = ?, video_url = ?, idCurso = ? WHERE idFor = ?";

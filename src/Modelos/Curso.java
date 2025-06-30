@@ -6,7 +6,6 @@ public class Curso {
     private Usuario docente;
     private Aula aula;
 
-    // Nuevos campos agregados
     private int grado;
     private String seccion;
 

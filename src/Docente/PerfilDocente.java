@@ -24,13 +24,11 @@ public class PerfilDocente extends ComplementosFrameDocente {
         add(crearPanelIzquierdo());
         add(crearPanelDerecho("BIENVENIDO A MICOLEDIGITAL"));
 
-        // Foto
         lblFoto = new JLabel();
         lblFoto.setBounds(460, 170, 180, 180);
         lblFoto.setIcon(new ImageIcon(getClass().getResource("/Img/profesorfoto.png")));
         panelDerecho.add(lblFoto);
 
-        // Títulos
         lblInfoBasica = new JLabel("Información básica");
         lblInfoBasica.setFont(new Font("Serif", Font.BOLD, 18));
         lblInfoBasica.setBounds(280, 380, 200, 30);

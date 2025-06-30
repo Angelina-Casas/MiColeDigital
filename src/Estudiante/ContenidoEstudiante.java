@@ -85,7 +85,7 @@ public class ContenidoEstudiante extends ComplementosFrameEstudiante {
                 btnVer.setBounds(650, 35, 120, 30);
                 btnVer.setBackground(new Color(39, 87, 117));
                 btnVer.setForeground(Color.WHITE);
-                int nroPractica = f.getIdFor(); // usa el ID de la base
+                int nroPractica = f.getIdFor();
                 btnVer.addActionListener(e -> {
                     new Practica(usuario, curso, nroPractica).setVisible(true);
                     dispose();

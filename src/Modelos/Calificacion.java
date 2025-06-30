@@ -1,9 +1,11 @@
 package Modelos;
 public class Calificacion {
+    
     private int idCalificacion;
     private Usuario estudiante;
     private Curso curso;
     private double nota;
+    
     public Calificacion() {}
     public Calificacion(int idCalificacion, Usuario estudiante, Curso curso, double nota) {
         this.idCalificacion = idCalificacion;
@@ -11,6 +13,7 @@ public class Calificacion {
         this.curso = curso;
         this.nota = nota;
     }
+    
     public int getIdCalificacion() { return idCalificacion; }
     public void setIdCalificacion(int idCalificacion) {
         this.idCalificacion = idCalificacion; }
