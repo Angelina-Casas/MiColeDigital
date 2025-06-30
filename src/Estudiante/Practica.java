@@ -51,7 +51,6 @@ public class Practica extends ComplementosFrameEstudiante {
             dispose();
         });
         panelDerecho.add(btnCalificaciones);
-
         crearPanelPreguntas();
     }
 
@@ -63,7 +62,6 @@ public class Practica extends ComplementosFrameEstudiante {
 
         try (Connection conn = new ConexionBD().obtenerConexion()) {
 
-            // Verifica si el usuario ya envió esta práctica
             PreparedStatement psCheck = conn.prepareStatement(
                 "SELECT nota FROM ResultadoPractica WHERE idUsuario = ? AND idFormulario = ?"
             );
@@ -77,11 +75,11 @@ public class Practica extends ComplementosFrameEstudiante {
 
                 JLabel mensaje = new JLabel("Ya enviaste esta práctica. Nota anterior: " + notaAnterior);
                 mensaje.setFont(new Font("Arial", Font.BOLD, 16));
-                mensaje.setBounds(50, 50, 600, 30);
+                mensaje.setForeground(Color.RED);
+                mensaje.setBounds(260, 200, 600, 30);
                 panelScroll.add(mensaje);
 
             } else {
-                // Cargar preguntas de la base de datos
                 PreparedStatement ps = conn.prepareStatement(
                     "SELECT * FROM PreguntaFormulario WHERE idFormulario = ? ORDER BY nroPregunta"
                 );
@@ -122,7 +120,6 @@ public class Practica extends ComplementosFrameEstudiante {
                             correctasList.add(radio);
                         }
                     }
-
                     yBase += 150;
                 }
 
@@ -177,7 +174,6 @@ public class Practica extends ComplementosFrameEstudiante {
             e.printStackTrace();
             JOptionPane.showMessageDialog(this, "Error al conectar con la base de datos.");
         }
-
         scrollPane = new JScrollPane(panelScroll);
         scrollPane.setBounds(100, 200, 850, 460);
         panelDerecho.add(scrollPane);

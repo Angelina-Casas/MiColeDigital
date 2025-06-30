@@ -22,7 +22,7 @@ public class CursoEstudiante extends ComplementosFrameEstudiante {
         contenedorCursos = new JPanel();
         contenedorCursos.setLayout(new BoxLayout(contenedorCursos, BoxLayout.Y_AXIS));
         contenedorCursos.setBackground(Color.WHITE);
-        contenedorCursos.setBounds(300, 180, 400, 400);
+        contenedorCursos.setBounds(340, 180, 400, 400);
         panelDerecho.setLayout(null);
         panelDerecho.add(contenedorCursos);
 
@@ -38,12 +38,13 @@ public class CursoEstudiante extends ComplementosFrameEstudiante {
             for (Curso curso : cursos) {
                 JButton btnCurso = new JButton(curso.getNombre() + " - " + curso.getAula().getGrado() + "° " + curso.getAula().getSeccion());
                 btnCurso.setAlignmentX(Component.CENTER_ALIGNMENT);
-                btnCurso.setMaximumSize(new Dimension(400, 50));
+                btnCurso.setMaximumSize(new Dimension(400, 80));
                 btnCurso.setFont(new Font("SansSerif", Font.BOLD, 16));
-                btnCurso.setBackground(new Color(255, 220, 80));
+                btnCurso.setBackground(new Color(254, 234, 157));
 
                 btnCurso.addActionListener(e -> {
                     new ContenidoEstudiante(usuario, curso);
+                    dispose();
                 });
 
                 contenedorCursos.add(Box.createRigidArea(new Dimension(0, 10)));

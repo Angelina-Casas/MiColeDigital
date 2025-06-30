@@ -57,8 +57,8 @@ public class CursoDocente extends ComplementosFrameDocente {
                     Curso curso = new Curso();
                     curso.setIdCurso(idCurso);
                     curso.setNombre(nombreCurso);
-                    curso.setGrado(grado);       // Requiere que el método exista en la clase Curso
-                    curso.setSeccion(seccion);   // Requiere que el método exista en la clase Curso
+                    curso.setGrado(grado);     
+                    curso.setSeccion(seccion);
 
                     new ContenidoDocente(usuario, curso).setVisible(true);
                     dispose();

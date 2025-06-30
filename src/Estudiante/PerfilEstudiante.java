@@ -13,7 +13,7 @@ public class PerfilEstudiante extends ComplementosFrameEstudiante {
     private Usuario usuario;
 
     private JLabel lblFoto, lblInfoBasica, lblInfoAdicional, lblNombre, lblCorreo;
-    private JLabel lblGrado, lblSeccion;
+    private JLabel lblGrado, lblSeccion, lblCursos;
     private JLabel lblNombreValor, lblCorreoValor, lblGradoValor, lblSeccionValor;
     private JTextArea areaCursos;
     private JScrollPane scrollCursos;
@@ -25,23 +25,21 @@ public class PerfilEstudiante extends ComplementosFrameEstudiante {
         add(crearPanelIzquierdo());
         add(crearPanelDerecho("BIENVENIDO A MICOLEDIGITAL"));
 
-        // Imagen
         lblFoto = new JLabel();
         lblFoto.setBounds(460, 170, 180, 180);
         lblFoto.setIcon(new ImageIcon(getClass().getResource("/Img/estudiantefoto.png")));
         panelDerecho.add(lblFoto);
 
-        // Títulos
         lblInfoBasica = new JLabel("Información básica");
         lblInfoBasica.setFont(new Font("Serif", Font.BOLD, 18));
         lblInfoBasica.setBounds(280, 380, 200, 30);
         panelDerecho.add(lblInfoBasica);
+        
         lblInfoAdicional = new JLabel("Información adicional");
         lblInfoAdicional.setFont(new Font("Serif", Font.BOLD, 18));
         lblInfoAdicional.setBounds(700, 380, 220, 30);
         panelDerecho.add(lblInfoAdicional);
 
-        // Nombre
         lblNombre = new JLabel("NOMBRE:");
         lblNombre.setFont(new Font("Serif", Font.BOLD, 14));
         lblNombre.setBounds(280, 415, 100, 30);
@@ -52,7 +50,6 @@ public class PerfilEstudiante extends ComplementosFrameEstudiante {
         lblNombreValor.setBounds(380, 415, 300, 30);
         panelDerecho.add(lblNombreValor);
 
-        // Correo
         lblCorreo = new JLabel("CORREO:");
         lblCorreo.setFont(new Font("Serif", Font.BOLD, 14));
         lblCorreo.setBounds(280, 450, 100, 30);
@@ -63,8 +60,7 @@ public class PerfilEstudiante extends ComplementosFrameEstudiante {
         lblCorreoValor.setBounds(380, 450, 300, 30);
         panelDerecho.add(lblCorreoValor);
 
-        // Cursos
-        JLabel lblCursos = new JLabel("CURSOS:");
+        lblCursos = new JLabel("CURSOS:");
         lblCursos.setFont(new Font("Serif", Font.BOLD, 14));
         lblCursos.setBounds(280, 485, 100, 30);
         panelDerecho.add(lblCursos);
@@ -77,11 +73,10 @@ public class PerfilEstudiante extends ComplementosFrameEstudiante {
         areaCursos.setWrapStyleWord(true);
 
         scrollCursos = new JScrollPane(areaCursos);
-        scrollCursos.setBounds(380, 485, 300, 80);
+        scrollCursos.setBounds(380, 490, 300, 80);
         scrollCursos.setBorder(null);
         panelDerecho.add(scrollCursos);
 
-        // Grado
         lblGrado = new JLabel("GRADO:");
         lblGrado.setFont(new Font("Serif", Font.BOLD, 14));
         lblGrado.setBounds(700, 415, 100, 30);
@@ -92,7 +87,6 @@ public class PerfilEstudiante extends ComplementosFrameEstudiante {
         lblGradoValor.setBounds(800, 415, 100, 30);
         panelDerecho.add(lblGradoValor);
 
-        // Sección
         lblSeccion = new JLabel("SECCIÓN:");
         lblSeccion.setFont(new Font("Serif", Font.BOLD, 14));
         lblSeccion.setBounds(700, 450, 100, 30);
@@ -103,7 +97,6 @@ public class PerfilEstudiante extends ComplementosFrameEstudiante {
         lblSeccionValor.setBounds(800, 450, 100, 30);
         panelDerecho.add(lblSeccionValor);
 
-        // Cargar datos de BD
         cargarCursosGradoSeccion(usuario.getIdUsuario());
 
         setVisible(true);
