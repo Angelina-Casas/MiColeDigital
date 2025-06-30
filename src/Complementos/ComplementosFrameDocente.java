@@ -86,7 +86,6 @@ public class ComplementosFrameDocente extends JFrame {
                     BorderFactory.createEmptyBorder(3, 3, 3, 3)
                 ));
             }
-
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 if (iconCursos != null) btnCursos.setIcon(iconCursos);
                 if (botonSeleccionado != btnCursos) {
@@ -141,7 +140,6 @@ public class ComplementosFrameDocente extends JFrame {
         });
         panelIzquierdo.add(btnDocentes);
 
-        // Botón CERRAR SESIÓN
         URL urlCerrar = getClass().getResource("/Img/btnCerrarSesion.png");
         URL urlCerrarHover = getClass().getResource("/Img/btnCerrarSesion_hover.png");
         ImageIcon iconCerrar = urlCerrar != null ? new ImageIcon(urlCerrar) : null;
