@@ -59,7 +59,7 @@ public class ContenidoEstudiante extends ComplementosFrameEstudiante {
                 panelPractica.setBackground(new Color(240, 240, 240));
                 panelPractica.setBorder(BorderFactory.createLineBorder(Color.GRAY));
 
-                JLabel lblSemana = new JLabel("Semana " + (i + 1));
+                JLabel lblSemana = new JLabel("Practica " + (i + 1));
                 lblSemana.setBounds(20, 10, 200, 20);
                 lblSemana.setFont(new Font("SansSerif", Font.BOLD, 14));
                 panelPractica.add(lblSemana);
