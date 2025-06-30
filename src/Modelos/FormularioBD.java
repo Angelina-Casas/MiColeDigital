@@ -134,27 +134,36 @@ public class FormularioBD {
         return lista;
     }
 
-    // Eliminar formulario con sus preguntas
+    
     public boolean eliminarFormularioYPreguntas(int idFormulario) {
         try {
+            String sqlResultados = "DELETE FROM ResultadoPractica WHERE idFormulario = ?";
+            PreparedStatement psResultados = conexion.prepareStatement(sqlResultados);
+            psResultados.setInt(1, idFormulario);
+            int res = psResultados.executeUpdate();
+            System.out.println("Resultados eliminados: " + res);
+
             String sqlPreguntas = "DELETE FROM PreguntaFormulario WHERE idFormulario = ?";
             PreparedStatement psPreguntas = conexion.prepareStatement(sqlPreguntas);
             psPreguntas.setInt(1, idFormulario);
-            psPreguntas.executeUpdate();
+            int filasPreguntas = psPreguntas.executeUpdate();
+            System.out.println("Preguntas eliminadas: " + filasPreguntas);
+
 
             String sqlFormulario = "DELETE FROM Formulario WHERE idFor = ?";
             PreparedStatement psFormulario = conexion.prepareStatement(sqlFormulario);
             psFormulario.setInt(1, idFormulario);
-            int filas = psFormulario.executeUpdate();
+            int filasFormulario = psFormulario.executeUpdate();
+            System.out.println("Formulario eliminado: " + filasFormulario);
 
-            return filas > 0;
+            return filasFormulario > 0;
         } catch (SQLException e) {
             e.printStackTrace();
-            return false;
+        return false;
         }
     }
 
-    // Actualizar formulario y preguntas
+  
     public boolean actualizarFormularioYPreguntas(Formulario formulario, List<PreguntaFormulario> preguntas) {
         try {
             String updateFormulario = "UPDATE Formulario SET nombreFor = ?, tema = ?, video_url = ?, idCurso = ? WHERE idFor = ?";
