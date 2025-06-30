@@ -96,6 +96,7 @@ public class CalifiDocente extends ComplementosFrameDocente {
         scroll = new JScrollPane(panelContenido);
         scroll.setBounds(100, 200, 850, 370);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scroll.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY,2));
         panelDerecho.add(scroll);
         panelDerecho.repaint();

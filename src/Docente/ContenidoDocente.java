@@ -105,6 +105,7 @@ public class ContenidoDocente extends ComplementosFrameDocente {
         scrollPane = new JScrollPane(contenedorScroll);
         scrollPane.setBounds(100, 190, 850, 380);
         scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
         panelDerecho.add(scrollPane);
 
