@@ -25,7 +25,7 @@ public class AdmCurso extends BaseFrame {
     @Override
     protected void initContenido() {
         JLabel lblBienvenida = new JLabel("Bienvenido, " + usuario.getNombre());
-        lblBienvenida.setFont(new Font("Arial", Font.BOLD, 16));
+        lblBienvenida.setFont(new Font("Serif", Font.BOLD, 16));
         lblBienvenida.setBounds(30, 20, 400, 25);
         panelContenido.add(lblBienvenida);
 
@@ -58,8 +58,8 @@ public class AdmCurso extends BaseFrame {
 
         int btnWidth = 140;
         int btnHeight = 35;
-        int xBtn = 30;
-        int startY = 300;
+        int xBtn = 110;
+        int startY = 320;
         int gap = 50;
 
         JButton btnAgregar = new JButton("AGREGAR");
@@ -70,19 +70,20 @@ public class AdmCurso extends BaseFrame {
 
         JButton btnEditar = new JButton("EDITAR");
         btnEditar.setBounds(xBtn, startY + gap, btnWidth, btnHeight);
-        btnEditar.setBackground(new Color(255, 102, 102));
+        btnEditar.setBackground(new Color(173, 216, 230));
         btnEditar.addActionListener(e -> editarCurso());
         panelContenido.add(btnEditar);
 
         JButton btnEliminar = new JButton("ELIMINAR");
         btnEliminar.setBounds(xBtn, startY + 2 * gap, btnWidth, btnHeight);
-        btnEliminar.setBackground(new Color(173, 216, 230));
+        btnEliminar.setBackground(new Color(255, 102, 102));
         btnEliminar.addActionListener(e -> eliminarCurso());
         panelContenido.add(btnEliminar);
 
         JButton btnRegresar = new JButton("REGRESAR");
         btnRegresar.setBounds(970, 510, 150, 40);
-        btnRegresar.setBackground(new Color(255, 249, 200));
+        btnRegresar.setBackground(new Color(39,87,117)); 
+        btnRegresar.setForeground(Color.WHITE);
         btnRegresar.setFont(new Font("Arial", Font.BOLD, 13));
         btnRegresar.addActionListener(e -> {
             new MenuAdm(usuario).setVisible(true);
@@ -107,7 +108,7 @@ public class AdmCurso extends BaseFrame {
         });
 
         JScrollPane scrollLista = new JScrollPane(tablaCursos);
-        scrollLista.setBounds(380, 40, 740, 420);
+        scrollLista.setBounds(380, 60, 740, 400);
         panelContenido.add(scrollLista);
 
         cargarDocente();

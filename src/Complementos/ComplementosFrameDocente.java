@@ -36,7 +36,7 @@ public class ComplementosFrameDocente extends JFrame{
 
     protected JPanel crearPanelIzquierdo() {
     panelIzquierdo = new JPanel();
-    panelIzquierdo.setBackground(new Color(255, 220, 80));
+    panelIzquierdo.setBackground(new Color(254, 234, 157));
     panelIzquierdo.setBounds(0, 0, 203, ALTO);
     panelIzquierdo.setLayout(null);
 
@@ -47,7 +47,7 @@ public class ComplementosFrameDocente extends JFrame{
 
     btnCursos = new JButton("CURSOS");
     btnCursos.setBounds(10, 220, 180, 40);
-    btnCursos.setBackground(new Color(255, 220, 80));
+    btnCursos.setBackground(new Color(254, 234, 157));
     btnCursos.addActionListener(e -> {
         new CursoDocente(usuario).setVisible(true);
         dispose();
@@ -56,7 +56,7 @@ public class ComplementosFrameDocente extends JFrame{
 
     btnEstudiante = new JButton("DOCENTE");
     btnEstudiante.setBounds(10, 270, 180, 40);
-    btnEstudiante.setBackground(new Color(255, 220, 80));
+    btnEstudiante.setBackground(new Color(254, 234, 157));
     btnEstudiante.addActionListener(e -> {
         
         new PerfilDocente(usuario).setVisible(true);
@@ -66,7 +66,7 @@ public class ComplementosFrameDocente extends JFrame{
 
     btnCerrarSesion = new JButton("CERRAR SESIÓN");
     btnCerrarSesion.setBounds(10, 320, 180, 40);
-    btnCerrarSesion.setBackground(new Color(255, 220, 80));
+    btnCerrarSesion.setBackground(new Color(254, 234, 157));
     btnCerrarSesion.addActionListener(e -> {
         new LoginGeneral().setVisible(true);
         dispose();
@@ -88,8 +88,8 @@ public class ComplementosFrameDocente extends JFrame{
         panelDerecho.add(lblLogoDerecha);
 
         lblTitulo = new JLabel(titulo);
-        lblTitulo.setFont(new Font("Serif", Font.BOLD, 24));
-        lblTitulo.setBounds(350, 30, 500, 30);
+        lblTitulo.setFont(new Font("Georgia", Font.BOLD, 24));
+        lblTitulo.setBounds(300, 30, 500, 30);
         panelDerecho.add(lblTitulo);
 
         lineaRoja = new JPanel();

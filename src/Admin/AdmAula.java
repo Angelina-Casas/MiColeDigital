@@ -23,32 +23,32 @@ public class AdmAula extends BaseFrame {
     @Override
     protected void initContenido() {
         JLabel lblBienvenida = new JLabel("Bienvenido, " + usuario.getNombre());
-        lblBienvenida.setFont(new Font("Arial", Font.BOLD, 16));
+        lblBienvenida.setFont(new Font("Serif", Font.BOLD, 16));
         lblBienvenida.setBounds(20, 20, 400, 25);
         panelContenido.add(lblBienvenida);
 
         JLabel lblGrado = new JLabel("Grado:");
-        lblGrado.setBounds(30, 110, 100, 30);
+        lblGrado.setBounds(90, 80, 100, 30);
         lblGrado.setFont(new Font("Arial", Font.BOLD, 14));
         panelContenido.add(lblGrado);
 
         txtGrado = new JTextField();
-        txtGrado.setBounds(110, 110, 180, 28);
+        txtGrado.setBounds(90, 110, 180, 28);
         panelContenido.add(txtGrado);
 
         JLabel lblSeccion = new JLabel("Sección:");
-        lblSeccion.setBounds(30, 160, 100, 30);
+        lblSeccion.setBounds(90, 145, 100, 30);
         lblSeccion.setFont(new Font("Arial", Font.BOLD, 14));
         panelContenido.add(lblSeccion);
 
         txtSeccion = new JTextField();
-        txtSeccion.setBounds(110, 160, 180, 28);
+        txtSeccion.setBounds(90, 175, 180, 28);
         panelContenido.add(txtSeccion);
 
         int btnWidth = 160;
         int btnHeight = 30;
-        int xBtn = 80;
-        int startY = 250;
+        int xBtn = 100;
+        int startY = 275;
         int gap = 50;
 
         JButton btnVerEstudiantes = new JButton("VER ESTUDIANTES");
@@ -95,12 +95,13 @@ public class AdmAula extends BaseFrame {
         ));
         tablaAulas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         JScrollPane scrollLista = new JScrollPane(tablaAulas);
-        scrollLista.setBounds(380, 40, 740, 420);
+        scrollLista.setBounds(380, 80, 740, 380);
         panelContenido.add(scrollLista);
 
         JButton btnRegresar = new JButton("REGRESAR");
         btnRegresar.setBounds(1000, 500, 120, 35);
-        btnRegresar.setBackground(new Color(255, 249, 200));
+        btnRegresar.setBackground(new Color(39,87,117)); 
+        btnRegresar.setForeground(Color.WHITE);
         btnRegresar.addActionListener(e -> {
             new MenuAdm(usuario).setVisible(true);
             dispose();
