@@ -24,35 +24,53 @@ public class VerEstudiantes extends BaseFrame {
     
     @Override
     protected void initContenido() {
+        JLabel lblBienvenida = new JLabel("Bienvenido, " + usuario.getNombre());
+        lblBienvenida.setFont(new Font("Serif", Font.BOLD, 16));
+        lblBienvenida.setBounds(30, 20, 400, 25);
+        panelContenido.add(lblBienvenida);
+        
         JLabel lblAula = new JLabel("AULA");
         lblAula.setFont(new Font("Arial", Font.BOLD, 13));
-        lblAula.setBounds(60, 40, 100, 30);
+        lblAula.setBounds(60, 70, 100, 30);
         panelContenido.add(lblAula);
 
         lblAulaValor = new JLabel();
-        lblAulaValor.setBounds(150, 40, 250, 30);
+        lblAulaValor.setBounds(60, 100, 290, 30);
         lblAulaValor.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
         panelContenido.add(lblAulaValor);
 
         JLabel lblTutor = new JLabel("TUTOR:");
         lblTutor.setFont(new Font("Arial", Font.BOLD, 13));
-        lblTutor.setBounds(60, 90, 180, 30);
+        lblTutor.setBounds(60, 140, 180, 30);
         panelContenido.add(lblTutor);
 
         comboTutor = new JComboBox<>();
-        comboTutor.setBounds(80, 120, 320, 30);
+        comboTutor.setBounds(60, 170, 290, 30);
         panelContenido.add(comboTutor);
 
+        JLabel lblEstudiante = new JLabel("ESTUDIANTES:");
+        lblEstudiante.setFont(new Font("Arial", Font.BOLD, 13));
+        lblEstudiante.setBounds(60, 210, 180, 30);
+        panelContenido.add(lblEstudiante);
+        
         comboEstudiantes = new JComboBox<>();
-        comboEstudiantes.setBounds(80, 180, 320, 30);
+        comboEstudiantes.setBounds(60, 240, 290, 30);
         panelContenido.add(comboEstudiantes);
 
+        int btnWidth = 160;
+        int btnHeight = 30;
+        int xBtn = 115;
+        int startY = 320;
+        int gap = 40;
+        
         JButton btnAgregar = new JButton("AGREGAR");
-        btnAgregar.setBounds(80, 230, 100, 30);
+        btnAgregar.setBounds(xBtn, startY + gap, btnWidth, btnHeight);
+        btnAgregar.setBackground(new Color(144, 238, 144));
         panelContenido.add(btnAgregar);
 
         JButton btnEliminar = new JButton("ELIMINAR");
-        btnEliminar.setBounds(300, 230, 100, 30);
+        btnEliminar.setBounds(xBtn, startY + 2 * gap, btnWidth, btnHeight);
+        btnEliminar.setBackground(new Color(255, 102, 102));
         panelContenido.add(btnEliminar);
 
         tablaEstudiantes = new JTable(new DefaultTableModel(
@@ -60,11 +78,13 @@ public class VerEstudiantes extends BaseFrame {
                 new String[]{"ID", "Nombre", "Correo"}
         ));
         JScrollPane scroll = new JScrollPane(tablaEstudiantes);
-        scroll.setBounds(450, 30, 700, 400);
+        scroll.setBounds(420, 70, 700, 380);
         panelContenido.add(scroll);
 
         JButton btnRegresar = new JButton("REGRESAR");
-        btnRegresar.setBounds(1000, 480, 120, 35);
+        btnRegresar.setBounds(1000, 500, 120, 35);
+        btnRegresar.setBackground(new Color(39,87,117)); 
+        btnRegresar.setForeground(Color.WHITE);
         btnRegresar.addActionListener(e -> {
         new AdmAula(usuario).setVisible(true);
             dispose();});

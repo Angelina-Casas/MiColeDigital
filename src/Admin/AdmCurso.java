@@ -59,7 +59,7 @@ public class AdmCurso extends BaseFrame {
         int btnWidth = 140;
         int btnHeight = 35;
         int xBtn = 110;
-        int startY = 300;
+        int startY = 320;
         int gap = 50;
 
         JButton btnAgregar = new JButton("AGREGAR");
@@ -70,13 +70,13 @@ public class AdmCurso extends BaseFrame {
 
         JButton btnEditar = new JButton("EDITAR");
         btnEditar.setBounds(xBtn, startY + gap, btnWidth, btnHeight);
-        btnEditar.setBackground(new Color(255, 102, 102));
+        btnEditar.setBackground(new Color(173, 216, 230));
         btnEditar.addActionListener(e -> editarCurso());
         panelContenido.add(btnEditar);
 
         JButton btnEliminar = new JButton("ELIMINAR");
         btnEliminar.setBounds(xBtn, startY + 2 * gap, btnWidth, btnHeight);
-        btnEliminar.setBackground(new Color(173, 216, 230));
+        btnEliminar.setBackground(new Color(255, 102, 102));
         btnEliminar.addActionListener(e -> eliminarCurso());
         panelContenido.add(btnEliminar);
 
@@ -108,7 +108,7 @@ public class AdmCurso extends BaseFrame {
         });
 
         JScrollPane scrollLista = new JScrollPane(tablaCursos);
-        scrollLista.setBounds(380, 40, 740, 420);
+        scrollLista.setBounds(380, 60, 740, 400);
         panelContenido.add(scrollLista);
 
         cargarDocente();
