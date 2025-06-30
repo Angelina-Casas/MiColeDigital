@@ -196,7 +196,7 @@ public class ComplementosFrameDocente extends JFrame {
 
         lblTitulo = new JLabel(titulo);
         lblTitulo.setFont(new Font("Serif", Font.BOLD, 24));
-        lblTitulo.setBounds(350, 30, 500, 30);
+        lblTitulo.setBounds(320,25, 500, 30);
         panelDerecho.add(lblTitulo);
 
         lineaRoja = new JPanel();
