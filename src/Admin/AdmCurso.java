@@ -25,7 +25,7 @@ public class AdmCurso extends BaseFrame {
     @Override
     protected void initContenido() {
         JLabel lblBienvenida = new JLabel("Bienvenido, " + usuario.getNombre());
-        lblBienvenida.setFont(new Font("Arial", Font.BOLD, 16));
+        lblBienvenida.setFont(new Font("Serif", Font.BOLD, 16));
         lblBienvenida.setBounds(30, 20, 400, 25);
         panelContenido.add(lblBienvenida);
 
@@ -58,7 +58,7 @@ public class AdmCurso extends BaseFrame {
 
         int btnWidth = 140;
         int btnHeight = 35;
-        int xBtn = 30;
+        int xBtn = 110;
         int startY = 300;
         int gap = 50;
 
@@ -82,7 +82,8 @@ public class AdmCurso extends BaseFrame {
 
         JButton btnRegresar = new JButton("REGRESAR");
         btnRegresar.setBounds(970, 510, 150, 40);
-        btnRegresar.setBackground(new Color(255, 249, 200));
+        btnRegresar.setBackground(new Color(39,87,117)); 
+        btnRegresar.setForeground(Color.WHITE);
         btnRegresar.setFont(new Font("Arial", Font.BOLD, 13));
         btnRegresar.addActionListener(e -> {
             new MenuAdm(usuario).setVisible(true);
