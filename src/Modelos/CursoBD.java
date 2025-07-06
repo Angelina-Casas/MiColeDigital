@@ -6,11 +6,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CursoBD {
-    private AulaBD aulaBD = new AulaBD();
-    private UsuarioBD usuarioBD = new UsuarioBD();
+    private final AulaBD aulaBD = new AulaBD();
+    private final UsuarioBD usuarioBD = new UsuarioBD();
 
     public CursoBD() {}
 
+    // Obtener todos los cursos
     public List<Curso> listarCurso() {
         List<Curso> lista = new ArrayList<>();
         String sql = "SELECT idCurso, nombre, idDocente, idAula FROM Curso";
@@ -20,14 +21,7 @@ public class CursoBD {
              ResultSet rs = ps.executeQuery()) {
 
             while (rs.next()) {
-                    int idCurso = rs.getInt("idCurso");
-                    String nombreCurso = rs.getString("nombre");
-
-                    Usuario docente = usuarioBD.obtenerUsuario(rs.getInt("idDocente"));
-                    Aula aula = aulaBD.obtenerAula(rs.getInt("idAula"));
-
-                    Curso curso = new Curso(idCurso, nombreCurso, docente, aula);
-                lista.add(curso);
+                lista.add(mapearCurso(rs));
             }
 
         } catch (SQLException e) {
@@ -37,6 +31,7 @@ public class CursoBD {
         return lista;
     }
 
+    // Obtener curso por ID
     public Curso obtenerCurso(int idCurso) {
         Curso curso = null;
         String sql = "SELECT idCurso, nombre, idDocente, idAula FROM Curso WHERE idCurso = ?";
@@ -45,18 +40,10 @@ public class CursoBD {
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, idCurso);
-
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) 
-                {
-                    String nombreCurso = rs.getString("nombre");
-
-                    Usuario docente = usuarioBD.obtenerUsuario(rs.getInt("idDocente"));
-                    Aula aula = aulaBD.obtenerAula(rs.getInt("idAula"));
-
-                    curso = new Curso(idCurso, nombreCurso, docente, aula);
+                if (rs.next()) {
+                    curso = mapearCurso(rs);
                 }
-
             }
 
         } catch (SQLException e) {
@@ -66,18 +53,18 @@ public class CursoBD {
         return curso;
     }
 
+    // Agregar curso
     public boolean agregarCurso(Curso curso) {
         String sql = "INSERT INTO Curso (nombre, idDocente, idAula) VALUES (?, ?, ?)";
 
         try (Connection con = new ConexionBD().obtenerConexion();
-            PreparedStatement ps = con.prepareStatement(sql)) {
+             PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, curso.getNombre());
             ps.setInt(2, curso.getDocente().getIdUsuario());
             ps.setInt(3, curso.getAula().getIdAula());
 
-            int filas = ps.executeUpdate();
-            return filas > 0;
+            return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -85,6 +72,7 @@ public class CursoBD {
         }
     }
 
+    // Actualizar curso
     public boolean actualizarCurso(Curso curso) {
         String sql = "UPDATE Curso SET nombre = ?, idDocente = ?, idAula = ? WHERE idCurso = ?";
 
@@ -96,8 +84,7 @@ public class CursoBD {
             ps.setInt(3, curso.getAula().getIdAula());
             ps.setInt(4, curso.getIdCurso());
 
-            int filas = ps.executeUpdate();
-            return filas > 0;
+            return ps.executeUpdate() > 0;
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -105,6 +92,7 @@ public class CursoBD {
         }
     }
 
+    // Eliminar curso
     public boolean eliminarCurso(int idCurso) {
         String eliminarRelacion = "DELETE FROM CursoEstudiante WHERE idCurso = ?";
         String eliminarCurso = "DELETE FROM Curso WHERE idCurso = ?";
@@ -117,8 +105,7 @@ public class CursoBD {
 
             try (PreparedStatement ps2 = con.prepareStatement(eliminarCurso)) {
                 ps2.setInt(1, idCurso);
-                int filas = ps2.executeUpdate();
-                return filas > 0;
+                return ps2.executeUpdate() > 0;
             }
 
         } catch (SQLException e) {
@@ -126,7 +113,8 @@ public class CursoBD {
             return false;
         }
     }
-    
+
+    // Listar cursos por estudiante
     public List<Curso> listarCursosPorEstudiante(int idUsuario) {
         List<Curso> lista = new ArrayList<>();
         String sql = """
@@ -141,19 +129,23 @@ public class CursoBD {
             ps.setInt(1, idUsuario);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
-                    int idCurso = rs.getInt("idCurso");
-                    String nombreCurso = rs.getString("nombre");
-
-                    Usuario docente = usuarioBD.obtenerUsuario(rs.getInt("idDocente"));
-                    Aula aula = aulaBD.obtenerAula(rs.getInt("idAula"));
-
-                    Curso curso = new Curso(idCurso, nombreCurso, docente, aula);
-                    lista.add(curso);
+                    lista.add(mapearCurso(rs));
                 }
             }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
         return lista;
+    }
+
+    // Método auxiliar para mapear un ResultSet a un objeto Curso
+    private Curso mapearCurso(ResultSet rs) throws SQLException {
+        int idCurso = rs.getInt("idCurso");
+        String nombreCurso = rs.getString("nombre");
+        Usuario docente = usuarioBD.obtenerUsuario(rs.getInt("idDocente"));
+        Aula aula = aulaBD.obtenerAula(rs.getInt("idAula"));
+        return new Curso(idCurso, nombreCurso, docente, aula);
     }
 }

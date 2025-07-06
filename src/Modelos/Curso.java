@@ -1,14 +1,19 @@
 package Modelos;
 
+/**
+ * Representa un curso que imparte un docente en un aula determinada.
+ */
 public class Curso {
     private int idCurso;
     private String nombre;
     private Usuario docente;
     private Aula aula;
 
+    // Grado y sección opcionales, útiles cuando no se accede directamente al objeto Aula
     private int grado;
     private String seccion;
 
+    // Constructores
     public Curso() {}
 
     public Curso(int idCurso, String nombre, Usuario docente, Aula aula) {
@@ -18,6 +23,7 @@ public class Curso {
         this.aula = aula;
     }
 
+    // Getters y setters
     public int getIdCurso() {
         return idCurso;
     }
@@ -50,7 +56,6 @@ public class Curso {
         this.aula = aula;
     }
 
-    // Métodos agregados para grado y seccion
     public int getGrado() {
         return grado;
     }
@@ -69,6 +74,6 @@ public class Curso {
 
     @Override
     public String toString() {
-        return nombre;
+        return nombre + " (" + grado + "° " + (seccion != null ? seccion : "") + ")";
     }
 }

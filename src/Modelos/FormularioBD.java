@@ -4,16 +4,24 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Clase que maneja operaciones CRUD sobre Formularios y sus Preguntas.
+ */
 public class FormularioBD {
-    private Connection conexion;
+    private final Connection conexion;
 
     public FormularioBD(Connection conexion) {
         this.conexion = conexion;
     }
 
+    // ---------- INSERTAR FORMULARIO Y PREGUNTAS ----------
     public boolean insertarFormularioYPreguntas(Formulario formulario, List<PreguntaFormulario> preguntas) {
         try {
-            String sqlFormulario = "INSERT INTO Formulario (nombreFor, tema, video_url, idCurso) OUTPUT INSERTED.idFor VALUES (?, ?, ?, ?)";
+            String sqlFormulario = """
+                INSERT INTO Formulario (nombreFor, tema, video_url, idCurso)
+                OUTPUT INSERTED.idFor
+                VALUES (?, ?, ?, ?)
+            """;
             PreparedStatement psFormulario = conexion.prepareStatement(sqlFormulario);
             psFormulario.setString(1, formulario.getNombreFor());
             psFormulario.setString(2, formulario.getTema());
@@ -21,15 +29,15 @@ public class FormularioBD {
             psFormulario.setInt(4, formulario.getIdCurso());
 
             ResultSet rs = psFormulario.executeQuery();
-            int idFormulario = -1;
+            if (!rs.next()) return false;
 
-            if (rs.next()) {
-                idFormulario = rs.getInt("idFor");
-            } else {
-                return false;
-            }
+            int idFormulario = rs.getInt("idFor");
 
-            String sqlPregunta = "INSERT INTO PreguntaFormulario (idFormulario, nroPregunta, pregunta, opcion1, opcion2, opcion3, opcion4, respuestaCorrecta) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            String sqlPregunta = """
+                INSERT INTO PreguntaFormulario
+                (idFormulario, nroPregunta, pregunta, opcion1, opcion2, opcion3, opcion4, respuestaCorrecta)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """;
             PreparedStatement psPregunta = conexion.prepareStatement(sqlPregunta);
 
             for (PreguntaFormulario pf : preguntas) {
@@ -46,183 +54,83 @@ public class FormularioBD {
 
             psPregunta.executeBatch();
             return true;
-
-        } catch (Exception e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
 
+    // ---------- OBTENER FORMULARIO Y PREGUNTAS ----------
     public Formulario obtenerFormularioPorId(int idFormulario) throws SQLException {
         String sql = "SELECT * FROM Formulario WHERE idFor = ?";
-        PreparedStatement ps = conexion.prepareStatement(sql);
-        ps.setInt(1, idFormulario);
-        ResultSet rs = ps.executeQuery();
-
-        if (rs.next()) {
-            Formulario f = new Formulario();
-            f.setIdFor(rs.getInt("idFor"));
-            f.setNombreFor(rs.getString("nombreFor"));
-            f.setTema(rs.getString("tema"));
-            f.setVideoUrl(rs.getString("video_url"));
-            f.setIdCurso(rs.getInt("idCurso"));
-            return f;
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setInt(1, idFormulario);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return cargarFormulario(rs);
+            }
         }
         return null;
-    }
-
-    public List<Formulario> obtenerTodosFormularios() throws SQLException {
-        List<Formulario> lista = new ArrayList<>();
-        String sql = "SELECT * FROM Formulario";
-        Statement stmt = conexion.createStatement();
-        ResultSet rs = stmt.executeQuery(sql);
-
-        while (rs.next()) {
-            Formulario f = new Formulario();
-            f.setIdFor(rs.getInt("idFor"));
-            f.setNombreFor(rs.getString("nombreFor"));
-            f.setTema(rs.getString("tema"));
-            f.setVideoUrl(rs.getString("video_url"));
-            f.setIdCurso(rs.getInt("idCurso"));
-            lista.add(f);
-        }
-        return lista;
-    }
-
-    public List<Formulario> obtenerFormulariosPorCurso(int idCurso) throws SQLException {
-        List<Formulario> lista = new ArrayList<>();
-        String sql = "SELECT * FROM Formulario WHERE idCurso = ?";
-        PreparedStatement ps = conexion.prepareStatement(sql);
-        ps.setInt(1, idCurso);
-        ResultSet rs = ps.executeQuery();
-
-        while (rs.next()) {
-            Formulario f = new Formulario();
-            f.setIdFor(rs.getInt("idFor"));
-            f.setNombreFor(rs.getString("nombreFor"));
-            f.setTema(rs.getString("tema"));
-            f.setVideoUrl(rs.getString("video_url"));
-            f.setIdCurso(rs.getInt("idCurso"));
-            lista.add(f);
-        }
-        return lista;
     }
 
     public List<PreguntaFormulario> obtenerPreguntas(int idFormulario) throws SQLException {
         List<PreguntaFormulario> lista = new ArrayList<>();
         String sql = "SELECT * FROM PreguntaFormulario WHERE idFormulario = ? ORDER BY nroPregunta";
-        PreparedStatement ps = conexion.prepareStatement(sql);
-        ps.setInt(1, idFormulario);
-        ResultSet rs = ps.executeQuery();
-
-        while (rs.next()) {
-            lista.add(new PreguntaFormulario(
-                rs.getInt("nroPregunta"),
-                rs.getString("pregunta"),
-                rs.getString("opcion1"),
-                rs.getString("opcion2"),
-                rs.getString("opcion3"),
-                rs.getString("opcion4"),
-                rs.getString("respuestaCorrecta")
-            ));
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setInt(1, idFormulario);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                lista.add(new PreguntaFormulario(
+                    rs.getInt("nroPregunta"),
+                    rs.getString("pregunta"),
+                    rs.getString("opcion1"),
+                    rs.getString("opcion2"),
+                    rs.getString("opcion3"),
+                    rs.getString("opcion4"),
+                    rs.getString("respuestaCorrecta")
+                ));
+            }
         }
         return lista;
     }
 
-    public boolean eliminarFormularioYPreguntas(int idFormulario) {
-        try {
-            String sqlResultados = "DELETE FROM ResultadoPractica WHERE idFormulario = ?";
-            PreparedStatement psResultados = conexion.prepareStatement(sqlResultados);
-            psResultados.setInt(1, idFormulario);
-            int res = psResultados.executeUpdate();
-            System.out.println("Resultados eliminados: " + res);
-
-            String sqlPreguntas = "DELETE FROM PreguntaFormulario WHERE idFormulario = ?";
-            PreparedStatement psPreguntas = conexion.prepareStatement(sqlPreguntas);
-            psPreguntas.setInt(1, idFormulario);
-            int filasPreguntas = psPreguntas.executeUpdate();
-            System.out.println("Preguntas eliminadas: " + filasPreguntas);
-
-
-            String sqlFormulario = "DELETE FROM Formulario WHERE idFor = ?";
-            PreparedStatement psFormulario = conexion.prepareStatement(sqlFormulario);
-            psFormulario.setInt(1, idFormulario);
-            int filasFormulario = psFormulario.executeUpdate();
-            System.out.println("Formulario eliminado: " + filasFormulario);
-
-            return filasFormulario > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        return false;
-        }
-    }
-
-    public boolean actualizarFormularioYPreguntas(Formulario formulario, List<PreguntaFormulario> preguntas) {
-        try {
-            String updateFormulario = "UPDATE Formulario SET nombreFor = ?, tema = ?, video_url = ?, idCurso = ? WHERE idFor = ?";
-            PreparedStatement stmtFormulario = conexion.prepareStatement(updateFormulario);
-            stmtFormulario.setString(1, formulario.getNombreFor());
-            stmtFormulario.setString(2, formulario.getTema());
-            stmtFormulario.setString(3, formulario.getVideoUrl());
-            stmtFormulario.setInt(4, formulario.getIdCurso());
-            stmtFormulario.setInt(5, formulario.getIdFor());
-            stmtFormulario.executeUpdate();
-
-            String deletePreguntas = "DELETE FROM PreguntaFormulario WHERE idFormulario = ?";
-            PreparedStatement stmtDelete = conexion.prepareStatement(deletePreguntas);
-            stmtDelete.setInt(1, formulario.getIdFor());
-            stmtDelete.executeUpdate();
-
-            String insertPregunta = "INSERT INTO PreguntaFormulario (idFormulario, nroPregunta, pregunta, opcion1, opcion2, opcion3, opcion4, respuestaCorrecta) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-            PreparedStatement stmtInsert = conexion.prepareStatement(insertPregunta);
-            for (PreguntaFormulario p : preguntas) {
-                stmtInsert.setInt(1, formulario.getIdFor());
-                stmtInsert.setInt(2, p.getNroPregunta());
-                stmtInsert.setString(3, p.getPregunta());
-                stmtInsert.setString(4, p.getOpcion1());
-                stmtInsert.setString(5, p.getOpcion2());
-                stmtInsert.setString(6, p.getOpcion3());
-                stmtInsert.setString(7, p.getOpcion4());
-                stmtInsert.setString(8, p.getRespuestaCorrecta());
-                stmtInsert.addBatch();
-            }
-            stmtInsert.executeBatch();
-
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-    
-    public List<Formulario> obtenerFormulariosPorDocente(int idDocente) throws SQLException {
+    // ---------- LISTAR FORMULARIOS ----------
+    public List<Formulario> obtenerTodosFormularios() throws SQLException {
         List<Formulario> lista = new ArrayList<>();
+        String sql = "SELECT * FROM Formulario";
+        try (Statement stmt = conexion.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                lista.add(cargarFormulario(rs));
+            }
+        }
+        return lista;
+    }
+
+    public List<Formulario> obtenerFormulariosPorCurso(int idCurso) throws SQLException {
+        return obtenerFormulariosPorCondicion("WHERE idCurso = ?", ps -> ps.setInt(1, idCurso));
+    }
+
+    public List<Formulario> obtenerFormulariosPorDocente(int idDocente) throws SQLException {
         String sql = """
             SELECT f.*
             FROM Formulario f
             JOIN Curso c ON f.idCurso = c.idCurso
             WHERE c.idDocente = ?
-            ORDER BY f.idFor;
+            ORDER BY f.idFor
         """;
-
-        PreparedStatement ps = conexion.prepareStatement(sql);
-        ps.setInt(1, idDocente);
-        ResultSet rs = ps.executeQuery();
-
-        while (rs.next()) {
-            Formulario f = new Formulario();
-            f.setIdFor(rs.getInt("idFor"));
-            f.setNombreFor(rs.getString("nombreFor"));
-            f.setTema(rs.getString("tema"));
-            f.setVideoUrl(rs.getString("video_url"));
-            f.setIdCurso(rs.getInt("idCurso"));
-            lista.add(f);
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setInt(1, idDocente);
+            ResultSet rs = ps.executeQuery();
+            List<Formulario> lista = new ArrayList<>();
+            while (rs.next()) {
+                lista.add(cargarFormulario(rs));
+            }
+            return lista;
         }
-
-        return lista;
     }
+
     public List<Formulario> obtenerFormulariosPorEstudiante(int idEstudiante) throws SQLException {
-        List<Formulario> lista = new ArrayList<>();
         String sql = """
             SELECT f.*
             FROM Formulario f
@@ -230,26 +138,18 @@ public class FormularioBD {
             JOIN AulaUsuario au ON au.idAula = c.idAula
             WHERE au.idUsuario = ?
         """;
-
-        PreparedStatement ps = conexion.prepareStatement(sql);
-        ps.setInt(1, idEstudiante);
-        ResultSet rs = ps.executeQuery();
-
-        while (rs.next()) {
-            Formulario f = new Formulario();
-            f.setIdFor(rs.getInt("idFor"));
-            f.setNombreFor(rs.getString("nombreFor"));
-            f.setTema(rs.getString("tema"));
-            f.setVideoUrl(rs.getString("video_url"));
-            f.setIdCurso(rs.getInt("idCurso"));
-            lista.add(f);
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setInt(1, idEstudiante);
+            ResultSet rs = ps.executeQuery();
+            List<Formulario> lista = new ArrayList<>();
+            while (rs.next()) {
+                lista.add(cargarFormulario(rs));
+            }
+            return lista;
         }
-
-        return lista;
     }
-    
+
     public List<Formulario> obtenerFormulariosPorUsuarioYCurso(int idUsuario, int idCurso) throws SQLException {
-        List<Formulario> lista = new ArrayList<>();
         String sql = """
             SELECT f.*
             FROM Formulario f
@@ -257,23 +157,107 @@ public class FormularioBD {
             JOIN AulaUsuario au ON au.idAula = c.idAula
             WHERE au.idUsuario = ? AND f.idCurso = ?
         """;
-
-        PreparedStatement ps = conexion.prepareStatement(sql);
-        ps.setInt(1, idUsuario);
-        ps.setInt(2, idCurso);
-
-        ResultSet rs = ps.executeQuery();
-        while (rs.next()) {
-            Formulario f = new Formulario();
-            f.setIdFor(rs.getInt("idFor"));
-            f.setNombreFor(rs.getString("nombreFor"));
-            f.setTema(rs.getString("tema"));
-            f.setVideoUrl(rs.getString("video_url"));
-            f.setIdCurso(rs.getInt("idCurso"));
-            lista.add(f);
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setInt(1, idUsuario);
+            ps.setInt(2, idCurso);
+            ResultSet rs = ps.executeQuery();
+            List<Formulario> lista = new ArrayList<>();
+            while (rs.next()) {
+                lista.add(cargarFormulario(rs));
+            }
+            return lista;
         }
+    }
 
+    // ---------- ACTUALIZAR Y ELIMINAR ----------
+    public boolean actualizarFormularioYPreguntas(Formulario formulario, List<PreguntaFormulario> preguntas) {
+        try {
+            String sqlUpdate = "UPDATE Formulario SET nombreFor = ?, tema = ?, video_url = ?, idCurso = ? WHERE idFor = ?";
+            PreparedStatement ps = conexion.prepareStatement(sqlUpdate);
+            ps.setString(1, formulario.getNombreFor());
+            ps.setString(2, formulario.getTema());
+            ps.setString(3, formulario.getVideoUrl());
+            ps.setInt(4, formulario.getIdCurso());
+            ps.setInt(5, formulario.getIdFor());
+            ps.executeUpdate();
+
+            // Borrar preguntas anteriores
+            String sqlDelete = "DELETE FROM PreguntaFormulario WHERE idFormulario = ?";
+            try (PreparedStatement psDel = conexion.prepareStatement(sqlDelete)) {
+                psDel.setInt(1, formulario.getIdFor());
+                psDel.executeUpdate();
+            }
+
+            // Insertar nuevas preguntas
+            String sqlInsert = """
+                INSERT INTO PreguntaFormulario (idFormulario, nroPregunta, pregunta, opcion1, opcion2, opcion3, opcion4, respuestaCorrecta)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """;
+            PreparedStatement psInsert = conexion.prepareStatement(sqlInsert);
+            for (PreguntaFormulario pf : preguntas) {
+                psInsert.setInt(1, formulario.getIdFor());
+                psInsert.setInt(2, pf.getNroPregunta());
+                psInsert.setString(3, pf.getPregunta());
+                psInsert.setString(4, pf.getOpcion1());
+                psInsert.setString(5, pf.getOpcion2());
+                psInsert.setString(6, pf.getOpcion3());
+                psInsert.setString(7, pf.getOpcion4());
+                psInsert.setString(8, pf.getRespuestaCorrecta());
+                psInsert.addBatch();
+            }
+            psInsert.executeBatch();
+            return true;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public boolean eliminarFormularioYPreguntas(int idFormulario) {
+        try {
+            ejecutarDelete("DELETE FROM ResultadoPractica WHERE idFormulario = ?", idFormulario);
+            ejecutarDelete("DELETE FROM PreguntaFormulario WHERE idFormulario = ?", idFormulario);
+            return ejecutarDelete("DELETE FROM Formulario WHERE idFor = ?", idFormulario) > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // ---------- MÉTODOS DE APOYO ----------
+    private Formulario cargarFormulario(ResultSet rs) throws SQLException {
+        Formulario f = new Formulario();
+        f.setIdFor(rs.getInt("idFor"));
+        f.setNombreFor(rs.getString("nombreFor"));
+        f.setTema(rs.getString("tema"));
+        f.setVideoUrl(rs.getString("video_url"));
+        f.setIdCurso(rs.getInt("idCurso"));
+        return f;
+    }
+
+    private List<Formulario> obtenerFormulariosPorCondicion(String condicion, ParamSetter setter) throws SQLException {
+        List<Formulario> lista = new ArrayList<>();
+        String sql = "SELECT * FROM Formulario " + condicion;
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            setter.set(ps);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                lista.add(cargarFormulario(rs));
+            }
+        }
         return lista;
     }
-    
+
+    private int ejecutarDelete(String sql, int id) throws SQLException {
+        try (PreparedStatement ps = conexion.prepareStatement(sql)) {
+            ps.setInt(1, id);
+            return ps.executeUpdate();
+        }
+    }
+
+    @FunctionalInterface
+    private interface ParamSetter {
+        void set(PreparedStatement ps) throws SQLException;
+    }
 }

@@ -19,71 +19,85 @@ public class CursoDocente extends ComplementosFrameDocente {
         add(crearPanelIzquierdo());
         add(crearPanelDerecho("BIENVENIDO A MICOLEDIGITAL"));
 
+        inicializarContenedorCursos();
+        cargarCursosDesdeBD();
+
+        panelDerecho.add(contenedorCursos);
+        setVisible(true);
+    }
+
+    private void inicializarContenedorCursos() {
         contenedorCursos = new JPanel();
         contenedorCursos.setLayout(new BoxLayout(contenedorCursos, BoxLayout.Y_AXIS));
         contenedorCursos.setBounds(200, 160, 600, 400);
         contenedorCursos.setBackground(Color.WHITE);
         contenedorCursos.setOpaque(false);
+    }
 
-        try {
-            ConexionBD conexion = new ConexionBD();
-            Connection conn = conexion.obtenerConexion();
+    private void cargarCursosDesdeBD() {
+        String sql = """
+            SELECT c.idCurso, c.nombre AS nombreCurso, a.grado, a.seccion
+            FROM Curso c
+            JOIN Aula a ON c.idAula = a.idAula
+            WHERE c.idDocente = ?
+        """;
 
-            String sql = "SELECT c.idCurso, c.nombre AS nombreCurso, a.grado, a.seccion " +
-                         "FROM Curso c " +
-                         "JOIN Aula a ON c.idAula = a.idAula " +
-                         "WHERE c.idDocente = ?";
-            PreparedStatement ps = conn.prepareStatement(sql);
+        try (Connection conn = new ConexionBD().obtenerConexion();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
             ps.setInt(1, usuario.getIdUsuario());
-
             ResultSet rs = ps.executeQuery();
-            int y = 0;
+
+            boolean tieneCursos = false;
 
             while (rs.next()) {
+                tieneCursos = true;
                 int idCurso = rs.getInt("idCurso");
                 String nombreCurso = rs.getString("nombreCurso");
                 int grado = rs.getInt("grado");
                 String seccion = rs.getString("seccion");
 
-                String textoBoton = nombreCurso + " - " + grado + "°" + seccion;
-
-                JButton btnCurso = new JButton(textoBoton);
-                btnCurso.setAlignmentX(Component.CENTER_ALIGNMENT);
-                btnCurso.setMaximumSize(new Dimension(400, 80));
-                btnCurso.setBackground(new Color(254, 234, 157));
-                btnCurso.setFont(new Font("SansSerif", Font.BOLD, 16));
-
-                btnCurso.addActionListener(e -> {
-                    Curso curso = new Curso();
-                    curso.setIdCurso(idCurso);
-                    curso.setNombre(nombreCurso);
-                    curso.setGrado(grado);     
-                    curso.setSeccion(seccion);
-
-                    new ContenidoDocente(usuario, curso).setVisible(true);
-                    dispose();
-                });
-
+                JButton btnCurso = crearBotonCurso(idCurso, nombreCurso, grado, seccion);
                 contenedorCursos.add(Box.createRigidArea(new Dimension(0, 20)));
                 contenedorCursos.add(btnCurso);
-                y += 100;
             }
 
-            if (y == 0) {
+            if (!tieneCursos) {
                 JLabel lbl = new JLabel("No tienes cursos asignados.");
                 lbl.setFont(new Font("SansSerif", Font.BOLD, 18));
                 lbl.setAlignmentX(Component.CENTER_ALIGNMENT);
                 contenedorCursos.add(lbl);
             }
 
-            rs.close();
-            ps.close();
-            conn.close();
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al cargar cursos del docente: " + e.getMessage());
+            mostrarError("Error al cargar cursos del docente: " + e.getMessage());
         }
+    }
 
-        panelDerecho.add(contenedorCursos);
-        setVisible(true);
+    private JButton crearBotonCurso(int idCurso, String nombre, int grado, String seccion) {
+        String texto = nombre + " - " + grado + "°" + seccion;
+
+        JButton btn = new JButton(texto);
+        btn.setAlignmentX(Component.CENTER_ALIGNMENT);
+        btn.setMaximumSize(new Dimension(400, 80));
+        btn.setBackground(new Color(254, 234, 157));
+        btn.setFont(new Font("SansSerif", Font.BOLD, 16));
+
+        btn.addActionListener(e -> {
+            Curso curso = new Curso();
+            curso.setIdCurso(idCurso);
+            curso.setNombre(nombre);
+            curso.setGrado(grado);
+            curso.setSeccion(seccion);
+
+            new ContenidoDocente(usuario, curso).setVisible(true);
+            dispose();
+        });
+
+        return btn;
+    }
+
+    private void mostrarError(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje, "Error", JOptionPane.ERROR_MESSAGE);
     }
 }

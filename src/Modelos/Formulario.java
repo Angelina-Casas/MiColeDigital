@@ -1,12 +1,19 @@
 package Modelos;
 
+/**
+ * Clase que representa un formulario/práctica con metadatos generales
+ * y una pregunta asociada.
+ */
 public class Formulario {
+
+    // Atributos del formulario
     private int idFor;
     private String nombreFor;
     private String tema;
     private String videoUrl;
     private int idCurso;
 
+    // Atributos de la pregunta
     private int nroPregunta;
     private String pregunta;
     private String opcion1;
@@ -15,6 +22,7 @@ public class Formulario {
     private String opcion4;
     private String respuestaCorrecta;
 
+    // Constructores
     public Formulario() {}
 
     public Formulario(String nombreFor, String tema, String videoUrl) {
@@ -24,18 +32,15 @@ public class Formulario {
     }
 
     public Formulario(String nombreFor, String tema, String videoUrl, int idCurso) {
-        this.nombreFor = nombreFor;
-        this.tema = tema;
-        this.videoUrl = videoUrl;
+        this(nombreFor, tema, videoUrl);
         this.idCurso = idCurso;
     }
 
-    public Formulario(String nombreFor, String tema, String videoUrl, 
-            int nroPregunta, String pregunta, String opcion1, String opcion2, 
-            String opcion3, String opcion4, String respuestaCorrecta) {
-        this.nombreFor = nombreFor;
-        this.tema = tema;
-        this.videoUrl = videoUrl;
+    public Formulario(String nombreFor, String tema, String videoUrl,
+                      int nroPregunta, String pregunta, String opcion1,
+                      String opcion2, String opcion3, String opcion4,
+                      String respuestaCorrecta) {
+        this(nombreFor, tema, videoUrl);
         this.nroPregunta = nroPregunta;
         this.pregunta = pregunta;
         this.opcion1 = opcion1;
@@ -45,40 +50,100 @@ public class Formulario {
         this.respuestaCorrecta = respuestaCorrecta;
     }
 
-    // Getters y Setters
-    public int getIdFor() { return idFor; }
-    public void setIdFor(int idFor) { this.idFor = idFor; }
+    // Getters y setters
+    public int getIdFor() {
+        return idFor;
+    }
 
-    public String getNombreFor() { return nombreFor; }
-    public void setNombreFor(String nombreFor) { this.nombreFor = nombreFor; }
+    public void setIdFor(int idFor) {
+        this.idFor = idFor;
+    }
 
-    public String getTema() { return tema; }
-    public void setTema(String tema) { this.tema = tema; }
+    public String getNombreFor() {
+        return nombreFor;
+    }
 
-    public String getVideoUrl() { return videoUrl; }
-    public void setVideoUrl(String videoUrl) { this.videoUrl = videoUrl; }
+    public void setNombreFor(String nombreFor) {
+        this.nombreFor = nombreFor;
+    }
 
-    public int getIdCurso() { return idCurso; }
-    public void setIdCurso(int idCurso) { this.idCurso = idCurso; }
+    public String getTema() {
+        return tema;
+    }
 
-    public int getNroPregunta() { return nroPregunta; }
-    public void setNroPregunta(int nroPregunta) { this.nroPregunta = nroPregunta; }
+    public void setTema(String tema) {
+        this.tema = tema;
+    }
 
-    public String getPregunta() { return pregunta; }
-    public void setPregunta(String pregunta) { this.pregunta = pregunta; }
+    public String getVideoUrl() {
+        return videoUrl;
+    }
 
-    public String getOpcion1() { return opcion1; }
-    public void setOpcion1(String opcion1) { this.opcion1 = opcion1; }
+    public void setVideoUrl(String videoUrl) {
+        this.videoUrl = videoUrl;
+    }
 
-    public String getOpcion2() { return opcion2; }
-    public void setOpcion2(String opcion2) { this.opcion2 = opcion2; }
+    public int getIdCurso() {
+        return idCurso;
+    }
 
-    public String getOpcion3() { return opcion3; }
-    public void setOpcion3(String opcion3) { this.opcion3 = opcion3; }
+    public void setIdCurso(int idCurso) {
+        this.idCurso = idCurso;
+    }
 
-    public String getOpcion4() { return opcion4; }
-    public void setOpcion4(String opcion4) { this.opcion4 = opcion4; }
+    public int getNroPregunta() {
+        return nroPregunta;
+    }
 
-    public String getRespuestaCorrecta() { return respuestaCorrecta; }
-    public void setRespuestaCorrecta(String respuestaCorrecta) { this.respuestaCorrecta = respuestaCorrecta; }
+    public void setNroPregunta(int nroPregunta) {
+        this.nroPregunta = nroPregunta;
+    }
+
+    public String getPregunta() {
+        return pregunta;
+    }
+
+    public void setPregunta(String pregunta) {
+        this.pregunta = pregunta;
+    }
+
+    public String getOpcion1() {
+        return opcion1;
+    }
+
+    public void setOpcion1(String opcion1) {
+        this.opcion1 = opcion1;
+    }
+
+    public String getOpcion2() {
+        return opcion2;
+    }
+
+    public void setOpcion2(String opcion2) {
+        this.opcion2 = opcion2;
+    }
+
+    public String getOpcion3() {
+        return opcion3;
+    }
+
+    public void setOpcion3(String opcion3) {
+        this.opcion3 = opcion3;
+    }
+
+    public String getOpcion4() {
+        return opcion4;
+    }
+
+    public void setOpcion4(String opcion4) {
+        this.opcion4 = opcion4;
+    }
+
+    public String getRespuestaCorrecta() {
+        return respuestaCorrecta;
+    }
+
+    public void setRespuestaCorrecta(String respuestaCorrecta) {
+        this.respuestaCorrecta = respuestaCorrecta;
+    }
 }

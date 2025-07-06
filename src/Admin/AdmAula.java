@@ -7,13 +7,12 @@ import Modelos.AulaBD;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.util.List;
 
 public class AdmAula extends BaseFrame {
     private JTextField txtGrado, txtSeccion;
     private JTable tablaAulas;
-    private AulaBD aulaBD = new AulaBD();
-    private Usuario usuario;
+    private final AulaBD aulaBD = new AulaBD();
+    private final Usuario usuario;
 
     public AdmAula(Usuario usuario) {
         this.usuario = usuario;
@@ -22,11 +21,23 @@ public class AdmAula extends BaseFrame {
 
     @Override
     protected void initContenido() {
+        agregarLabelBienvenida();
+        agregarCamposEntrada();
+        agregarBotones();
+        agregarTablaAulas();
+        agregarBotonRegresar();
+        cargarAulas();
+    }
+
+    // Sección: UI Components
+    private void agregarLabelBienvenida() {
         JLabel lblBienvenida = new JLabel("Bienvenido, " + usuario.getNombre());
         lblBienvenida.setFont(new Font("Serif", Font.BOLD, 16));
         lblBienvenida.setBounds(20, 20, 400, 25);
         panelContenido.add(lblBienvenida);
+    }
 
+    private void agregarCamposEntrada() {
         JLabel lblGrado = new JLabel("Grado:");
         lblGrado.setBounds(90, 80, 100, 30);
         lblGrado.setFont(new Font("Arial", Font.BOLD, 14));
@@ -44,69 +55,31 @@ public class AdmAula extends BaseFrame {
         txtSeccion = new JTextField();
         txtSeccion.setBounds(90, 175, 180, 28);
         panelContenido.add(txtSeccion);
+    }
 
-        int btnWidth = 160;
-        int btnHeight = 30;
-        int xBtn = 100;
-        int startY = 275;
-        int gap = 50;
+    private void agregarBotones() {
+        int x = 100, y = 275, w = 160, h = 30, gap = 50;
 
-        JButton btnVerEstudiantes = new JButton("VER ESTUDIANTES");
-        btnVerEstudiantes.setBounds(xBtn, startY, btnWidth, btnHeight);
-        btnVerEstudiantes.setBackground(new Color(255, 249, 200));
-        panelContenido.add(btnVerEstudiantes);
-        btnVerEstudiantes.addActionListener(e -> {
-            int fila = tablaAulas.getSelectedRow();
-            if (fila != -1) {
-                int idAula = (int) tablaAulas.getValueAt(fila, 0);
-                Aula aulaSeleccionada = aulaBD.obtenerAula(idAula);
-                if (aulaSeleccionada != null) {
-                    new VerEstudiantes(aulaSeleccionada, usuario).setVisible(true);
-                    dispose();
-                } else {
-                    JOptionPane.showMessageDialog(this, "No se pudo encontrar el aula.");
-                }
-            } else {
-                JOptionPane.showMessageDialog(this, "Selecciona un aula primero.");
-            }
-        });
+        agregarBoton("VER ESTUDIANTES", x, y, w, h, new Color(255, 249, 200), e -> verEstudiantes());
+        agregarBoton("AGREGAR", x, y + gap, w, h, new Color(144, 238, 144), e -> agregarAula());
+        agregarBoton("EDITAR", x, y + 2 * gap, w, h, new Color(173, 216, 230), e -> editarAula());
+        agregarBoton("ELIMINAR", x, y + 3 * gap, w, h, new Color(255, 102, 102), e -> eliminarAula());
+    }
 
-        JButton btnAgregar = new JButton("AGREGAR");
-        btnAgregar.setBounds(xBtn, startY + gap, btnWidth, btnHeight);
-        btnAgregar.setBackground(new Color(144, 238, 144));
-        btnAgregar.addActionListener(e -> agregarAula());
-        panelContenido.add(btnAgregar);
+    private void agregarBoton(String texto, int x, int y, int w, int h, Color color, java.awt.event.ActionListener accion) {
+        JButton boton = new JButton(texto);
+        boton.setBounds(x, y, w, h);
+        boton.setBackground(color);
+        boton.addActionListener(accion);
+        panelContenido.add(boton);
+    }
 
-        JButton btnEditar = new JButton("EDITAR");
-        btnEditar.setBounds(xBtn, startY + 2 * gap, btnWidth, btnHeight);
-        btnEditar.setBackground(new Color(173, 216, 230));
-        btnEditar.addActionListener(e -> editarAula());
-        panelContenido.add(btnEditar);
-
-        JButton btnEliminar = new JButton("ELIMINAR");
-        btnEliminar.setBounds(xBtn, startY + 3 * gap, btnWidth, btnHeight);
-        btnEliminar.setBackground(new Color(255, 102, 102));
-        btnEliminar.addActionListener(e -> eliminarAula());
-        panelContenido.add(btnEliminar);
-
-        tablaAulas = new JTable(new DefaultTableModel(
-            new Object[][] {},
-            new String[] {"ID", "Grado", "Sección"}
-        ));
+    private void agregarTablaAulas() {
+        tablaAulas = new JTable(new DefaultTableModel(new Object[][]{}, new String[]{"ID", "Grado", "Sección"}));
         tablaAulas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        JScrollPane scrollLista = new JScrollPane(tablaAulas);
-        scrollLista.setBounds(380, 80, 740, 380);
-        panelContenido.add(scrollLista);
-
-        JButton btnRegresar = new JButton("REGRESAR");
-        btnRegresar.setBounds(1000, 500, 120, 35);
-        btnRegresar.setBackground(new Color(39,87,117)); 
-        btnRegresar.setForeground(Color.WHITE);
-        btnRegresar.addActionListener(e -> {
-            new MenuAdm(usuario).setVisible(true);
-            dispose();
-        });
-        panelContenido.add(btnRegresar);
+        JScrollPane scroll = new JScrollPane(tablaAulas);
+        scroll.setBounds(380, 80, 740, 380);
+        panelContenido.add(scroll);
 
         tablaAulas.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
@@ -118,20 +91,42 @@ public class AdmAula extends BaseFrame {
                 }
             }
         });
-
-        cargarAulas();
     }
 
+    private void agregarBotonRegresar() {
+        JButton btnRegresar = new JButton("REGRESAR");
+        btnRegresar.setBounds(1000, 500, 120, 35);
+        btnRegresar.setBackground(new Color(39, 87, 117));
+        btnRegresar.setForeground(Color.WHITE);
+        btnRegresar.addActionListener(e -> {
+            new MenuAdm(usuario).setVisible(true);
+            dispose();
+        });
+        panelContenido.add(btnRegresar);
+    }
+
+    // Sección: Lógica de negocio
     private void cargarAulas() {
         DefaultTableModel model = (DefaultTableModel) tablaAulas.getModel();
         model.setRowCount(0);
-        List<Aula> lista = aulaBD.listarAulas();
-        for (Aula a : lista) {
-            model.addRow(new Object[]{
-                a.getIdAula(),
-                a.getGrado(),
-                a.getSeccion()
-            });
+        for (Aula a : aulaBD.listarAulas()) {
+            model.addRow(new Object[]{a.getIdAula(), a.getGrado(), a.getSeccion()});
+        }
+    }
+
+    private void verEstudiantes() {
+        int fila = tablaAulas.getSelectedRow();
+        if (fila != -1) {
+            int idAula = (int) tablaAulas.getValueAt(fila, 0);
+            Aula aula = aulaBD.obtenerAula(idAula);
+            if (aula != null) {
+                new VerEstudiantes(aula, usuario).setVisible(true);
+                dispose();
+            } else {
+                mostrarMensaje("No se pudo encontrar el aula.");
+            }
+        } else {
+            mostrarMensaje("Selecciona un aula primero.");
         }
     }
 
@@ -142,11 +137,11 @@ public class AdmAula extends BaseFrame {
             int grado = Integer.parseInt(gradoStr);
             Aula aula = new Aula(-1, grado, seccion);
             if (aulaBD.insertarAula(aula)) {
-                JOptionPane.showMessageDialog(this, "Aula agregada exitosamente.");
+                mostrarMensaje("Aula agregada exitosamente.");
                 limpiarCampos();
                 cargarAulas();
             } else {
-                JOptionPane.showMessageDialog(this, "Error al agregar aula.");
+                mostrarMensaje("Error al agregar aula.");
             }
         }
     }
@@ -154,7 +149,7 @@ public class AdmAula extends BaseFrame {
     private void editarAula() {
         int fila = tablaAulas.getSelectedRow();
         if (fila == -1) {
-            JOptionPane.showMessageDialog(this, "Selecciona una fila.");
+            mostrarMensaje("Selecciona una fila.");
             return;
         }
         String gradoStr = txtGrado.getText();
@@ -164,11 +159,11 @@ public class AdmAula extends BaseFrame {
             int id = (int) tablaAulas.getValueAt(fila, 0);
             Aula aula = new Aula(id, grado, seccion);
             if (aulaBD.actualizarAula(aula)) {
-                JOptionPane.showMessageDialog(this, "Aula actualizada.");
+                mostrarMensaje("Aula actualizada.");
                 limpiarCampos();
                 cargarAulas();
             } else {
-                JOptionPane.showMessageDialog(this, "Error al actualizar aula.");
+                mostrarMensaje("Error al actualizar aula.");
             }
         }
     }
@@ -176,19 +171,20 @@ public class AdmAula extends BaseFrame {
     private void eliminarAula() {
         int fila = tablaAulas.getSelectedRow();
         if (fila == -1) {
-            JOptionPane.showMessageDialog(this, "Selecciona una fila.");
+            mostrarMensaje("Selecciona una fila.");
             return;
         }
         int id = (int) tablaAulas.getValueAt(fila, 0);
         if (aulaBD.eliminarAula(id)) {
-            JOptionPane.showMessageDialog(this, "Aula eliminada.");
+            mostrarMensaje("Aula eliminada.");
             limpiarCampos();
             cargarAulas();
         } else {
-            JOptionPane.showMessageDialog(this, "Error al eliminar aula.");
+            mostrarMensaje("Error al eliminar aula.");
         }
     }
 
+    // Sección: Helpers
     private void limpiarCampos() {
         txtGrado.setText("");
         txtSeccion.setText("");
@@ -196,25 +192,27 @@ public class AdmAula extends BaseFrame {
 
     private boolean verificarCampos(String gradoStr, String seccion) {
         if (gradoStr.isEmpty() || seccion.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Por favor, complete todos los campos.");
+            mostrarMensaje("Por favor, complete todos los campos.");
             return false;
         }
         try {
             int grado = Integer.parseInt(gradoStr);
-            if (grado > 6 || grado <= 0) {
-                JOptionPane.showMessageDialog(this, "El grado debe estar entre 1 y 6.");
+            if (grado <= 0 || grado > 6) {
+                mostrarMensaje("El grado debe estar entre 1 y 6.");
                 return false;
             }
         } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "El grado debe ser un número entero.");
+            mostrarMensaje("El grado debe ser un número entero.");
             return false;
         }
         if (seccion.length() >= 3) {
-            JOptionPane.showMessageDialog(this, "La sección debe tener máximo 2 caracteres.");
+            mostrarMensaje("La sección debe tener máximo 2 caracteres.");
             return false;
         }
         return true;
     }
+
+    private void mostrarMensaje(String mensaje) {
+        JOptionPane.showMessageDialog(this, mensaje);
+    }
 }
-
-

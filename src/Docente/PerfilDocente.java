@@ -10,9 +10,8 @@ import java.awt.*;
 import java.util.List;
 
 public class PerfilDocente extends ComplementosFrameDocente {
-    private Usuario usuario;
-    private JLabel lblFoto, lblInfoBasica, lblInfoAdicional, lblNombre;
-    private JLabel lblGrado, lblSeccion;
+    private JLabel lblFoto, lblInfoBasica, lblInfoAdicional;
+    private JLabel lblNombre, lblGrado, lblSeccion;
     private JLabel lblNombreValor, lblGradoValor, lblSeccionValor;
     private JTextArea areaCursos;
     private JScrollPane scrollCursos;
@@ -24,35 +23,40 @@ public class PerfilDocente extends ComplementosFrameDocente {
         add(crearPanelIzquierdo());
         add(crearPanelDerecho("BIENVENIDO A MICOLEDIGITAL"));
 
+        inicializarComponentes();
+        cargarDatosDelDocente(usuario.getIdUsuario());
+
+        setVisible(true);
+    }
+
+    private void inicializarComponentes() {
+        crearImagenPerfil();
+        crearEtiquetasTitulos();
+        crearEtiquetasBasicas();
+        crearAreaCursos();
+        crearEtiquetasAdicionales();
+    }
+
+    private void crearImagenPerfil() {
         lblFoto = new JLabel();
         lblFoto.setBounds(460, 170, 180, 180);
         lblFoto.setIcon(new ImageIcon(getClass().getResource("/Img/profesorfoto.png")));
         panelDerecho.add(lblFoto);
+    }
 
-        lblInfoBasica = new JLabel("Información básica");
-        lblInfoBasica.setFont(new Font("Serif", Font.BOLD, 18));
-        lblInfoBasica.setBounds(280, 380, 200, 30);
-        panelDerecho.add(lblInfoBasica);
-        lblInfoAdicional = new JLabel("Información adicional");
-        lblInfoAdicional.setFont(new Font("Serif", Font.BOLD, 18));
-        lblInfoAdicional.setBounds(700, 380, 220, 30);
-        panelDerecho.add(lblInfoAdicional);
+    private void crearEtiquetasTitulos() {
+        lblInfoBasica = crearEtiqueta("Información básica", 280, 380, 200, 30, Font.BOLD, 18);
+        lblInfoAdicional = crearEtiqueta("Información adicional", 700, 380, 220, 30, Font.BOLD, 18);
+    }
 
-        lblNombre = new JLabel("NOMBRE:");
-        lblNombre.setFont(new Font("Serif", Font.BOLD, 14));
-        lblNombre.setBounds(280, 415, 100, 30);
-        panelDerecho.add(lblNombre);
+    private void crearEtiquetasBasicas() {
+        lblNombre = crearEtiqueta("NOMBRE:", 280, 415, 100, 30, Font.BOLD, 14);
+        lblNombreValor = crearEtiqueta(usuario.getNombre(), 380, 415, 300, 30, Font.PLAIN, 14);
 
-        lblNombreValor = new JLabel(usuario.getNombre());
-        lblNombreValor.setFont(new Font("Serif", Font.PLAIN, 14));
-        lblNombreValor.setBounds(380, 415, 300, 30);
-        panelDerecho.add(lblNombreValor);
+        JLabel lblCursos = crearEtiqueta("CURSOS:", 280, 450, 100, 30, Font.BOLD, 14);
+    }
 
-        JLabel lblCursos = new JLabel("CURSOS:");
-        lblCursos.setFont(new Font("Serif", Font.BOLD, 14));
-        lblCursos.setBounds(280, 450, 100, 30);
-        panelDerecho.add(lblCursos);
-
+    private void crearAreaCursos() {
         areaCursos = new JTextArea();
         areaCursos.setFont(new Font("Serif", Font.PLAIN, 14));
         areaCursos.setEditable(false);
@@ -64,40 +68,32 @@ public class PerfilDocente extends ComplementosFrameDocente {
         scrollCursos.setBounds(380, 455, 300, 80);
         scrollCursos.setBorder(null);
         panelDerecho.add(scrollCursos);
+    }
 
-        lblGrado = new JLabel("GRADO:");
-        lblGrado.setFont(new Font("Serif", Font.BOLD, 14));
-        lblGrado.setBounds(700, 415, 100, 30);
-        panelDerecho.add(lblGrado);
+    private void crearEtiquetasAdicionales() {
+        lblGrado = crearEtiqueta("GRADO:", 700, 415, 100, 30, Font.BOLD, 14);
+        lblGradoValor = crearEtiqueta("N/A", 800, 415, 100, 30, Font.PLAIN, 14);
 
-        lblGradoValor = new JLabel("N/A");
-        lblGradoValor.setFont(new Font("Serif", Font.PLAIN, 14));
-        lblGradoValor.setBounds(800, 415, 100, 30);
-        panelDerecho.add(lblGradoValor);
+        lblSeccion = crearEtiqueta("SECCIÓN:", 700, 450, 100, 30, Font.BOLD, 14);
+        lblSeccionValor = crearEtiqueta("N/A", 800, 450, 100, 30, Font.PLAIN, 14);
+    }
 
-        lblSeccion = new JLabel("SECCIÓN:");
-        lblSeccion.setFont(new Font("Serif", Font.BOLD, 14));
-        lblSeccion.setBounds(700, 450, 100, 30);
-        panelDerecho.add(lblSeccion);
-
-        lblSeccionValor = new JLabel("N/A");
-        lblSeccionValor.setFont(new Font("Serif", Font.PLAIN, 14));
-        lblSeccionValor.setBounds(800, 450, 100, 30);
-        panelDerecho.add(lblSeccionValor);
-
-        cargarDatosDelDocente(usuario.getIdUsuario());
-
-        setVisible(true);
+    private JLabel crearEtiqueta(String texto, int x, int y, int w, int h, int estilo, int tamaño) {
+        JLabel lbl = new JLabel(texto);
+        lbl.setFont(new Font("Serif", estilo, tamaño));
+        lbl.setBounds(x, y, w, h);
+        panelDerecho.add(lbl);
+        return lbl;
     }
 
     private void cargarDatosDelDocente(int idDocente) {
         CursoBD cursoBD = new CursoBD();
-        List<Curso> todosLosCursos = cursoBD.listarCurso();
+        List<Curso> cursos = cursoBD.listarCurso();
         StringBuilder cursosTexto = new StringBuilder();
         String grado = null;
         String seccion = null;
 
-        for (Curso curso : todosLosCursos) {
+        for (Curso curso : cursos) {
             if (curso.getDocente() != null && curso.getDocente().getIdUsuario() == idDocente) {
                 cursosTexto.append("- ").append(curso.getNombre()).append("\n");
 
@@ -108,7 +104,7 @@ public class PerfilDocente extends ComplementosFrameDocente {
             }
         }
 
-        areaCursos.setText(cursosTexto.length() == 0 ? "Sin cursos asignados." : cursosTexto.toString());
+        areaCursos.setText(cursosTexto.length() > 0 ? cursosTexto.toString() : "Sin cursos asignados.");
         lblGradoValor.setText(grado != null ? grado : "N/A");
         lblSeccionValor.setText(seccion != null ? seccion : "N/A");
     }
