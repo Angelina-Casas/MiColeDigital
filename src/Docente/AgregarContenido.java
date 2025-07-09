@@ -167,6 +167,9 @@ public class AgregarContenido extends ComplementosFrameDocente {
             if (confirmacion == JOptionPane.OK_OPTION) {
                 actualizarPreguntaDesdeCampos();
                 guardarEnBaseDeDatos();
+                ContenidoDocente contenido = new ContenidoDocente(usuario,curso);
+                contenido.setVisible(true);
+        
             }
         });
         panelDerecho.add(btnGuardar);
