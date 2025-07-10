@@ -124,8 +124,6 @@ public class AdmCurso extends BaseFrame {
         panelContenido.add(scroll);
     }
 
-    // ==== CARGA DE DATOS ====
-
     private void cargarCursos() {
         DefaultTableModel model = (DefaultTableModel) tablaCursos.getModel();
         model.setRowCount(0);
@@ -155,8 +153,6 @@ public class AdmCurso extends BaseFrame {
         cbAula.setSelectedIndex(-1);
     }
 
-    // ==== CRUD ====
-
     private void agregarCurso() {
         String nombre = txtNombre.getText();
         Usuario docente = (Usuario) cbDocente.getSelectedItem();
@@ -173,7 +169,7 @@ public class AdmCurso extends BaseFrame {
             mostrarMensaje("Error al agregar curso.");
         }
     }
-
+    
     private void editarCurso() {
         int fila = tablaCursos.getSelectedRow();
         if (fila == -1) {
@@ -217,8 +213,6 @@ public class AdmCurso extends BaseFrame {
             }
         }
     }
-
-    // ==== UTILS ====
 
     private boolean verificarCampos(String nombre, Usuario docente, Aula aula) {
         if (nombre.isEmpty() || docente == null || aula == null) {

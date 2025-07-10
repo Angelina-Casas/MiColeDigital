@@ -183,7 +183,6 @@ public class AdmAula extends BaseFrame {
         }
     }
 
-    // Sección: Helpers
     private void limpiarCampos() {
         txtGrado.setText("");
         txtSeccion.setText("");

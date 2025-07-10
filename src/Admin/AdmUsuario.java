@@ -32,8 +32,6 @@ public class AdmUsuario extends BaseFrame {
         cargarUsuarios();
     }
 
-    // ==== COMPONENTES UI ====
-
     private void agregarLabelBienvenida() {
         JLabel lblBienvenido = new JLabel("Bienvenido, " + usuario.getNombre());
         lblBienvenido.setFont(new Font("Serif", Font.BOLD, 16));
@@ -111,8 +109,6 @@ public class AdmUsuario extends BaseFrame {
         panelContenido.add(scroll);
     }
 
-    // ==== CARGA DE DATOS ====
-
     private void cargarRoles() {
         cbRol.removeAllItems();
         for (Rol rol : rolBD.listarRoles()) {
@@ -133,8 +129,6 @@ public class AdmUsuario extends BaseFrame {
             });
         }
     }
-
-    // ==== ACCIONES ====
 
     private void agregarUsuario() {
         Usuario nuevo = obtenerUsuarioDesdeFormulario(-1);

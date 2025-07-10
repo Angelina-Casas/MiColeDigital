@@ -22,8 +22,6 @@ public class MenuAdm extends BaseFrame {
         agregarBotones();
     }
 
-    // === Secciones UI ===
-
     private void agregarLogo() {
         JLabel lblLogo = new JLabel(new ImageIcon(getClass().getResource("/Img/logoMiColePequeno.png")));
         lblLogo.setBounds(1040, 5, 128, 101);
