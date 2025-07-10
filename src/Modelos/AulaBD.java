@@ -6,14 +6,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Clase de acceso a datos para la entidad Aula.
- */
 public class AulaBD {
 
-    /**
-     * Devuelve la lista de todas las aulas registradas.
-     */
+ 
     public List<Aula> listarAulas() {
         List<Aula> lista = new ArrayList<>();
         String sql = "SELECT idAula, grado, seccion FROM Aula";
@@ -36,9 +31,6 @@ public class AulaBD {
         return lista;
     }
 
-    /**
-     * Busca un aula por su ID.
-     */
     public Aula obtenerAula(int idAula) {
         String sql = "SELECT idAula, grado, seccion FROM Aula WHERE idAula = ?";
         Aula aula = null;
@@ -62,9 +54,7 @@ public class AulaBD {
         return aula;
     }
 
-    /**
-     * Inserta una nueva aula.
-     */
+
     public boolean insertarAula(Aula aula) {
         String sql = "INSERT INTO Aula (grado, seccion) VALUES (?, ?)";
 
@@ -81,9 +71,6 @@ public class AulaBD {
         }
     }
 
-    /**
-     * Actualiza los datos de un aula existente.
-     */
     public boolean actualizarAula(Aula aula) {
         String sql = "UPDATE Aula SET grado = ?, seccion = ? WHERE idAula = ?";
 
@@ -101,9 +88,6 @@ public class AulaBD {
         }
     }
 
-    /**
-     * Elimina un aula por su ID.
-     */
     public boolean eliminarAula(int idAula) {
         String sql = "DELETE FROM Aula WHERE idAula = ?";
 
@@ -119,9 +103,7 @@ public class AulaBD {
         }
     }
 
-    /**
-     * Asocia un estudiante a un aula.
-     */
+
     public boolean agregarEstudianteAlAula(int idUsuario, int idAula) {
         String sql = "INSERT INTO AulaUsuario (idUsuario, idAula) VALUES (?, ?)";
 
@@ -138,9 +120,6 @@ public class AulaBD {
         }
     }
 
-    /**
-     * Elimina la asociación entre un estudiante y un aula.
-     */
     public boolean eliminarEstudianteDelAula(int idUsuario, int idAula) {
         String sql = "DELETE FROM AulaUsuario WHERE idUsuario = ? AND idAula = ?";
 

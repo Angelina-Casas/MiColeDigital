@@ -7,7 +7,6 @@ public class Usuario {
     private String password;
     private Rol rol;
 
-    // Constructores
     public Usuario() {}
 
     public Usuario(int idUsuario, String nombre, String correo, String password, Rol rol) {
@@ -18,7 +17,6 @@ public class Usuario {
         this.rol = rol;
     }
 
-    // Getters y Setters
     public int getIdUsuario() {
         return idUsuario;
     }
@@ -59,7 +57,6 @@ public class Usuario {
         this.rol = rol;
     }
 
-    // Representación textual del usuario (útil en listas o ComboBox)
     @Override
     public String toString() {
         return idUsuario + " | " + nombre;

@@ -1,8 +1,5 @@
 package Modelos;
 
-/**
- * Representa la relación entre un usuario (estudiante) y un aula.
- */
 public class AulaUsuario {
     private int id;
     private Usuario usuario;

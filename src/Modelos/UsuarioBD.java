@@ -9,7 +9,6 @@ public class UsuarioBD {
 
     public UsuarioBD() {}
 
-    // Listar todos los usuarios con su rol
     public List<Usuario> listarUsuario() {
         List<Usuario> lista = new ArrayList<>();
         String sql = """
@@ -41,7 +40,6 @@ public class UsuarioBD {
         return lista;
     }
 
-    // Obtener usuario por ID
     public Usuario obtenerUsuario(int idUsuario) {
         String sql = """
             SELECT u.idUsuario, u.nombre, u.correo, u.password, 
@@ -73,7 +71,6 @@ public class UsuarioBD {
         return null;
     }
 
-    // Validar usuario con correo y contraseña
     public Usuario validarUsuario(String correo, String password) {
         String sql = """
             SELECT u.idUsuario, u.nombre, u.correo, u.password, 
@@ -106,7 +103,6 @@ public class UsuarioBD {
         return null;
     }
 
-    // Insertar nuevo usuario
     public boolean insertarUsuario(Usuario usuario) {
         String sql = "INSERT INTO Usuario (nombre, correo, password, idRol) VALUES (?, ?, ?, ?)";
 
@@ -125,7 +121,6 @@ public class UsuarioBD {
         }
     }
 
-    // Actualizar usuario existente
     public boolean actualizarUsuario(Usuario usuario) {
         String sql = "UPDATE Usuario SET nombre = ?, correo = ?, password = ?, idRol = ? WHERE idUsuario = ?";
 
@@ -145,7 +140,6 @@ public class UsuarioBD {
         }
     }
 
-    // Eliminar usuario
     public boolean eliminarUsuario(int idUsuario) {
         String sql = "DELETE FROM Usuario WHERE idUsuario = ?";
 
@@ -161,7 +155,6 @@ public class UsuarioBD {
         }
     }
 
-    // Obtener ID de usuario por correo
     public int obtenerIdPorCorreo(String correo) {
         String sql = "SELECT idUsuario FROM Usuario WHERE correo = ?";
         int idUsuario = -1;
@@ -182,17 +175,14 @@ public class UsuarioBD {
         return idUsuario;
     }
 
-    // Listar solo docentes
     public List<Usuario> listarDocentes() {
         return listarUsuariosPorRol(2);
     }
 
-    // Listar solo estudiantes
     public List<Usuario> listarEstudiantes() {
         return listarUsuariosPorRol(1);
     }
 
-    // Método auxiliar para listar usuarios por ID de rol
     private List<Usuario> listarUsuariosPorRol(int idRol) {
         List<Usuario> lista = new ArrayList<>();
         String sql = """
@@ -225,7 +215,6 @@ public class UsuarioBD {
         return lista;
     }
 
-    // Obtener docente por aula
     public Usuario obtenerDocentePorAula(int idAula) {
         String sql = """
             SELECT u.idUsuario, u.nombre, u.correo, u.password, u.idRol 
@@ -257,7 +246,6 @@ public class UsuarioBD {
         return null;
     }
 
-    // Estudiantes de un aula
     public List<Usuario> obtenerEstudiantesPorAula(int idAula) {
         List<Usuario> estudiantes = new ArrayList<>();
         String sql = """

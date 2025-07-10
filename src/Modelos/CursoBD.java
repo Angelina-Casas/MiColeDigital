@@ -11,7 +11,6 @@ public class CursoBD {
 
     public CursoBD() {}
 
-    // Obtener todos los cursos
     public List<Curso> listarCurso() {
         List<Curso> lista = new ArrayList<>();
         String sql = "SELECT idCurso, nombre, idDocente, idAula FROM Curso";
@@ -31,7 +30,6 @@ public class CursoBD {
         return lista;
     }
 
-    // Obtener curso por ID
     public Curso obtenerCurso(int idCurso) {
         Curso curso = null;
         String sql = "SELECT idCurso, nombre, idDocente, idAula FROM Curso WHERE idCurso = ?";
@@ -53,7 +51,6 @@ public class CursoBD {
         return curso;
     }
 
-    // Agregar curso
     public boolean agregarCurso(Curso curso) {
         String sql = "INSERT INTO Curso (nombre, idDocente, idAula) VALUES (?, ?, ?)";
 
@@ -72,7 +69,6 @@ public class CursoBD {
         }
     }
 
-    // Actualizar curso
     public boolean actualizarCurso(Curso curso) {
         String sql = "UPDATE Curso SET nombre = ?, idDocente = ?, idAula = ? WHERE idCurso = ?";
 
@@ -92,7 +88,6 @@ public class CursoBD {
         }
     }
 
-    // Eliminar curso
     public boolean eliminarCurso(int idCurso) {
         String eliminarRelacion = "DELETE FROM CursoEstudiante WHERE idCurso = ?";
         String eliminarCurso = "DELETE FROM Curso WHERE idCurso = ?";
@@ -114,7 +109,6 @@ public class CursoBD {
         }
     }
 
-    // Listar cursos por estudiante
     public List<Curso> listarCursosPorEstudiante(int idUsuario) {
         List<Curso> lista = new ArrayList<>();
         String sql = """
@@ -140,7 +134,6 @@ public class CursoBD {
         return lista;
     }
 
-    // Método auxiliar para mapear un ResultSet a un objeto Curso
     private Curso mapearCurso(ResultSet rs) throws SQLException {
         int idCurso = rs.getInt("idCurso");
         String nombreCurso = rs.getString("nombre");

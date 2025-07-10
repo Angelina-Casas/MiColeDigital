@@ -1,8 +1,5 @@
 package Modelos;
 
-/**
- * Representa una pregunta de un formulario con sus opciones y respuesta correcta.
- */
 public class PreguntaFormulario {
     private int nroPregunta;
     private String pregunta;
@@ -24,7 +21,6 @@ public class PreguntaFormulario {
         this.respuestaCorrecta = respuestaCorrecta;
     }
 
-    // Getters
     public int getNroPregunta() {
         return nroPregunta;
     }

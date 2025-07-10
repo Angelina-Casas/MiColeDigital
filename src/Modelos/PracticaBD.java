@@ -6,14 +6,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Clase que maneja las operaciones de base de datos para las prácticas de los estudiantes.
- */
 public class PracticaBD {
 
-    /**
-     * Verifica si el estudiante ya envió la práctica.
-     */
     public boolean practicaYaEnviada(int idUsuario, int idFormulario) {
         String sql = "SELECT 1 FROM ResultadoPractica WHERE idUsuario = ? AND idFormulario = ?";
         try (Connection con = new ConexionBD().obtenerConexion();
@@ -28,9 +22,6 @@ public class PracticaBD {
         }
     }
 
-    /**
-     * Obtiene la nota anterior del estudiante en una práctica.
-     */
     public int obtenerNotaAnterior(int idUsuario, int idFormulario) {
         String sql = "SELECT nota FROM ResultadoPractica WHERE idUsuario = ? AND idFormulario = ?";
         try (Connection con = new ConexionBD().obtenerConexion();
@@ -44,12 +35,9 @@ public class PracticaBD {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return -1; // indica que no hay nota
+        return -1; 
     }
 
-    /**
-     * Devuelve la lista de preguntas de una práctica.
-     */
     public List<PreguntaFormulario> obtenerPreguntasFormulario(int idFormulario) {
         List<PreguntaFormulario> preguntas = new ArrayList<>();
         String sql = "SELECT * FROM PreguntaFormulario WHERE idFormulario = ? ORDER BY nroPregunta";
@@ -75,7 +63,6 @@ public class PracticaBD {
         }
         return preguntas;
     }
-
 
     public boolean insertarResultadoPractica(int idUsuario, int idFormulario, int nota) {
         String sql = "INSERT INTO ResultadoPractica (idUsuario, idFormulario, nota) VALUES (?, ?, ?)";

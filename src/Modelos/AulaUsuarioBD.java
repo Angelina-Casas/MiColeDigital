@@ -6,17 +6,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Clase responsable de manejar las operaciones en la tabla AulaUsuario.
- */
+
 public class AulaUsuarioBD {
 
-    /**
-     * Lista los IDs de usuarios asignados a un aula específica.
-     *
-     * @param idAula ID del aula.
-     * @return Lista de IDs de usuarios.
-     */
     public List<Integer> listarUsuariosPorAula(int idAula) {
         List<Integer> usuarios = new ArrayList<>();
         String sql = "SELECT idUsuario FROM AulaUsuario WHERE idAula = ?";
@@ -38,13 +30,6 @@ public class AulaUsuarioBD {
         return usuarios;
     }
 
-    /**
-     * Inserta un nuevo registro en la tabla AulaUsuario.
-     *
-     * @param idUsuario ID del usuario.
-     * @param idAula    ID del aula.
-     * @return true si se insertó correctamente, false en caso contrario.
-     */
     public boolean insertarAulaUsuario(int idUsuario, int idAula) {
         String sql = "INSERT INTO AulaUsuario (idUsuario, idAula) VALUES (?, ?)";
 
@@ -61,13 +46,6 @@ public class AulaUsuarioBD {
         }
     }
 
-    /**
-     * Elimina un usuario de un aula específica.
-     *
-     * @param idUsuario ID del usuario.
-     * @param idAula    ID del aula.
-     * @return true si se eliminó correctamente, false en caso contrario.
-     */
     public boolean eliminarUsuarioDeAula(int idUsuario, int idAula) {
         String sql = "DELETE FROM AulaUsuario WHERE idUsuario = ? AND idAula = ?";
 

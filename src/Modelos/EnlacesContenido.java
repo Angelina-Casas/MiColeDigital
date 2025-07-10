@@ -7,17 +7,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URI;
 
-/**
- * Clase utilitaria para convertir etiquetas JLabel en hipervínculos funcionales.
- */
 public class EnlacesContenido {
 
-    /**
-     * Convierte una JLabel en un hipervínculo que abre la URL especificada en el navegador.
-     *
-     * @param label JLabel que se transformará en hipervínculo
-     * @param url   Dirección URL que se abrirá al hacer clic
-     */
     public static void hacerHipervinculo(JLabel label, String url) {
         if (label == null || url == null || url.isBlank()) return;
 
@@ -32,11 +23,6 @@ public class EnlacesContenido {
         });
     }
 
-    /**
-     * Abre una URL en el navegador predeterminado del sistema.
-     *
-     * @param url La URL a abrir
-     */
     private static void abrirEnlace(String url) {
         try {
             if (Desktop.isDesktopSupported()) {
