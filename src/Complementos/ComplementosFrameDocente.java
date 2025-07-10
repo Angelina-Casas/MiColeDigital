@@ -32,4 +32,4 @@ public class ComplementosFrameDocente extends FrameConMenu {
         panel.add(btnDocentes);
         return panel;
     }
-}
+} 

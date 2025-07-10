@@ -82,6 +82,7 @@ public abstract class FrameConMenu extends JFrame {
 
         return panelDerecho;
     }
+    
 
     protected JButton crearBotonMenu(String iconPath, String hoverPath, int y, Runnable accion) {
         ImageIcon icon = cargarIcono(iconPath);
@@ -117,20 +118,16 @@ public abstract class FrameConMenu extends JFrame {
                 }
             }
         });
-
         return btn;
     }
-
     private ImageIcon cargarIcono(String path) {
         URL url = getClass().getResource(path);
         return url != null ? new ImageIcon(url) : new ImageIcon();
     }
-
     private ImageIcon cargarIcono(String path, ImageIcon fallback) {
         URL url = getClass().getResource(path);
         return url != null ? new ImageIcon(url) : fallback;
     }
-
     private JLabel crearLogo(String path, int x, int y, int width, int height) {
         JLabel lbl = new JLabel(new ImageIcon(getClass().getResource(path)));
         lbl.setBounds(x, y, width, height);
