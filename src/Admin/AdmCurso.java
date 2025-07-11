@@ -1,5 +1,6 @@
 package Admin;
 
+import Complementos.ComplementosAdmin;
 import Complementos.BaseFrame;
 import Modelos.*;
 
@@ -7,7 +8,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 
-public class AdmCurso extends BaseFrame {
+public final class AdmCurso extends BaseFrame {
     private JTextField txtNombre;
     private JComboBox<Usuario> cbDocente;
     private JComboBox<Aula> cbAula;
@@ -182,7 +183,7 @@ public class AdmCurso extends BaseFrame {
         Usuario docente = (Usuario) cbDocente.getSelectedItem();
         Aula aula = (Aula) cbAula.getSelectedItem();
 
-        if (!verificarCampos(nombre, docente, aula)) return;
+        if (!ComplementosAdmin.verificarCamposCurso(this, nombre, docente, aula)) return;
 
         Curso curso = new Curso(idCurso, nombre, docente, aula);
         if (cursoBD.actualizarCurso(curso)) {

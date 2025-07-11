@@ -1,0 +1,460 @@
+@startuml
+skinparam classAttributeIconSize 0
+left to right direction 
+' -------------------- Main --------------------
+package Main {
+    class LoginGeneral {
+        - txtUsuario: JTextField
+        - txtContrasena: JPasswordField
+        + LoginGeneral()
+        - crearPanelIzquierdo(): JPanel
+        - crearPanelDerecho(): JPanel
+        - agregarComponentesLogin(panel: JPanel): void
+        - autenticarUsuario(): void
+    }
+
+    class Main {
+        + main(args: String[]): void
+    }
+    Main.Main ..> Main.LoginGeneral : usa
+}
+
+' -------------------- Conexion --------------------
+package Conexion {
+    class ConexionBD {
+        - DRIVER: String
+        - URL: String
+        - USUARIO: String
+        - CONTRASENA: String
+        - conexion: Connection
+        - conectar(): Connection
+        + obtenerConexion(): Connection
+    }
+
+    class TestConexion {
+        + main(args: String[]): void
+    }
+}
+
+' -------------------- Complementos --------------------
+package Complementos {
+    abstract class BaseFrame {
+        - panelFondo: JPanel
+        - panelContenido: JPanel
+        + initContenido(): void
+    }
+
+    class ComplementosFrameDocente {
+        - usuario: Usuario
+        - panelIzquierdo: JPanel
+        # crearPanelIzquierdo(): JPanel
+    }
+
+    class ComplementosFrameEstudiante {
+        - usuario: Usuario
+        - panelIzquierdo: JPanel
+        # crearPanelIzquierdo(): JPanel
+    }
+    abstract class FrameConMenu {
+        - usuario: Usuario
+        - panelIzquierdo: JPanel
+        - panelDerecho: JPanel
+        - lineaRoja: JPanel
+        - lblLogoIzquierda: JLabel
+        - lblLogoDerecha: JLabel
+        - lblTitulo: JLabel
+        - btnCerrarSesion: JButton
+        - botonSeleccionado: JButton
+
+        + FrameConMenu(usuario: Usuario)
+        - configurarVentana(): void
+        # resaltarBoton(boton: JButton): void
+        # crearPanelIzquierdoBase(): JPanel
+        # crearPanelDerecho(titulo: String): JPanel
+        # crearBotonMenu(iconPath: String, hoverPath: String, y: int, accion: Runnable): JButton
+        - cargarIcono(path: String): ImageIcon
+        - cargarIcono(path: String, fallback: ImageIcon): ImageIcon
+        - crearLogo(path: String, x: int, y: int, width: int, height: int): JLabel      
+    }
+    class ComplementosAdmin {
+        + mostrarMensaje(Jframe: JFrame, mensaje: String): void
+        + verificarCamposTexto(Jframe: JFrame, texto: String, campoNombre: String): boolean
+        + verificarGrado(Jframe: JFrame, gradoStr: String): boolean
+        + verificarSeccion(Jframe: JFrame, seccion: String): boolean
+        + verificarCamposCurso(Jframe: JFrame, nombre: String, docente: Object, aula: Object): boolean
+    }
+
+
+        AdmAula ..> ComplementosAdmin : «use»
+        AdmCurso ..> ComplementosAdmin : «use»
+        ComplementosFrameDocente --|> FrameConMenu
+        ComplementosFrameEstudiante --|> FrameConMenu
+        BaseFrame --|> JFrame
+        
+    
+}
+
+' -------------------- Admin --------------------
+package Admin {
+    class AdmAula {
+        - txtGrado: JTextField
+        - txtSeccion: JTextField
+        - tablaAulas: JTable
+        - aulaBD: AulaBD
+        - usuario: Usuario
+        + AdmAula(usuario: Usuario)
+        + initContenido(): void
+    }
+
+    class AdmCurso {
+        - txtNombre: JTextField
+        - cbDocente: JComboBox<Usuario>
+        - cbAula: JComboBox<Aula>
+        - tablaCursos: JTable
+        - cursoBD: CursoBD
+        - usuarioBD: UsuarioBD
+        - aulaBD: AulaBD
+        - usuario: Usuario
+        + AdmCurso(usuario: Usuario)
+        + initContenido(): void
+    }
+
+    class AdmUsuario {
+        - usuario: Usuario
+        - usuarioBD: UsuarioBD
+        - rolBD: RolBD
+        - txtNombre: JTextField
+        - txtUsuario: JTextField
+        - txtContrasena: JPasswordField
+        - cbRol: JComboBox<Rol>
+        - tablaUsuarios: JTable
+        + AdmUsuario(usuario: Usuario)
+        + initContenido(): void
+    }
+
+    class MenuAdm {
+        - usuario: Usuario
+        + MenuAdm(Usuario)
+        + initContenido(): void
+    }
+
+    class VerEstudiantes {
+        - lblAulaValor: JLabel
+        - usuario: Usuario
+        - comboTutor: JComboBox<Usuario>
+        - comboEstudiantes: JComboBox<Usuario>
+        - tablaEstudiantes: JTable
+        - idAulaActual: int
+        - usuarioBD: UsuarioBD
+        - aulaBD: AulaBD
+        + VerEstudiantes(Aula, Usuario)
+        + initContenido(): void
+    }
+    AdmAula --|> BaseFrame
+    AdmCurso --|> BaseFrame
+    AdmUsuario --|> BaseFrame
+    VerEstudiantes --|> BaseFrame
+
+}
+
+' -------------------- Modelos --------------------
+package Modelos {
+    class Aula {
+        - idAula: int
+        - grado: int
+        - seccion: String
+        + Aula()
+        + Aula(idAula: int, grado: int, seccion: String)
+        + getIdAula(): int
+        + setIdAula(int): void
+        + getGrado(): int
+        + setGrado(int): void
+        + getSeccion(): String
+        + setSeccion(String): void
+        + getGradoString(): String
+        + toString(): String
+    }
+
+    class AulaBD {
+        + listarAulas(): List<Aula>
+        + obtenerAula(idAula: int): Aula
+        + insertarAula(aula: Aula): boolean
+        + actualizarAula(aula: Aula): boolean
+        + eliminarAula(idAula: int): boolean
+        + agregarEstudianteAlAula(idUsuario: int, idAula: int): boolean
+        + eliminarEstudianteDelAula(idUsuario: int, idAula: int): boolean
+    }
+
+    class AulaUsuario {
+        - id: int
+        - usuario: Usuario
+        - aula: Aula
+        + AulaUsuario()
+        + AulaUsuario(id: int, usuario: Usuario, aula: Aula)
+        + getId(): int
+        + setId(int): void
+        + getUsuario(): Usuario
+        + setUsuario(Usuario): void
+        + getAula(): Aula
+        + setAula(Aula): void
+        + toString(): String
+    }
+
+    class AulaUsuarioBD {
+        + listarUsuariosPorAula(idAula: int): List<Integer>
+        + insertarAulaUsuario(idUsuario: int, idAula: int): boolean
+        + eliminarUsuarioDeAula(idUsuario: int, idAula: int): boolean
+    }
+
+    class Usuario {
+        - idUsuario: int
+        - nombre: String
+        - correo: String
+        - password: String
+        - rol: Rol
+        + getIdUsuario(): int
+        + setIdUsuario(int): void
+        + getNombre(): String
+        + setNombre(String): void
+        + getCorreo(): String
+        + setCorreo(String): void
+        + getPassword(): String
+        + setPassword(String): void
+        + getRol(): Rol
+        + setRol(Rol): void
+        + toString(): String
+    }
+
+    class UsuarioBD {
+        - rolrs: RolBD
+        + listarUsuario(): List<Usuario>
+        + obtenerUsuario(int): Usuario
+        + validarUsuario(String, String): Usuario
+        + insertarUsuario(Usuario): boolean
+        + actualizarUsuario(Usuario): boolean
+        + eliminarUsuario(int): boolean
+        + obtenerIdPorCorreo(String): int
+        + listarDocentes(): List<Usuario>
+        + listarEstudiantes(): List<Usuario>
+        + obtenerDocentePorAula(int): Usuario
+        + obtenerEstudiantesPorAula(int): List<Usuario>
+        + obtenerEstudiantesSinAula(): List<Usuario>
+    }
+
+    class Rol {
+        - idRol: int
+        - nombreRol: String
+        + getIdRol(): int
+        + setIdRol(int): void
+        + getNombreRol(): String
+        + setNombreRol(String): void
+        + toString(): String
+    }
+
+    class RolBD {
+        + listarRoles(): List<Rol>
+        + obtenerRol(int): Rol
+        + buscarRol(String): Rol
+        + insertarRol(Rol): boolean
+        + actualizarRol(Rol): boolean
+        + eliminarRol(int): boolean
+    }
+
+    class Curso {
+        - idCurso: int
+        - nombre: String
+        - docente: Usuario
+        - aula: Aula
+        + getIdCurso(): int
+        + getNombre(): String
+        + getDocente(): Usuario
+        + getAula(): Aula
+    }
+
+    class CursoBD {
+        + listarCursosPorDocente(idUsuario: int): List<Curso>
+        + listarCursosPorEstudiante(idUsuario: int): List<Curso>
+        + insertarCurso(Curso): boolean
+        + eliminarCurso(int): boolean
+    }
+
+    class Formulario {
+        - idFor: int
+        - nombreFor: String
+        - tema: String
+        - videoUrl: String
+        - idCurso: int
+    }
+
+    class FormularioBD {
+        - conexion: Connection
+        + obtenerFormulariosPorCurso(idCurso: int): List<Formulario>
+        + insertarFormulario(Formulario): boolean
+        + actualizarFormulario(Formulario): boolean
+        + eliminarFormulario(int): boolean
+    }
+
+    class PreguntaFormulario {
+        - nroPregunta: int
+        - pregunta: String
+        - opcion1: String
+        - opcion2: String
+        - opcion3: String
+        - opcion4: String
+        - respuestaCorrecta: String
+    }
+
+    class Calificacion {
+        - idCalificacion: int
+        - estudiante: Usuario
+        - curso: Curso
+        - nota: double
+    }
+
+    class Evaluador {
+        + calcularNota(grupos: ButtonGroup[], respuestasCorrectas: JRadioButton[]): int
+        + mostrarNota(parent: Component, nota: int): void
+        + todosLosGruposRespondidos(grupos: ButtonGroup[]): boolean
+    }
+}
+
+
+
+' -------------------- Docente --------------------
+package Docente {
+    class PerfilDocente {
+        - lblFoto: JLabel
+        - lblGradoValor: JLabel
+        - lblSeccionValor: JLabel
+        - areaCursos: JTextArea
+        - scrollCursos: JScrollPane
+        + PerfilDocente(usuario: Usuario)
+    }
+
+    class CursoDocente {
+        - contenedorCursos: JPanel
+        + CursoDocente(usuario: Usuario)
+    }
+
+    class ContenidoDocente {
+        - scrollPane: JScrollPane
+        - contenedorScroll: JPanel
+        - curso: Curso
+        + ContenidoDocente(usuario: Usuario, curso: Curso)
+    }
+
+    class CalifiDocente {
+        - tabla: JTable
+        - scroll: JScrollPane
+        - modelo: DefaultTableModel
+        - curso: Curso
+        - panelContenido: JPanel
+    }
+
+    class AgregarContenido {
+        - scrollPaneFormulario: JScrollPane
+        - panelFormulario: JPanel
+        - panelVistaPrevia: JPanel
+        - txtNombre: JTextField
+        - txtTema: JTextField
+        - txtVideo: JTextField
+        - txtPregunta: JTextField
+        - txtOpciones: JTextField[]
+        - comboNumero: JComboBox<String>
+        - comboAlternativa: JComboBox<String>
+        - btnGuardar: JButton
+        - preguntas: List<PreguntaFormulario>
+        - idFormularioActual: int
+        - curso: Curso
+    }
+      PerfilDocente --|> ComplementosFrameDocente
+      CursoDocente --|> ComplementosFrameDocente
+      ContenidoDocente --|> ComplementosFrameDocente
+      CalifiDocente --|> ComplementosFrameDocente
+      AgregarContenido --|> ComplementosFrameDocente
+
+}
+
+' -------------------- Estudiante --------------------
+package Estudiante {
+    class PerfilEstudiante {
+        - usuario: Usuario
+        - lblNombreValor: JLabel
+        - lblCorreoValor: JLabel
+        - lblGradoValor: JLabel
+        - lblSeccionValor: JLabel
+        - areaCursos: JTextArea
+        + PerfilEstudiante(Usuario)
+    }
+
+    class CursoEstudiante {
+        - contenedorCursos: JPanel
+        + CursoEstudiante(Usuario)
+    }
+
+    class ContenidoEstudiante {
+        - scrollPane: JScrollPane
+        - contenedorScroll: JPanel
+        - curso: Curso
+        + ContenidoEstudiante(Usuario, Curso)
+    }
+
+    class Practica {
+        - usuario: Usuario
+        - curso: Curso
+        - numeroPractica: int
+        - enviada: boolean
+        - respuestasCorrectas: JRadioButton[]
+        - grupos: ButtonGroup[]
+        - panelScroll: JPanel
+        - scrollPane: JScrollPane
+        + Practica(Usuario, Curso, int)
+    }
+
+    class CalifiEstudiante {
+        - tablaNotas: JTable
+        - scrollPane: JScrollPane
+        - curso: Curso
+        + CalifiEstudiante(Usuario, Curso)
+    }
+
+  PerfilEstudiante --|> ComplementosFrameEstudiante
+  CursoEstudiante --|> ComplementosFrameEstudiante
+  ContenidoEstudiante --|> ComplementosFrameEstudiante
+  Practica --|> ComplementosFrameEstudiante
+  CalifiEstudiante --|> ComplementosFrameEstudiante
+Estudiante.Practica ..> Modelos.Evaluador : use
+
+}
+
+class JFrame
+
+' -------------------- Relaciones -------------------
+Usuario --> Rol
+Curso --> Usuario
+Curso --> Aula
+Formulario --> Curso
+Formulario --> PreguntaFormulario
+CursoBD --> Curso
+FormularioBD --> Formulario
+FormularioBD --> PreguntaFormulario
+Calificacion --> Usuario
+Calificacion --> Curso
+AulaUsuarioBD --> AulaUsuario
+AulaBD --> Usuario
+RolBD --> Rol
+
+
+
+LoginGeneral --|> JFrame
+ContenidoDocente --> ConexionBD
+AgregarContenido --> ConexionBD
+CalifiDocente --> ConexionBD
+Practica --> ConexionBD
+CalifiEstudiante --> ConexionBD
+
+
+show members
+show methods
+show attributes
+@enduml

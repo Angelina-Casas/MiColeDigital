@@ -1,5 +1,6 @@
 package Admin;
 
+import Complementos.ComplementosAdmin;
 import Complementos.BaseFrame;
 import Modelos.Usuario;
 import Modelos.Aula;
@@ -189,25 +190,10 @@ public class AdmAula extends BaseFrame {
     }
 
     private boolean verificarCampos(String gradoStr, String seccion) {
-        if (gradoStr.isEmpty() || seccion.isEmpty()) {
-            mostrarMensaje("Por favor, complete todos los campos.");
-            return false;
-        }
-        try {
-            int grado = Integer.parseInt(gradoStr);
-            if (grado <= 0 || grado > 6) {
-                mostrarMensaje("El grado debe estar entre 1 y 6.");
-                return false;
-            }
-        } catch (NumberFormatException e) {
-            mostrarMensaje("El grado debe ser un número entero.");
-            return false;
-        }
-        if (seccion.length() >= 3) {
-            mostrarMensaje("La sección debe tener máximo 2 caracteres.");
-            return false;
-        }
-        return true;
+    return ComplementosAdmin.verificarCamposTexto(this, gradoStr, "Grado")
+        && ComplementosAdmin.verificarCamposTexto(this, seccion, "Sección")
+        && ComplementosAdmin.verificarGrado(this, gradoStr)
+        && ComplementosAdmin.verificarSeccion(this, seccion);
     }
 
     private void mostrarMensaje(String mensaje) {
