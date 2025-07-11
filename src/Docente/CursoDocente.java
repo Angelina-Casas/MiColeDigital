@@ -45,7 +45,7 @@ public class CursoDocente extends ComplementosFrameDocente {
                 int grado = rs.getInt("grado");
                 String seccion = rs.getString("seccion");
 
-                String textoBoton = nombreCurso + " - " + grado + "Â°" + seccion;
+                String textoBoton = nombreCurso + " - " + grado + "°" + seccion;
 
                 JButton btnCurso = new JButton(textoBoton);
                 btnCurso.setAlignmentX(Component.CENTER_ALIGNMENT);
