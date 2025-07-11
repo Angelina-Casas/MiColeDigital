@@ -34,8 +34,6 @@ public class VerEstudiantes extends BaseFrame {
         agregarBotonRegresar();
     }
 
-    // === Secciones UI ===
-
     private void agregarLabels() {
         JLabel lblBienvenida = crearLabel("Bienvenido, " + usuario.getNombre(), 30, 20, 400, 25, new Font("Serif", Font.BOLD, 16));
         JLabel lblAula = crearLabel("AULA", 60, 70, 100, 30, new Font("Arial", Font.BOLD, 13));
@@ -91,8 +89,6 @@ public class VerEstudiantes extends BaseFrame {
         });
         panelContenido.add(btnRegresar);
     }
-
-    // === Lógica funcional ===
 
     private void cargarDatos(Aula aula) {
         if (aula == null) return;
@@ -174,8 +170,6 @@ public class VerEstudiantes extends BaseFrame {
             JOptionPane.showMessageDialog(this, "Error al eliminar de la base de datos.");
         }
     }
-
-    // === Utilidades ===
 
     private JLabel crearLabel(String texto, int x, int y, int w, int h, Font fuente) {
         JLabel lbl = new JLabel(texto);

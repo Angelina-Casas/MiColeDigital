@@ -8,7 +8,6 @@ public class RolBD {
 
     public RolBD() {}
 
-    // Listar todos los roles
     public List<Rol> listarRoles() {
         List<Rol> lista = new ArrayList<>();
         String sql = "SELECT idRol, nombreRol FROM Rol";
@@ -29,7 +28,6 @@ public class RolBD {
         return lista;
     }
 
-    // Obtener un rol por su ID
     public Rol obtenerRol(int idRol) {
         Rol rol = null;
         String sql = "SELECT idRol, nombreRol FROM Rol WHERE idRol = ?";
@@ -51,7 +49,6 @@ public class RolBD {
         return rol;
     }
 
-    // Buscar rol por nombre
     public Rol buscarRol(String nombreRol) {
         Rol rol = null;
         String sql = "SELECT idRol, nombreRol FROM Rol WHERE nombreRol = ?";
@@ -74,7 +71,6 @@ public class RolBD {
         return rol;
     }
 
-    // Insertar un nuevo rol
     public boolean insertarRol(Rol rol) {
         String sql = "INSERT INTO Rol (nombreRol) VALUES (?)";
 
@@ -90,7 +86,6 @@ public class RolBD {
         }
     }
 
-    // Actualizar un rol existente
     public boolean actualizarRol(Rol rol) {
         String sql = "UPDATE Rol SET nombreRol = ? WHERE idRol = ?";
 
@@ -107,7 +102,6 @@ public class RolBD {
         }
     }
 
-    // Eliminar un rol por su ID
     public boolean eliminarRol(int idRol) {
         String sql = "DELETE FROM Rol WHERE idRol = ?";
 

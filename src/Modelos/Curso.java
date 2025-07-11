@@ -1,19 +1,14 @@
 package Modelos;
 
-/**
- * Representa un curso que imparte un docente en un aula determinada.
- */
 public class Curso {
     private int idCurso;
     private String nombre;
     private Usuario docente;
     private Aula aula;
 
-    // Grado y sección opcionales, útiles cuando no se accede directamente al objeto Aula
     private int grado;
     private String seccion;
 
-    // Constructores
     public Curso() {}
 
     public Curso(int idCurso, String nombre, Usuario docente, Aula aula) {

@@ -4,9 +4,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Clase que maneja operaciones CRUD sobre Formularios y sus Preguntas.
- */
 public class FormularioBD {
     private final Connection conexion;
 
@@ -14,7 +11,6 @@ public class FormularioBD {
         this.conexion = conexion;
     }
 
-    // ---------- INSERTAR FORMULARIO Y PREGUNTAS ----------
     public boolean insertarFormularioYPreguntas(Formulario formulario, List<PreguntaFormulario> preguntas) {
         try {
             String sqlFormulario = """
@@ -60,7 +56,6 @@ public class FormularioBD {
         }
     }
 
-    // ---------- OBTENER FORMULARIO Y PREGUNTAS ----------
     public Formulario obtenerFormularioPorId(int idFormulario) throws SQLException {
         String sql = "SELECT * FROM Formulario WHERE idFor = ?";
         try (PreparedStatement ps = conexion.prepareStatement(sql)) {
@@ -94,7 +89,6 @@ public class FormularioBD {
         return lista;
     }
 
-    // ---------- LISTAR FORMULARIOS ----------
     public List<Formulario> obtenerTodosFormularios() throws SQLException {
         List<Formulario> lista = new ArrayList<>();
         String sql = "SELECT * FROM Formulario";
@@ -225,7 +219,6 @@ public class FormularioBD {
         }
     }
 
-    // ---------- MÉTODOS DE APOYO ----------
     private Formulario cargarFormulario(ResultSet rs) throws SQLException {
         Formulario f = new Formulario();
         f.setIdFor(rs.getInt("idFor"));

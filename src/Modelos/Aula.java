@@ -5,7 +5,6 @@ public class Aula {
     private int grado;
     private String seccion;
 
-    // Constructores
     public Aula() {}
 
     public Aula(int idAula, int grado, String seccion) {
@@ -14,7 +13,6 @@ public class Aula {
         this.seccion = seccion;
     }
 
-    // Getters y Setters
     public int getIdAula() {
         return idAula;
     }
@@ -39,7 +37,6 @@ public class Aula {
         this.seccion = seccion;
     }
 
-    // Devuelve el nombre del grado como texto
     public String getGradoString() {
         return switch (grado) {
             case 1 -> "Primero";
@@ -52,7 +49,6 @@ public class Aula {
         };
     }
 
-    // Representación legible del aula
     @Override
     public String toString() {
         return grado + "° " + seccion;

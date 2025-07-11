@@ -1,19 +1,13 @@
 package Modelos;
 
-/**
- * Clase que representa un formulario/práctica con metadatos generales
- * y una pregunta asociada.
- */
 public class Formulario {
 
-    // Atributos del formulario
     private int idFor;
     private String nombreFor;
     private String tema;
     private String videoUrl;
     private int idCurso;
 
-    // Atributos de la pregunta
     private int nroPregunta;
     private String pregunta;
     private String opcion1;
@@ -22,7 +16,6 @@ public class Formulario {
     private String opcion4;
     private String respuestaCorrecta;
 
-    // Constructores
     public Formulario() {}
 
     public Formulario(String nombreFor, String tema, String videoUrl) {
@@ -50,7 +43,6 @@ public class Formulario {
         this.respuestaCorrecta = respuestaCorrecta;
     }
 
-    // Getters y setters
     public int getIdFor() {
         return idFor;
     }

@@ -1,8 +1,5 @@
 package Modelos;
 
-/**
- * Clase que representa la calificación obtenida por un estudiante en un curso.
- */
 public class Calificacion {
 
     private int idCalificacion;
@@ -10,10 +7,8 @@ public class Calificacion {
     private Curso curso;
     private double nota;
 
-    // Constructor vacío
     public Calificacion() {}
 
-    // Constructor completo
     public Calificacion(int idCalificacion, Usuario estudiante, Curso curso, double nota) {
         this.idCalificacion = idCalificacion;
         this.estudiante = estudiante;
