@@ -1,6 +1,6 @@
 @startuml
 skinparam classAttributeIconSize 0
-
+left to right direction 
 ' -------------------- Main --------------------
 package Main {
     class LoginGeneral {
@@ -423,6 +423,8 @@ package Estudiante {
   ContenidoEstudiante --|> ComplementosFrameEstudiante
   Practica --|> ComplementosFrameEstudiante
   CalifiEstudiante --|> ComplementosFrameEstudiante
+Estudiante.Practica ..> Modelos.Evaluador : use
+
 }
 
 class JFrame
@@ -438,12 +440,10 @@ FormularioBD --> Formulario
 FormularioBD --> PreguntaFormulario
 Calificacion --> Usuario
 Calificacion --> Curso
-Evaluador --> ButtonGroup
-Evaluador --> JRadioButton
-Evaluador --> Component
 AulaUsuarioBD --> AulaUsuario
 AulaBD --> Usuario
 RolBD --> Rol
+
 
 
 LoginGeneral --|> JFrame
@@ -453,4 +453,8 @@ CalifiDocente --> ConexionBD
 Practica --> ConexionBD
 CalifiEstudiante --> ConexionBD
 
+
+show members
+show methods
+show attributes
 @enduml
