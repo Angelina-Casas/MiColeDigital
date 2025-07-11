@@ -29,7 +29,6 @@ public class AdmAula extends BaseFrame {
         cargarAulas();
     }
 
-    // Sección: UI Components
     private void agregarLabelBienvenida() {
         JLabel lblBienvenida = new JLabel("Bienvenido, " + usuario.getNombre());
         lblBienvenida.setFont(new Font("Serif", Font.BOLD, 16));
