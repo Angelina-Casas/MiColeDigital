@@ -120,6 +120,8 @@ public class CalifiDocente extends ComplementosFrameDocente {
 
         panelContenido.add(lblTitulo);
         
+        panelContenido.add(lblTitulo);
+
         String[] columnas = {"Nombre del Estudiante", "Nota"};
         modelo = new DefaultTableModel(null, columnas);
         tabla = new JTable(modelo);
