@@ -47,18 +47,42 @@ package Complementos {
     class ComplementosFrameDocente {
         - usuario: Usuario
         - panelIzquierdo: JPanel
-        - panelDerecho: JPanel
         # crearPanelIzquierdo(): JPanel
-        # crearPanelDerecho(titulo: String): JPanel
     }
 
     class ComplementosFrameEstudiante {
         - usuario: Usuario
         - panelIzquierdo: JPanel
-        - panelDerecho: JPanel
         # crearPanelIzquierdo(): JPanel
-        # crearPanelDerecho(titulo: String): JPanel
     }
+    abstract class FrameConMenu {
+        - usuario: Usuario
+        - panelIzquierdo: JPanel
+        - panelDerecho: JPanel
+        - lineaRoja: JPanel
+        - lblLogoIzquierda: JLabel
+        - lblLogoDerecha: JLabel
+        - lblTitulo: JLabel
+        - btnCerrarSesion: JButton
+        - botonSeleccionado: JButton
+
+        + FrameConMenu(usuario: Usuario)
+        - configurarVentana(): void
+        # resaltarBoton(boton: JButton): void
+        # crearPanelIzquierdoBase(): JPanel
+        # crearPanelDerecho(titulo: String): JPanel
+        # crearBotonMenu(iconPath: String, hoverPath: String, y: int, accion: Runnable): JButton
+        - cargarIcono(path: String): ImageIcon
+        - cargarIcono(path: String, fallback: ImageIcon): ImageIcon
+        - crearLogo(path: String, x: int, y: int, width: int, height: int): JLabel
+        
+    }
+
+        ComplementosFrameDocente --|> FrameConMenu
+        ComplementosFrameEstudiante --|> FrameConMenu
+        BaseFrame --|> JFrame
+        
+    
 }
 
 ' -------------------- Admin --------------------
@@ -117,9 +141,11 @@ package Admin {
         + VerEstudiantes(Aula, Usuario)
         + initContenido(): void
     }
-  AdmAula --|> BaseFrame
-  AdmCurso --|> BaseFrame
-  AdmUsuario --|> BaseFrame
+    AdmAula --|> BaseFrame
+    AdmCurso --|> BaseFrame
+    AdmUsuario --|> BaseFrame
+    VerEstudiantes --|> BaseFrame
+
 }
 
 ' -------------------- Modelos --------------------
@@ -412,10 +438,6 @@ RolBD --> Rol
 
 
 LoginGeneral --|> JFrame
-ComplementosFrameDocente --|> JFrame
-ComplementosFrameEstudiante --|> JFrame
-BaseFrame --|> JFrame
-
 ContenidoDocente --> ConexionBD
 AgregarContenido --> ConexionBD
 CalifiDocente --> ConexionBD
