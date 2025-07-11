@@ -74,10 +74,19 @@ package Complementos {
         # crearBotonMenu(iconPath: String, hoverPath: String, y: int, accion: Runnable): JButton
         - cargarIcono(path: String): ImageIcon
         - cargarIcono(path: String, fallback: ImageIcon): ImageIcon
-        - crearLogo(path: String, x: int, y: int, width: int, height: int): JLabel
-        
+        - crearLogo(path: String, x: int, y: int, width: int, height: int): JLabel      
+    }
+    class ComplementosAdmin {
+        + mostrarMensaje(Jframe: JFrame, mensaje: String): void
+        + verificarCamposTexto(Jframe: JFrame, texto: String, campoNombre: String): boolean
+        + verificarGrado(Jframe: JFrame, gradoStr: String): boolean
+        + verificarSeccion(Jframe: JFrame, seccion: String): boolean
+        + verificarCamposCurso(Jframe: JFrame, nombre: String, docente: Object, aula: Object): boolean
     }
 
+
+        AdmAula ..> ComplementosAdmin : «use»
+        AdmCurso ..> ComplementosAdmin : «use»
         ComplementosFrameDocente --|> FrameConMenu
         ComplementosFrameEstudiante --|> FrameConMenu
         BaseFrame --|> JFrame

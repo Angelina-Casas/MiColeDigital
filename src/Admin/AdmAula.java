@@ -1,5 +1,6 @@
 package Admin;
 
+import Complementos.ComplementosAdmin;
 import Complementos.BaseFrame;
 import Modelos.Usuario;
 import Modelos.Aula;
