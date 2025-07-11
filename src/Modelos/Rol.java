@@ -1,17 +1,21 @@
 package Modelos;
 
+/**
+ * Representa un rol de usuario (por ejemplo: Docente, Estudiante).
+ */
 public class Rol {
     private int idRol;
     private String nombreRol;
 
-    public Rol (){}
-    // Constructor
+    // Constructores
+    public Rol() {}
+
     public Rol(int idRol, String nombreRol) {
         this.idRol = idRol;
         this.nombreRol = nombreRol;
     }
 
-    // Getters y setters
+    // Getters
     public int getIdRol() {
         return idRol;
     }
@@ -20,6 +24,7 @@ public class Rol {
         return nombreRol;
     }
 
+    // Setters
     public void setIdRol(int idRol) {
         this.idRol = idRol;
     }
@@ -28,10 +33,8 @@ public class Rol {
         this.nombreRol = nombreRol;
     }
 
-    // Sobrescribir el método toString() para mostrar el nombre del rol
     @Override
     public String toString() {
-        return nombreRol;  // Esto es lo que se mostrará en el JComboBox
+        return nombreRol;  // Usado para representar el rol en combos o listas
     }
 }
- 

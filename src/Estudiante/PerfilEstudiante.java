@@ -12,11 +12,8 @@ import java.util.List;
 public class PerfilEstudiante extends ComplementosFrameEstudiante {
     private Usuario usuario;
 
-    private JLabel lblFoto, lblInfoBasica, lblInfoAdicional, lblNombre, lblCorreo;
-    private JLabel lblGrado, lblSeccion, lblCursos;
     private JLabel lblNombreValor, lblCorreoValor, lblGradoValor, lblSeccionValor;
     private JTextArea areaCursos;
-    private JScrollPane scrollCursos;
 
     public PerfilEstudiante(Usuario usuario) {
         super(usuario);
@@ -25,45 +22,45 @@ public class PerfilEstudiante extends ComplementosFrameEstudiante {
         add(crearPanelIzquierdo());
         add(crearPanelDerecho("BIENVENIDO A MICOLEDIGITAL"));
 
-        lblFoto = new JLabel();
-        lblFoto.setBounds(460, 170, 180, 180);
-        lblFoto.setIcon(new ImageIcon(getClass().getResource("/Img/estudiantefoto.png")));
-        panelDerecho.add(lblFoto);
+        inicializarComponentes();
+        cargarCursosGradoSeccion(usuario.getIdUsuario());
 
-        lblInfoBasica = new JLabel("Información básica");
+        setVisible(true);
+    }
+
+    private void inicializarComponentes() {
+        agregarFotoPerfil();
+        agregarSeccionTitulos();
+        agregarInformacionBasica();
+        agregarInformacionAdicional();
+    }
+
+    private void agregarFotoPerfil() {
+        JLabel lblFoto = new JLabel(new ImageIcon(getClass().getResource("/Img/estudiantefoto.png")));
+        lblFoto.setBounds(460, 170, 180, 180);
+        panelDerecho.add(lblFoto);
+    }
+
+    private void agregarSeccionTitulos() {
+        JLabel lblInfoBasica = new JLabel("Información básica");
         lblInfoBasica.setFont(new Font("Serif", Font.BOLD, 18));
         lblInfoBasica.setBounds(280, 380, 200, 30);
         panelDerecho.add(lblInfoBasica);
-        
-        lblInfoAdicional = new JLabel("Información adicional");
+
+        JLabel lblInfoAdicional = new JLabel("Información adicional");
         lblInfoAdicional.setFont(new Font("Serif", Font.BOLD, 18));
         lblInfoAdicional.setBounds(700, 380, 220, 30);
         panelDerecho.add(lblInfoAdicional);
+    }
 
-        lblNombre = new JLabel("NOMBRE:");
-        lblNombre.setFont(new Font("Serif", Font.BOLD, 14));
-        lblNombre.setBounds(280, 415, 100, 30);
-        panelDerecho.add(lblNombre);
+    private void agregarInformacionBasica() {
+        crearEtiqueta("NOMBRE:", 280, 415);
+        lblNombreValor = crearValor(usuario.getNombre(), 380, 415);
 
-        lblNombreValor = new JLabel(usuario.getNombre());
-        lblNombreValor.setFont(new Font("Serif", Font.PLAIN, 14));
-        lblNombreValor.setBounds(380, 415, 300, 30);
-        panelDerecho.add(lblNombreValor);
+        crearEtiqueta("CORREO:", 280, 450);
+        lblCorreoValor = crearValor(usuario.getCorreo(), 380, 450);
 
-        lblCorreo = new JLabel("CORREO:");
-        lblCorreo.setFont(new Font("Serif", Font.BOLD, 14));
-        lblCorreo.setBounds(280, 450, 100, 30);
-        panelDerecho.add(lblCorreo);
-
-        lblCorreoValor = new JLabel(usuario.getCorreo());
-        lblCorreoValor.setFont(new Font("Serif", Font.PLAIN, 14));
-        lblCorreoValor.setBounds(380, 450, 300, 30);
-        panelDerecho.add(lblCorreoValor);
-
-        lblCursos = new JLabel("CURSOS:");
-        lblCursos.setFont(new Font("Serif", Font.BOLD, 14));
-        lblCursos.setBounds(280, 485, 100, 30);
-        panelDerecho.add(lblCursos);
+        crearEtiqueta("CURSOS:", 280, 485);
 
         areaCursos = new JTextArea();
         areaCursos.setFont(new Font("Serif", Font.PLAIN, 14));
@@ -72,41 +69,25 @@ public class PerfilEstudiante extends ComplementosFrameEstudiante {
         areaCursos.setLineWrap(true);
         areaCursos.setWrapStyleWord(true);
 
-        scrollCursos = new JScrollPane(areaCursos);
+        JScrollPane scrollCursos = new JScrollPane(areaCursos);
         scrollCursos.setBounds(380, 490, 300, 80);
         scrollCursos.setBorder(null);
         panelDerecho.add(scrollCursos);
+    }
 
-        lblGrado = new JLabel("GRADO:");
-        lblGrado.setFont(new Font("Serif", Font.BOLD, 14));
-        lblGrado.setBounds(700, 415, 100, 30);
-        panelDerecho.add(lblGrado);
+    private void agregarInformacionAdicional() {
+        crearEtiqueta("GRADO:", 700, 415);
+        lblGradoValor = createPlaceholderValue(800, 415);
 
-        lblGradoValor = new JLabel("N/A");
-        lblGradoValor.setFont(new Font("Serif", Font.PLAIN, 14));
-        lblGradoValor.setBounds(800, 415, 100, 30);
-        panelDerecho.add(lblGradoValor);
-
-        lblSeccion = new JLabel("SECCIÓN:");
-        lblSeccion.setFont(new Font("Serif", Font.BOLD, 14));
-        lblSeccion.setBounds(700, 450, 100, 30);
-        panelDerecho.add(lblSeccion);
-
-        lblSeccionValor = new JLabel("N/A");
-        lblSeccionValor.setFont(new Font("Serif", Font.PLAIN, 14));
-        lblSeccionValor.setBounds(800, 450, 100, 30);
-        panelDerecho.add(lblSeccionValor);
-
-        cargarCursosGradoSeccion(usuario.getIdUsuario());
-
-        setVisible(true);
+        crearEtiqueta("SECCIÓN:", 700, 450);
+        lblSeccionValor = createPlaceholderValue(800, 450);
     }
 
     private void cargarCursosGradoSeccion(int idUsuario) {
         CursoBD cursoBD = new CursoBD();
         List<Curso> cursos = cursoBD.listarCursosPorEstudiante(idUsuario);
 
-        StringBuilder textoCursos = new StringBuilder();
+        StringBuilder cursosTexto = new StringBuilder();
         String grado = null;
         String seccion = null;
 
@@ -115,10 +96,30 @@ public class PerfilEstudiante extends ComplementosFrameEstudiante {
                 grado = String.valueOf(curso.getAula().getGrado());
                 seccion = curso.getAula().getSeccion();
             }
-            textoCursos.append("- ").append(curso.getNombre()).append("\n");
+            cursosTexto.append("- ").append(curso.getNombre()).append("\n");
         }
-        areaCursos.setText(textoCursos.length() == 0 ? "Sin cursos asignados." : textoCursos.toString());
-        lblGradoValor.setText(grado == null ? "N/A" : grado);
-        lblSeccionValor.setText(seccion == null ? "N/A" : seccion);
+
+        areaCursos.setText(cursosTexto.length() == 0 ? "Sin cursos asignados." : cursosTexto.toString());
+        lblGradoValor.setText(grado != null ? grado : "N/A");
+        lblSeccionValor.setText(seccion != null ? seccion : "N/A");
+    }
+
+    private void crearEtiqueta(String texto, int x, int y) {
+        JLabel etiqueta = new JLabel(texto);
+        etiqueta.setFont(new Font("Serif", Font.BOLD, 14));
+        etiqueta.setBounds(x, y, 100, 30);
+        panelDerecho.add(etiqueta);
+    }
+
+    private JLabel crearValor(String texto, int x, int y) {
+        JLabel valor = new JLabel(texto);
+        valor.setFont(new Font("Serif", Font.PLAIN, 14));
+        valor.setBounds(x, y, 300, 30);
+        panelDerecho.add(valor);
+        return valor;
+    }
+
+    private JLabel createPlaceholderValue(int x, int y) {
+        return crearValor("N/A", x, y);
     }
 }

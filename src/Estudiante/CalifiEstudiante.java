@@ -15,7 +15,7 @@ public class CalifiEstudiante extends ComplementosFrameEstudiante {
     private JScrollPane scrollPane;
     private Curso curso;
 
-    public CalifiEstudiante(Usuario usuario, Curso curso){
+    public CalifiEstudiante(Usuario usuario, Curso curso) {
         super(usuario);
         this.usuario = usuario;
         this.curso = curso;
@@ -23,36 +23,46 @@ public class CalifiEstudiante extends ComplementosFrameEstudiante {
         add(crearPanelIzquierdo());
         add(crearPanelDerecho("CALIFICACIONES - " + curso.getNombre().toUpperCase()));
 
-        JButton btnCabecera1 = new JButton("Contenido");
-        btnCabecera1.setBounds(100, 140, 425, 40); 
-        btnCabecera1.setBackground(Color.WHITE);
-        btnCabecera1.setBorder(BorderFactory.createLineBorder(new Color(39,87,117), 2));
-        btnCabecera1.addActionListener(e -> {
+        crearBotonesCabecera();
+        inicializarTabla();
+    }
+
+    private void crearBotonesCabecera() {
+        JButton btnContenido = crearBotonCabecera("Contenido", 100);
+        btnContenido.addActionListener(e -> {
             new ContenidoEstudiante(usuario, curso).setVisible(true);
             dispose();
         });
-        panelDerecho.add(btnCabecera1);
+        panelDerecho.add(btnContenido);
 
-        JButton btnCabecera2 = new JButton("Calificaciones");
-        btnCabecera2.setBounds(525, 140, 425, 40); 
-        btnCabecera2.setBackground(Color.WHITE);
-        btnCabecera2.setBorder(BorderFactory.createLineBorder(new Color(39,87,117), 2));
-        btnCabecera2.setEnabled(false);
-        panelDerecho.add(btnCabecera2);
+        JButton btnCalificaciones = crearBotonCabecera("Calificaciones", 525);
+        btnCalificaciones.setEnabled(false);  // Ya estamos en esta pantalla
+        panelDerecho.add(btnCalificaciones);
+    }
 
+    private JButton crearBotonCabecera(String texto, int x) {
+        JButton boton = new JButton(texto);
+        boton.setBounds(x, 140, 425, 40);
+        boton.setBackground(Color.WHITE);
+        boton.setBorder(BorderFactory.createLineBorder(new Color(39, 87, 117), 2));
+        return boton;
+    }
+
+    private void inicializarTabla() {
         String[] columnas = {"Práctica", "Nota", "Fecha de Envío"};
         DefaultTableModel modelo = new DefaultTableModel(null, columnas);
         tablaNotas = new JTable(modelo);
         tablaNotas.setRowHeight(25);
         tablaNotas.getTableHeader().setFont(new Font("SansSerif", Font.BOLD, 14));
+
         scrollPane = new JScrollPane(tablaNotas);
         scrollPane.setBounds(100, 200, 850, 400);
         panelDerecho.add(scrollPane);
 
-        cargarNotas(modelo);
+        cargarNotasDesdeBD(modelo);
     }
 
-    private void cargarNotas(DefaultTableModel modelo) {
+    private void cargarNotasDesdeBD(DefaultTableModel modelo) {
         String sql = """
             SELECT f.nombreFor AS practica, r.nota, r.fechaEnvio
             FROM ResultadoPractica r
@@ -70,10 +80,12 @@ public class CalifiEstudiante extends ComplementosFrameEstudiante {
 
             boolean hayDatos = false;
             while (rs.next()) {
-                String practica = rs.getString("practica");
-                double nota = rs.getDouble("nota");
-                Date fecha = rs.getDate("fechaEnvio");
-                modelo.addRow(new Object[]{practica, nota, fecha});
+                Object[] fila = {
+                    rs.getString("practica"),
+                    rs.getDouble("nota"),
+                    rs.getDate("fechaEnvio")
+                };
+                modelo.addRow(fila);
                 hayDatos = true;
             }
 
@@ -83,7 +95,6 @@ public class CalifiEstudiante extends ComplementosFrameEstudiante {
 
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "Error al cargar notas:\n" + e.getMessage());
-            e.printStackTrace();
         }
     }
 }

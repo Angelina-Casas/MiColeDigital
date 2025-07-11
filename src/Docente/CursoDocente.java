@@ -45,13 +45,13 @@ public class CursoDocente extends ComplementosFrameDocente {
                 int grado = rs.getInt("grado");
                 String seccion = rs.getString("seccion");
 
-                String textoBoton = nombreCurso + " - " + grado + "°" + seccion;
+                String textoBoton = nombreCurso + " - " + grado + "Â°" + seccion;
 
                 JButton btnCurso = new JButton(textoBoton);
                 btnCurso.setAlignmentX(Component.CENTER_ALIGNMENT);
                 btnCurso.setMaximumSize(new Dimension(400, 80));
-                btnCurso.setBackground(new Color(255, 220, 80));
-                btnCurso.setFont(new Font("Serif", Font.PLAIN, 20));
+                btnCurso.setBackground(new Color(254, 234, 157));
+                btnCurso.setFont(new Font("SansSerif", Font.BOLD, 16));
 
                 btnCurso.addActionListener(e -> {
                     Curso curso = new Curso();

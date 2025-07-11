@@ -5,120 +5,118 @@ import Docente.CursoDocente;
 import Estudiante.CursoEstudiante;
 import Modelos.Usuario;
 import Modelos.UsuarioBD;
+
 import javax.swing.*;
 import java.awt.*;
 
-public class LoginGeneral extends JFrame{
-    private JLabel lblLogoIzquierda;
-    private JLabel lblIconoUsuario;
-    private JLabel lblLogoDerecha;
-    private JLabel lblTitulo;
-    private JLabel lblUsuario;
-    private JLabel lblContrasena;
+public class LoginGeneral extends JFrame {
     private JTextField txtUsuario;
     private JPasswordField txtContrasena;
-    private JButton btnIngresar;
-    
-    public LoginGeneral() { 
-        setSize(1280, 720); 
+
+    public LoginGeneral() {
+        setTitle("Login - MiColeDigital");
+        setSize(1280, 720);
         setLayout(null);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
-        
-        JPanel panelIzquierdologin = new JPanel();
-        panelIzquierdologin .setBackground(new Color(212, 223, 237)); 
-        panelIzquierdologin .setBounds(0, 0, 640, 720);
-        panelIzquierdologin .setLayout(null);
 
-        lblLogoIzquierda = new JLabel();
-        lblLogoIzquierda.setBounds(155,154, 330, 413); 
-        lblLogoIzquierda.setIcon(new ImageIcon(getClass().getResource("/Img/montefioriLogoGrande1.png")));
-        panelIzquierdologin.add(lblLogoIzquierda);
+        add(crearPanelIzquierdo());
+        add(crearPanelDerecho());
 
-        JPanel panelDerechoLogin = new JPanel();
-        panelDerechoLogin.setBackground(Color.WHITE);
-        panelDerechoLogin.setBounds(640, 0, 640, 720);
-        panelDerechoLogin.setLayout(null);
+        setVisible(true);
+    }
 
-        lblLogoDerecha = new JLabel();
-        lblLogoDerecha.setBounds(494,15,125,101);
-        lblLogoDerecha.setIcon(new ImageIcon(getClass().getResource("/Img/logoMiColePequeno.png")));
-        panelDerechoLogin.add(lblLogoDerecha); 
+    private JPanel crearPanelIzquierdo() {
+        JPanel panelIzquierdo = new JPanel(null);
+        panelIzquierdo.setBackground(new Color(212, 223, 237));
+        panelIzquierdo.setBounds(0, 0, 640, 720);
 
-        lblTitulo = new JLabel("INICIAR SESION");
+        JLabel lblLogo = new JLabel();
+        lblLogo.setBounds(155, 154, 330, 413);
+        lblLogo.setIcon(new ImageIcon(getClass().getResource("/Img/montefioriLogoGrande1.png")));
+        panelIzquierdo.add(lblLogo);
+
+        return panelIzquierdo;
+    }
+
+    private JPanel crearPanelDerecho() {
+        JPanel panelDerecho = new JPanel(null);
+        panelDerecho.setBackground(Color.WHITE);
+        panelDerecho.setBounds(640, 0, 640, 720);
+
+        agregarComponentesLogin(panelDerecho);
+
+        return panelDerecho;
+    }
+
+    private void agregarComponentesLogin(JPanel panel) {
+        JLabel lblLogoPeque = new JLabel();
+        lblLogoPeque.setBounds(494, 15, 125, 101);
+        lblLogoPeque.setIcon(new ImageIcon(getClass().getResource("/Img/logoMiColePequeno.png")));
+        panel.add(lblLogoPeque);
+
+        JLabel lblTitulo = new JLabel("INICIAR SESIÓN");
         lblTitulo.setFont(new Font("Serif", Font.BOLD, 22));
         lblTitulo.setBounds(217, 160, 200, 30);
-        panelDerechoLogin.add(lblTitulo);
+        panel.add(lblTitulo);
 
-        lblIconoUsuario = new JLabel();
+        JLabel lblIconoUsuario = new JLabel();
         lblIconoUsuario.setBounds(250, 230, 95, 95);
         lblIconoUsuario.setIcon(new ImageIcon(getClass().getResource("/Img/personaIniciarSesion.png")));
-        panelDerechoLogin.add(lblIconoUsuario);
+        panel.add(lblIconoUsuario);
 
-        lblUsuario = new JLabel("Usuario");
+        JLabel lblUsuario = new JLabel("Usuario");
         lblUsuario.setFont(new Font("SansSerif", Font.BOLD, 14));
         lblUsuario.setBounds(215, 350, 100, 20);
-        panelDerechoLogin.add(lblUsuario);
+        panel.add(lblUsuario);
 
         txtUsuario = new JTextField();
         txtUsuario.setBounds(215, 375, 200, 30);
         txtUsuario.setBackground(new Color(210, 235, 255));
-        panelDerechoLogin.add(txtUsuario);
+        panel.add(txtUsuario);
 
-        lblContrasena = new JLabel("Contraseña");
+        JLabel lblContrasena = new JLabel("Contraseña");
         lblContrasena.setFont(new Font("SansSerif", Font.BOLD, 14));
         lblContrasena.setBounds(215, 420, 100, 20);
-        panelDerechoLogin.add(lblContrasena);
+        panel.add(lblContrasena);
 
         txtContrasena = new JPasswordField();
         txtContrasena.setBounds(215, 445, 200, 30);
         txtContrasena.setBackground(new Color(210, 235, 255));
-        panelDerechoLogin.add(txtContrasena);
+        panel.add(txtContrasena);
 
-        btnIngresar = new JButton("Ingresar");
+        JButton btnIngresar = new JButton("Ingresar");
         btnIngresar.setBounds(215, 500, 200, 40);
-        btnIngresar.setBackground(new Color(39,87,117)); 
+        btnIngresar.setBackground(new Color(39, 87, 117));
         btnIngresar.setForeground(Color.WHITE);
         btnIngresar.setFocusPainted(false);
-        btnIngresar.addActionListener(e -> {
-            String correo = txtUsuario.getText();
-            String contrasena = new String(txtContrasena.getPassword());
+        btnIngresar.addActionListener(e -> autenticarUsuario());
+        panel.add(btnIngresar);
 
-            UsuarioBD usuarioBD = new UsuarioBD();
-            Usuario usuario = usuarioBD.validarUsuario(correo, contrasena);
+        getRootPane().setDefaultButton(btnIngresar);
+    }
 
-            if (usuario != null) {
-            String rol = usuario.getRol().getNombreRol();
+    private void autenticarUsuario() {
+        String correo = txtUsuario.getText().trim();
+        String contrasena = new String(txtContrasena.getPassword()).trim();
 
+        UsuarioBD usuarioBD = new UsuarioBD();
+        Usuario usuario = usuarioBD.validarUsuario(correo, contrasena);
+
+        if (usuario != null) {
+            String rol = usuario.getRol().getNombreRol().toLowerCase();
             JOptionPane.showMessageDialog(this, "¡Bienvenido " + usuario.getNombre() + " (" + rol + ")!");
 
-            switch (rol.toLowerCase()) {
-                case "estudiante":
-                    new CursoEstudiante(usuario).setVisible(true);
-                break;
-                case "docente":
-                    new CursoDocente(usuario).setVisible(true);
-                break;
-                case "administrador":
-                    new MenuAdm(usuario).setVisible(true);
-                break;
-                default:
-                    JOptionPane.showMessageDialog(this, "Rol no reconocido.");
-                return;
+            switch (rol) {
+                case "estudiante" -> new CursoEstudiante(usuario).setVisible(true);
+                case "docente" -> new CursoDocente(usuario).setVisible(true);
+                case "administrador" -> new MenuAdm(usuario).setVisible(true);
+                default -> JOptionPane.showMessageDialog(this, "Rol no reconocido.");
             }
-            dispose(); 
-            } else {
-                JOptionPane.showMessageDialog(this, "Correo o contraseña incorrectos.");
-            }
-    
-        });
-        panelDerechoLogin.add(btnIngresar);
-        getRootPane().setDefaultButton(btnIngresar);
-
-        add(panelIzquierdologin);
-        add(panelDerechoLogin);
-
-        setVisible(true);
+            dispose();
+        } else {
+            JOptionPane.showMessageDialog(this, "Correo o contraseña incorrectos.");
+        }
     }
 }

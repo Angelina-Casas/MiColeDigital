@@ -12,7 +12,6 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.sql.*;
 import java.util.List;
-import javax.swing.table.TableColumn;
 
 public class CalifiDocente extends ComplementosFrameDocente {
     private JTable tabla;
@@ -29,7 +28,7 @@ public class CalifiDocente extends ComplementosFrameDocente {
         add(crearPanelIzquierdo());
         add(crearPanelDerecho("Calificaciones del curso: " + curso.getNombre()));
 
-        // Botón Contenido
+
         JButton btnCabecera1 = new JButton("Contenido");
         btnCabecera1.setBounds(100, 140, 425, 40);
         btnCabecera1.setBackground(Color.WHITE);
@@ -40,14 +39,13 @@ public class CalifiDocente extends ComplementosFrameDocente {
         });
         panelDerecho.add(btnCabecera1);
 
-        // Botón Calificaciones (refresca vista)
+        
         JButton btnCabecera2 = new JButton("Calificaciones");
         btnCabecera2.setBounds(525, 140, 425, 40);
         btnCabecera2.setBackground(Color.WHITE);
         btnCabecera2.setBorder(BorderFactory.createLineBorder(new Color(39, 87, 117), 2));
         btnCabecera2.addActionListener(e -> mostrarBotonesDePracticas());
         panelDerecho.add(btnCabecera2);
-
         mostrarBotonesDePracticas();
         setVisible(true);
     }
@@ -97,30 +95,28 @@ public class CalifiDocente extends ComplementosFrameDocente {
         scroll = new JScrollPane(panelContenido);
         scroll.setBounds(100, 200, 850, 370);
         scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-        scroll.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
+        scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scroll.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY,2));
         panelDerecho.add(scroll);
         panelDerecho.repaint();
         panelDerecho.revalidate();
     }
 
     private void mostrarTablaNotas(int idFormulario, String nombrePractica) {
+
         if (scroll != null) panelDerecho.remove(scroll);
         if (panelContenido != null) panelDerecho.remove(panelContenido);
 
-        panelContenido = new JPanel(null);
+        panelContenido = new JPanel(new BorderLayout());
         panelContenido.setBounds(100, 200, 850, 400);
         panelContenido.setBackground(Color.WHITE);
 
-        JLabel lblTitulo = new JLabel("Notas de: " + nombrePractica);
-        lblTitulo.setBounds(0, 0, 500, 30);
-        lblTitulo.setFont(new Font("SansSerif", Font.BOLD, 18));
 
+        JLabel lblTitulo = new JLabel("Notas de: " + nombrePractica);
+        lblTitulo.setFont(new Font("SansSerif", Font.BOLD, 18));
         lblTitulo.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         panelContenido.add(lblTitulo, BorderLayout.NORTH);
 
-        panelContenido.add(lblTitulo);
-        
-        panelContenido.add(lblTitulo);
 
         String[] columnas = {"Nombre del Estudiante", "Nota"};
         modelo = new DefaultTableModel(null, columnas);
@@ -128,19 +124,21 @@ public class CalifiDocente extends ComplementosFrameDocente {
         tabla.setRowHeight(25);
         tabla.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 
-        TableColumn colNombre = tabla.getColumnModel().getColumn(0);
-        colNombre.setPreferredWidth(600);
-        tabla.getColumnModel().getColumn(1).setPreferredWidth(200);
+        tabla.getColumnModel().getColumn(0).setPreferredWidth(600);
+        tabla.getColumnModel().getColumn(1).setPreferredWidth(235);
 
         JScrollPane scrollTabla = new JScrollPane(tabla);
-        scrollTabla.setBounds(0, 40, 800, 300);
-        panelContenido.add(scrollTabla);
+        scrollTabla.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollTabla.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY, 2));
+
+        panelContenido.add(scrollTabla, BorderLayout.CENTER);
 
         panelDerecho.add(panelContenido);
         panelDerecho.repaint();
         panelDerecho.revalidate();
 
         cargarNotasPorPractica(idFormulario);
+
     }
 
     private void cargarNotasPorPractica(int idFormulario) {
@@ -170,7 +168,7 @@ public class CalifiDocente extends ComplementosFrameDocente {
             }
 
             if (!tieneDatos) {
-                JOptionPane.showMessageDialog(this, "No hay calificaciones para esta práctica.");
+                JOptionPane.showMessageDialog(this, "No hay calificaciones para esta prÃ¡ctica.");
             }
 
         } catch (SQLException e) {

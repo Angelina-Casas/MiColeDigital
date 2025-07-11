@@ -46,7 +46,7 @@ public class AgregarContenido extends ComplementosFrameDocente {
         btnCabecera2.setBackground(Color.WHITE);
         btnCabecera2.setBorder(BorderFactory.createLineBorder(new Color(39,87,117), 2));
         btnCabecera2.addActionListener(e -> {
-            new CalifiDocente(usuario, curso).setVisible(true); // ← LÍNEA CORREGIDA
+            new CalifiDocente(usuario, curso).setVisible(true); 
             dispose();
         });
         panelDerecho.add(btnCabecera2);
