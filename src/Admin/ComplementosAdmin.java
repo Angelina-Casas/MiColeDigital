@@ -40,6 +40,21 @@ public class ComplementosAdmin {
         }
         return true;
     }
-
+    
+    public static boolean verificarCamposCurso(JFrame frame, String nombre, Object docente, Object aula) {
+    if (nombre == null || nombre.trim().isEmpty()) {
+        mostrarMensaje(frame, "El nombre del curso no puede estar vacío.");
+        return false;
+    }
+    if (docente == null) {
+        mostrarMensaje(frame, "Selecciona un docente.");
+        return false;
+    }
+    if (aula == null) {
+        mostrarMensaje(frame, "Selecciona un aula.");
+        return false;
+    }
+    return true;
+    }
     
 }
